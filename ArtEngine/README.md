@@ -16,7 +16,7 @@ To find out more please visit:
 
 [ℹ️ Website](https://hashlips.online/HashLips)
 
-# HashLips Art Engine 🔥
+# Alpha7 Art Engine 🔥
 
 ![](https://github.com/HashLips/hashlips_art_engine/blob/main/banner.png)
 
@@ -209,7 +209,7 @@ The program will output all the images in the `build/images` directory along wit
     { "trait_type": "Bottom lid", "value": "Low" },
     { "trait_type": "Top lid", "value": "Middle" }
   ],
-  "compiler": "HashLips Art Engine"
+  "compiler": "Alpha7 Art Engine"
 }
 ```
 
