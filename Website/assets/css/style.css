@@ -162,7 +162,7 @@ p {
 }
 
 #header .logo img {
-  max-height: 40px;
+  max-height: 90px;
 }
 
 
@@ -170,7 +170,7 @@ p {
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
-* Desktop Navigation 
+* Desktop Navigation
 */
 .navbar {
   padding: 0;
@@ -394,7 +394,7 @@ p {
 }
 
 /**
-* Mobile Navigation 
+* Mobile Navigation
 */
 .mobile-nav-toggle {
   color: #fff;
