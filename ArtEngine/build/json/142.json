@@ -1,23 +1,59 @@
-BitMaxx{
-  "name": "LegendaryRare AF BitMaxx NFT Collection #142",
-  "description": "BitMaxx NFT Collection. 200 in total, with 1 legendary NFT AND YOU GOT IT! This exclusive digital collectible is a true gem, boasting a unique combination of intricate artistry and scarcity that sets it apart in the vast NFT landscape. BitMaxx employs state-of-the-art blockchain technology to ensure the authenticity and rarity of each NFT, and my legendary piece stands as a testament to the platform's commitment to delivering unparalleled value to its community.The rarity of my BitMaxx legendary NFT is underscored by its limited edition status, with only a handful of these mesmerizing digital assets in existence. Each element of this NFT, from its meticulously crafted design to its scarcity in the broader NFT ecosystem, contributes to its status as a highly sought-after and one-of-a-kind creation. As a proud owner of this legendary BitMaxx NFT, I am not only part of an exclusive community of collectors but also a custodian of a digital masterpiece that transcends the ordinary, reflecting the intersection of art, technology, and rarity in the captivating world of NFTs",
-  "image": "https://github.com/ArielRin/BitMaxx-NFT-Collection--BNFT/blob/master/Assets/Image/142.png",
-  "dna": "52a467ad26c53e4f89febce7e529dec4fad4df1f",
+{
+  "name": "Alpha Dawgz NFT Collection #142",
+  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, 8holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
+  "image": "https://github.com/ArielRin/BitMaxx-NFT-Collection--BNFT/blob/master/Assets/Metadata//142.png",
+  "dna": "9de959dd74e33a0cd06241058e8d3825be9bc00a",
   "edition": 142,
-  "date": 1700015423433,
+  "date": 1705195437562,
   "attributes": [
     {
       "trait_type": "Background",
-      "value": "Legendary"
+      "value": "Standard"
     },
     {
-      "trait_type": "Image",
-      "value": "Legendary NFT"
+      "trait_type": "Dawg",
+      "value": "Steel"
     },
     {
       "trait_type": "Edition",
-      "value": "Legendary"
+      "value": "Original"
+    },
+    {
+      "trait_type": "Image",
+      "value": "bitmaxxNFTCollection"
+    },
+    {
+      "trait_type": "Logo",
+      "value": "Silver"
+    },
+    {
+      "trait_type": "Type1",
+      "value": "Silver"
+    },
+    {
+      "trait_type": "Type2",
+      "value": "Steel"
+    },
+    {
+      "trait_type": "Type3",
+      "value": "Steel"
+    },
+    {
+      "trait_type": "Type4",
+      "value": "Gold"
+    },
+    {
+      "trait_type": "Type5",
+      "value": "Steel"
+    },
+    {
+      "trait_type": "Type6",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Type7",
+      "value": "Steel"
     }
   ],
-  "compiler": "ArielRyn Art Generation 2023"
+  "compiler": "HashLips Art Engine"
 }

@@ -1,24 +1,59 @@
 {
-  "name": "BitMaxx NFT Collection #5",
-  "description": "a limited edition series that pushes the boundaries of digital art and innovation. Each NFT in this exclusive collection is priced at 5000PWR, representing a fusion of cutting-edge technology and artistic expression. With a total supply restricted to just 200 minted on the groundbreaking Maxx Chain.",
-  "image": "https://github.com/ArielRin/BitMaxx-NFT-Collection--BNFT/blob/master/Assets/Image/5.png",
-  "animation_url": "https://github.com/ArielRin/BitMaxx-NFT-Collection--BNFT/blob/master/Assets/Image/3.mp4",
-  "dna": "0c760ffef613006e9ff1e3000909e862e4eaf8ea",
+  "name": "Alpha Dawgz NFT Collection #5",
+  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, 8holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
+  "image": "https://github.com/ArielRin/BitMaxx-NFT-Collection--BNFT/blob/master/Assets/Metadata//5.png",
+  "dna": "da12e111e895a2a167aa480f920bf66bbd5eca41",
   "edition": 5,
-  "date": 1700015402554,
+  "date": 1705195415259,
   "attributes": [
     {
       "trait_type": "Background",
       "value": "Standard"
     },
     {
-      "trait_type": "Image",
-      "value": "BitmaxxNFTCollection"
+      "trait_type": "Dawg",
+      "value": "Gold"
     },
     {
       "trait_type": "Edition",
       "value": "Iron"
+    },
+    {
+      "trait_type": "Image",
+      "value": "bitmaxxNFTCollection"
+    },
+    {
+      "trait_type": "Logo",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Type1",
+      "value": "Titanium"
+    },
+    {
+      "trait_type": "Type2",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Type3",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Type4",
+      "value": "Steel"
+    },
+    {
+      "trait_type": "Type5",
+      "value": "Bronze"
+    },
+    {
+      "trait_type": "Type6",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Type7",
+      "value": "Bronze"
     }
   ],
-  "compiler": "ArielRyn Art Generation 2023"
+  "compiler": "HashLips Art Engine"
 }
