@@ -1,10 +1,10 @@
 {
   "name": "Alpha Dawgz NFT Collection #737",
   "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
-  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/737.png",
-  "dna": "30bc2daa479b813861ab17a73f695752d242dd30",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Metadata/737.png",
+  "dna": "ce47f9c01215d69df0edd28e104dd0de79d12bb5",
   "edition": 737,
-  "date": 1705225187928,
+  "date": 1705293632749,
   "attributes": [
     {
       "trait_type": "Background",
@@ -12,19 +12,19 @@
     },
     {
       "trait_type": "Logo",
-      "value": "Logo1"
+      "value": "Logo7"
     },
     {
       "trait_type": "Dawg",
-      "value": "sharpei"
+      "value": "BlueHealer"
     },
     {
       "trait_type": "Edition",
-      "value": "Steel"
+      "value": "Diamond"
     },
     {
       "trait_type": "Image",
-      "value": "2"
+      "value": "1"
     },
     {
       "trait_type": "Type1",
@@ -32,19 +32,19 @@
     },
     {
       "trait_type": "Type2",
-      "value": "lvl3"
+      "value": "lvl1"
     },
     {
       "trait_type": "Type3",
-      "value": "lvl7"
+      "value": "lvl6"
     },
     {
       "trait_type": "Type4",
-      "value": "lv21"
+      "value": "lvl7"
     },
     {
       "trait_type": "Type5",
-      "value": "lvl1"
+      "value": "lvl6"
     },
     {
       "trait_type": "Type6",
@@ -52,7 +52,7 @@
     },
     {
       "trait_type": "Type7",
-      "value": "lvl4"
+      "value": "lvl3"
     }
   ],
   "compiler": "Alpha7 Art Engine"

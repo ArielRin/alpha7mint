@@ -1,14 +1,14 @@
 {
   "name": "Alpha Dawgz NFT Collection #462",
   "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
-  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/462.png",
-  "dna": "b89970b29aba93ba64e71bdddf40e75d09ccb5c9",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Metadata/462.png",
+  "dna": "fbb07272f2783d1b7542baf2375aa5b6bdbe1b50",
   "edition": 462,
-  "date": 1705225144670,
+  "date": 1705293591566,
   "attributes": [
     {
       "trait_type": "Background",
-      "value": "greenbackground"
+      "value": "bluebackground"
     },
     {
       "trait_type": "Logo",
@@ -16,23 +16,23 @@
     },
     {
       "trait_type": "Dawg",
-      "value": "PatterdaleTerrier2"
+      "value": "Bulldog"
     },
     {
       "trait_type": "Edition",
-      "value": "Titanium"
+      "value": "Original"
     },
     {
       "trait_type": "Image",
-      "value": "2"
+      "value": "1"
     },
     {
       "trait_type": "Type1",
-      "value": "lvl6"
+      "value": "lvl8"
     },
     {
       "trait_type": "Type2",
-      "value": "lvl4"
+      "value": "lv21"
     },
     {
       "trait_type": "Type3",
@@ -40,11 +40,11 @@
     },
     {
       "trait_type": "Type4",
-      "value": "lvl7"
+      "value": "lvl8"
     },
     {
       "trait_type": "Type5",
-      "value": "lvl6"
+      "value": "lvl7"
     },
     {
       "trait_type": "Type6",

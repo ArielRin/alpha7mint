@@ -1,26 +1,26 @@
 {
   "name": "Alpha Dawgz NFT Collection #243",
-  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, 8holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
+  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
   "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Metadata/243.png",
-  "dna": "101d0dca47b02b042d91794be53415a8c90bbc72",
+  "dna": "2d817cacc23712cb1ae1f05d7606bcbe0b5823f8",
   "edition": 243,
-  "date": 1705225110839,
+  "date": 1705293558708,
   "attributes": [
     {
       "trait_type": "Background",
-      "value": "redbackground"
+      "value": "bluebackground"
     },
     {
       "trait_type": "Logo",
-      "value": "Logo5"
+      "value": "Logo4"
     },
     {
       "trait_type": "Dawg",
-      "value": "ArgentinaDogo"
+      "value": "PatterdaleTerrier2"
     },
     {
       "trait_type": "Edition",
-      "value": "Gold"
+      "value": "Titanium"
     },
     {
       "trait_type": "Image",
@@ -28,11 +28,11 @@
     },
     {
       "trait_type": "Type1",
-      "value": "lvl1"
+      "value": "lvl7"
     },
     {
       "trait_type": "Type2",
-      "value": "lvl8"
+      "value": "lv21"
     },
     {
       "trait_type": "Type3",
@@ -40,7 +40,7 @@
     },
     {
       "trait_type": "Type4",
-      "value": "lvl3"
+      "value": "lvl4"
     },
     {
       "trait_type": "Type5",
@@ -52,7 +52,7 @@
     },
     {
       "trait_type": "Type7",
-      "value": "lvl7"
+      "value": "lvl8"
     }
   ],
   "compiler": "Alpha7 Art Engine"
