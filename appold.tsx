@@ -26,10 +26,11 @@ import './styles.css';
 import backgroundGif from './gold.gif';
 import MainTextLogo from './headerlogo.png';
 
-const CONTRACT_ADDRESS = '0xeaD4A1507C4cEE75fc3691FA57b7f2774753482C';
+const CONTRACT_ADDRESS = '0xca695feb6b1b603ca9fec66aaa98be164db4e660';
 
-const getExplorerLink = () => `https://scan.maxxchain.org/address/${CONTRACT_ADDRESS}`;
-const getOpenSeaURL = () => `https://testnets.opensea.io/assets/goerli/${CONTRACT_ADDRESS}`;
+const getExplorerLink = () => `https://bscscan.com/address/${CONTRACT_ADDRESS}`;
+const getOpenSeaURL = () => `https://opensea.io/collection/aplha-dawgz-nft-collection`;
+const getTofuNftURL = () => `https://tofunft.com/discover/items?contracts=98523`;
 
 function App() {
   const account = useAccount();
@@ -153,7 +154,7 @@ function App() {
   useEffect(() => {
     async function fetchContractData() {
       try {
-        const provider = new ethers.providers.JsonRpcProvider('https://mainrpc4.maxxchain.org/');
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
         const name = await contract.name();
         const supply = await contract.totalSupply();
@@ -174,7 +175,7 @@ function App() {
   useEffect(() => {
     async function fetchContractBalance() {
       try {
-        const provider = new ethers.providers.JsonRpcProvider('https://mainrpc4.maxxchain.org/');
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
 
         // Read the balance directly from the contract address
@@ -195,7 +196,7 @@ const [cost, setCost] = useState('0');
 useEffect(() => {
   async function fetchCost() {
     try {
-      const provider = new ethers.providers.JsonRpcProvider('https://mainrpc4.maxxchain.org/');
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
 
       // Read the cost value directly from the contract
@@ -216,7 +217,7 @@ const [isPaused, setIsPaused] = useState(false);
 useEffect(() => {
   async function fetchPauseStatus() {
     try {
-      const provider = new ethers.providers.JsonRpcProvider('https://mainrpc4.maxxchain.org/');
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
 
       // Read the paused status directly from the contract
@@ -236,7 +237,7 @@ const [isRevealed, setIsRevealed] = useState(false);
   useEffect(() => {
     async function fetchRevealStatus() {
       try {
-        const provider = new ethers.providers.JsonRpcProvider('https://mainrpc4.maxxchain.org/');
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
 
         // Read the revealed status directly from the contract
@@ -287,7 +288,6 @@ const [isRevealed, setIsRevealed] = useState(false);
       <ToastContainer />
 
       <header>
-        <img src={MainTextLogo} alt="BitMaxx NFT Collection" className="logobodyhead" />
         <div className="connect-button">
           <ConnectButton />
         </div>
@@ -306,38 +306,10 @@ const [isRevealed, setIsRevealed] = useState(false);
           <Container className="container" paddingY="4">
           <Tabs isFitted variant="enclosed">
             <TabList>
-              <Tab style={{ fontWeight: 'bold', color: 'white' }}>Home</Tab>
               <Tab style={{ fontWeight: 'bold', color: 'white' }}>Mint</Tab>
-              <Tab style={{ fontWeight: 'bold', color: 'white' }}>Stats</Tab>
             </TabList>
 
             <TabPanels>
-              <TabPanel>
-
-              <div>
-                <img src={MainTextLogo} alt="BitMaxx NFT Collection" className="logobody" />
-
-                <Text className="pricecost" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
-                  BitMaxx About our NFTs
-                </Text>
-
-                <Text className="paragraph1" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
-                Welcome to the BitMaxx NFT Collection! This collection is built on the MaxxChain network, bringing you a seamless and secure NFT experience. Each NFT in this collection is priced at 5000 PWR, making it an exclusive addition to your digital assets.
-                </Text>
-
-
-
-
-
-                <Text className="pauseStatus" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold', color: isPaused ? 'red' : 'green' }}>
-                  {isPaused ? 'NFT Minting currently Paused' : 'NFT Minting is Open!'}
-                </Text>
-              </div>
-
-
-
-
-              </TabPanel>
               <TabPanel>
 
               <div>
@@ -405,102 +377,6 @@ const [isRevealed, setIsRevealed] = useState(false);
                   {isConnected ? `Mint ${mintAmount} Now` : ' Mint on (Connect Wallet)'}
                 </Button>
               </Box>
-
-
-
-
-              </TabPanel>
-              <TabPanel>
-
-
-
-              <div>
-                <img src={MainTextLogo} alt="BitMaxx NFT Collection" className="logobody" />
-
-
-                <Text className="contractaddr" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
-
-                    {CONTRACT_ADDRESS}
-
-                </Text>
-
-
-                <Text className="paragraph1" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
-                  {loading ? 'Loading...' : `Contract Balance: ${ethers.utils.formatEther(contractBalance)} PWR`}
-                </Text>
-                <Text className="paragraph1" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
-                  {loading ? 'Loading...' : `Remaining Supply: ${remainingSupply}`}
-                </Text>
-                <Text className="paragraph1" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
-                  {loading ? 'Loading...' : `NFT Price: ${cost} PWR`}
-                </Text>
-
-                <Text className="pricecost" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
-                  Admin Functions
-                </Text>
-
-                <div className="buttons-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-                  <Button
-                    onClick={onRevealClick}
-                    textColor="white"
-                    bg={isRevealed ? '#666' : '#ff5555'}
-                    _hover={{
-                      bg: isRevealed ? '#666' : '#ff6b6b',
-                    }}
-                    style={{ marginRight: '1rem' }}
-                    >
-                    {isRevealed ? 'Already Revealed' : 'Reveal Collection (Only Owner)'}
-                  </Button>
-
-                  <Button
-                    onClick={onTogglePauseClick}
-                      textColor="white"
-                      bg="#ff5555"
-                      _hover={{
-                        bg: '#ff6b6b',
-                      }}
-                      >
-                      {isPaused ? 'UnPause Minting ' : 'Pause Minting'}
-                  </Button>
-              </div>
-              <Text
-                className="revealedStatus"
-                style={{
-                  padding: '10px',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  color: isRevealed ? 'green' : 'orange',
-                    }}
-                    >
-                {isRevealed ? 'NFT has been Revealed' : 'NFT is yet to be Revealed. Stay Tuned!'}
-              </Text>
-              <Text className="pauseStatus" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold', color: isPaused ? 'red' : 'green' }}>
-                {isPaused ? 'NFT Minting currently Paused' : 'NFT Minting is Open!'}
-              </Text>
-
-              <Box marginTop='2' display='flex' alignItems='center' justifyContent='center'>
-                <Input
-                 type="number"
-                 placeholder=" Enter new price in Wei (Only Owner)"
-                 value={newCost}
-                 onChange={(e) => setNewCost(e.target.value)}
-                 marginBottom="0"
-                 />
-                <Button
-                 onClick={onSetCostClick}
-                 textColor="white"
-                 bg="#ff5555"
-                 _hover={{
-                   bg: '#ff6b6b',
-                 }}
-                 >
-                 Set Cost
-                 </Button>
-
-               </Box>
-
-              </div>
-
 
 
 

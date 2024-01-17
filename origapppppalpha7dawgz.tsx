@@ -357,62 +357,99 @@ const [isRevealed, setIsRevealed] = useState(false);
                   <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
                   {/* Rest of your first row content */}
                 </div>
+        <div className="row row-2">
+
+
+
+          <div  className="column column-left">
+
+                                    <Text className="pricecost" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
+                                      Mint your AlphaDawgz for {cost} BNB Each!
+                                    </Text>
+                                    <Box marginTop='4' display='flex' alignItems='center' justifyContent='center'>
+                                      <Button
+                                        marginTop='1'
+                                        textColor='white'
+                                        bg='#094da7'
+                                        _hover={{
+                                          bg: '#0b6be8',
+                                        }}
+                                        onClick={handleDecrement}
+                                        disabled={!isConnected || mintLoading || mintAmount === 1}
+                                      >
+                                        -
+                                      </Button>
+                                      <Text marginX='3' textAlign='center' fontSize='lg'>
+                                        {mintAmount}
+                                      </Text>
+                                      <Button
+                                        marginTop='1'
+                                        textColor='white'
+                                        bg='#094da7'
+                                        _hover={{
+                                          bg: '#0b6be8',
+                                        }}
+                                        onClick={handleIncrement}
+                                        disabled={!isConnected || mintLoading || mintAmount === 200}
+                                      >
+                                        +
+                                      </Button>
+                                    </Box>
+
+                                    <Box marginTop='2' display='flex' alignItems='center' justifyContent='center'>
+                                      <Button
+                                        disabled={!isConnected || mintLoading}
+                                        marginTop='6'
+                                        onClick={onMintClick}
+                                        textColor='white'
+                                        bg='#094da7'
+                                        _hover={{
+                                          bg: '#0b6be8',
+                                        }}
+                                      >
+                                        {isConnected ? `Mint ${mintAmount} Now` : ' Mint on (Connect Wallet)'}
+                                      </Button>
+                                    </Box>
+          </div>
+
+
+
+
+
+          <div className="column column-right">
+
+          </div>
+        </div>
         <div className="row row-3">
 
-                                                    <div>
-                                                    <Text className="pricecost" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
-                                                      Mint your AlphaDawgz for {cost} BNB Each!
-                                                    </Text>
-                                                    <Box marginTop='4' display='flex' alignItems='center' justifyContent='center'>
-                                                      <Button
-                                                        marginTop='1'
-                                                        textColor='white'
-                                                        bg='#094da7'
-                                                        _hover={{
-                                                          bg: '#0b6be8',
-                                                        }}
-                                                        onClick={handleDecrement}
-                                                        disabled={!isConnected || mintLoading || mintAmount === 1}
-                                                      >
-                                                        -
-                                                      </Button>
-                                                      <Text marginX='3' textAlign='center' fontSize='lg'>
-                                                        {mintAmount}
+
+                                            <div>
+                                                    <Text className="contractname" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                       <p>Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token.
+The funds raised from these sales will contribute to the initial liquidity pool (LP) adding to Alpha7 Tokens initial capital and the NFT Holder rewards pool.
+Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own.
+This setup is designed to quickly offset the initial cost of the NFTs. Moreover,
+holders of Alpha Dawg NFTs will enjoy an additional 2% reflection from Alpha7 token to the NFT rewards pool,
+which will be distributed to holders on a weekly basis.
+</p>
                                                       </Text>
-                                                      <Button
-                                                        marginTop='1'
-                                                        textColor='white'
-                                                        bg='#094da7'
-                                                        _hover={{
-                                                          bg: '#0b6be8',
-                                                        }}
-                                                        onClick={handleIncrement}
-                                                        disabled={!isConnected || mintLoading || mintAmount === 200}
-                                                      >
-                                                        +
-                                                      </Button>
-                                                    </Box>
-
-                                                    <Box marginTop='2' display='flex' alignItems='center' justifyContent='center'>
-                                                      <Button
-                                                        disabled={!isConnected || mintLoading}
-                                                        marginTop='6'
-                                                        onClick={onMintClick}
-                                                        textColor='white'
-                                                        bg='#094da7'
-                                                        _hover={{
-                                                          bg: '#0b6be8',
-                                                        }}
-                                                      >
-                                                        {isConnected ? `Mint ${mintAmount} Now` : ' Mint on (Connect Wallet)'}
-                                                      </Button>
-                                                    </Box>
-
+                                              <Text className="contractname" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                {loading ? 'Loading...' : `${contractName || 'N/A'}`}
+                                              </Text>
+                                              <Text className="totalSupply" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                {loading ? 'Loading...' : `Minted : ${totalSupply} `}
+                                              </Text>
+                                              <Text className="remainingSupply" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                {loading ? 'Loading...' : `Remaining Dawgz: ${remainingSupply}`}
+                                              </Text>
+                                              <Text className="contractaddr" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                <Link isExternal href={getExplorerLink()}>
+                                                  {CONTRACT_ADDRESS}
+                                                </Link>
+                                              </Text>
                                             </div>
                 </div>
-        <div className="row row-4">
-
-        </div>
+        <div className="row row-4">Fourth Row (Min Height: 75px)</div>
       </div>
     </>
   );

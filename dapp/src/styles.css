@@ -49,7 +49,7 @@ header {
   display: block; /* Use block level for proper alignment */
   margin: 0 auto; /* Center the logo */
   max-width: 100%; /* Ensure it's responsive and doesn't overflow */
-  height: auto; /* Maintain aspect ratio */
+  height: 200px; /* Maintain aspect ratio */
 }
 
 /* Main Container Styles */
@@ -70,7 +70,8 @@ header {
 /* Row Styles */
 .row {
   width: 100%;
-  min-height: 200px;
+  min-height: 350px;
+  color: white;
   display: flex;
   border-radius: 25px;
 }
@@ -79,12 +80,12 @@ header {
 .row-1 {
   min-height: 200px;
   border-radius: 25px;
+  color: white;
   padding: 0 20%; /* 20% padding on each side */
   display: flex; /* Align items with flexbox */
   justify-content: center; /* Center items horizontally */
   align-items: center; /* Center items vertically */
 }
-
 
 .row-1_0 {
   min-height: 90px;
@@ -125,11 +126,16 @@ header {
 }
 
 .row-2 {
-background-color: rgba(0, 0, 0, 0.6); /* or any other desired background */
-  display: flex;
-  color: white;
-  flex-wrap: wrap;
+  min-height: 500px;
   border-radius: 25px;
+  color: white;
+  padding: 0 15%; /* 15% padding on each side */
+  display: flex; /* Align items with flexbox */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  background-color: rgba(0, 0, 0, 0.6); /* or any other desired background */
+    min-width: 700px;
+    flex-grow: 1;
 }
 
 /* Column Styles */
