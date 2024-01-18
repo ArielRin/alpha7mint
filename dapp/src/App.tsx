@@ -26,7 +26,7 @@ import abiFile from './abiFile.json';
 import './styles.css';
 import backgroundGif from './gold.gif';
 import tokenGif from './token.gif';
-import tokenLogo from './token.png';
+import tokenLogo from './token.jpg';
 
 import MainTextLogo from './headerlogo.png';
 
@@ -385,6 +385,17 @@ const handleAddToken = async () => {
                   {/* Apply the logobody class to the image */}
                   <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
                   {/* Rest of your first row content */}
+                  <Button
+                          marginTop='6'
+                          onClick={handleAddToken}
+                          textColor='white'
+                          bg='#094da7'
+                          _hover={{
+                            bg: '#0b6be8',
+                          }}
+                        >
+                          Add Token to MetaMask
+                        </Button>
                 </div>
         <div className="row row-3">
 
@@ -440,17 +451,6 @@ const handleAddToken = async () => {
                                             </div>
                 </div>
         <div className="row row-4">
-        <Button
-                marginTop='6'
-                onClick={handleAddToken}
-                textColor='white'
-                bg='#094da7'
-                _hover={{
-                  bg: '#0b6be8',
-                }}
-              >
-                Add Token to MetaMask
-              </Button>
         </div>
       </div>
     </>
