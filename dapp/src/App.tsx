@@ -16,6 +16,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
+import Web3 from 'web3';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { useAccount, useContractWrite } from 'wagmi';
@@ -24,9 +25,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import abiFile from './abiFile.json';
 import './styles.css';
 import backgroundGif from './gold.gif';
+import tokenGif from './token.gif';
+import tokenLogo from './token.png';
+
 import MainTextLogo from './headerlogo.png';
 
 const CONTRACT_ADDRESS = '0xca695feb6b1b603ca9fec66aaa98be164db4e660';
+const TOKEN_ADDRESS = '0x88CE0d545cF2eE28d622535724B4A06E59a766F0';
 
 const getExplorerLink = () => `https://bscscan.com/address/${CONTRACT_ADDRESS}`;
 const getOpenSeaURL = () => `https://opensea.io/collection/aplha-dawgz-nft-collection`;
@@ -331,6 +336,30 @@ const [isRevealed, setIsRevealed] = useState(false);
 //
 // export default App;
 
+// Function to handle adding token to MetaMask
+const handleAddToken = async () => {
+  if (window.ethereum) {
+    try {
+      // MetaMask request to watch the asset
+      await window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20', // Use 'ERC721' for NFTs
+          options: {
+            address: TOKEN_ADDRESS, // The address that the token is at
+            symbol: 'ALPHA7', // A ticker symbol or shorthand, up to 5 characters
+            decimals: 9, // The number of decimals in the token
+            image: tokenLogo, // A string url of the token logo
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    console.log('MetaMask is not installed!');
+  }
+};
 
   const headerTextStyle = {
     fontSize: '28px', // Increased font size
@@ -411,7 +440,17 @@ const [isRevealed, setIsRevealed] = useState(false);
                                             </div>
                 </div>
         <div className="row row-4">
-
+        <Button
+                marginTop='6'
+                onClick={handleAddToken}
+                textColor='white'
+                bg='#094da7'
+                _hover={{
+                  bg: '#0b6be8',
+                }}
+              >
+                Add Token to MetaMask
+              </Button>
         </div>
       </div>
     </>
