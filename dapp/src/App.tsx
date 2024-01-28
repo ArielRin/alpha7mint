@@ -385,17 +385,6 @@ const handleAddToken = async () => {
                   {/* Apply the logobody class to the image */}
                   <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
                   {/* Rest of your first row content */}
-                  <Button
-                          marginTop='6'
-                          onClick={handleAddToken}
-                          textColor='white'
-                          bg='#094da7'
-                          _hover={{
-                            bg: '#0b6be8',
-                          }}
-                        >
-                          Add Token to MetaMask
-                        </Button>
                 </div>
         <div className="row row-3">
 
@@ -447,6 +436,17 @@ const handleAddToken = async () => {
                                                         {isConnected ? `Mint ${mintAmount} Now` : ' Mint on (Connect Wallet)'}
                                                       </Button>
                                                     </Box>
+                                                    <Button
+                                                            marginTop='6'
+                                                            onClick={handleAddToken}
+                                                            textColor='white'
+                                                            bg='#094da7'
+                                                            _hover={{
+                                                              bg: '#0b6be8',
+                                                            }}
+                                                          >
+                                                            Add Alpha7 Token to MetaMask
+                                                          </Button>
 
                                             </div>
                 </div>
