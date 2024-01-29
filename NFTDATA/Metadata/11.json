@@ -8,7 +8,7 @@
   "attributes": [
     {
       "trait_type": "Background",
-      "value": "goldenbackground3"
+      "value": "greenbackground3"
     },
     {
       "trait_type": "Logo",
@@ -16,11 +16,11 @@
     },
     {
       "trait_type": "Dawg",
-      "value": "Doberman"
+      "value": "Mastif crossed Wombat"
     },
     {
       "trait_type": "Edition",
-      "value": "Original"
+      "value": "Hybrid"
     },
     {
       "trait_type": "Image",
