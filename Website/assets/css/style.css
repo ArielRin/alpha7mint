@@ -2178,3 +2178,19 @@ padding: unset;
 #tokenomics .section-title h2 {
   color: #ffffff;
 }
+.dexscreener-embed {
+  width: 93%; /* Fill 90% of the page width */
+  max-width: 1200px; /* Optional: Prevents the container from becoming too wide */
+  margin: 0 auto; /* Center the container horizontally */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  background-color: #000; /* Make the background color black */
+  color: #fff; /* Optional: Change text color to white for better contrast */
+  padding: 10px; /* Add some padding around the content */
+}
+
+/* Make embedded content (like an iframe) responsive */
+.dexscreener-embed iframe {
+  width: 100%; /* Make the iframe fill the container */
+  height: auto; /* Adjust the height as necessary, or set a fixed height */
+  background-color: #000; /* Make the background color black */
+}
