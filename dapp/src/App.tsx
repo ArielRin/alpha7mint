@@ -237,44 +237,67 @@ function App() {
 };
 
 // _____________-----------______------__--_-_-_-_--_-_-_------__---_--_-_---___----_--_--_-_--_--
-const [userTokenBalance, setUserTokenBalance] = useState('0');
+// _____________-----------______------__--_-_-_-_--_-_-_------__---_--_-_---___----_--_--_-_--_--
+// _____________-----------______------__--_-_-_-_--_-_-_------__---_--_-_---___----_--_--_-_--_--
+// _____________-----------______------__--_-_-_-_--_-_-_------__---_--_-_---___----_--_--_-_--_--
+// _____________-----------______------__--_-_-_-_--_-_-_------__---_--_-_---___----_--_--_-_--_--
+const [userAddress, setUserAddress] = useState('');
+ const [userTokenBalance, setUserTokenBalance] = useState('0');
+ const [unlockDate, setUnlockDate] = useState('');
 
-useEffect(() => {
-  const fetchTokenBalance = async () => {
-    // Check if window.ethereum is available
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        // Request account access if needed
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+ // Fetch user's Ethereum address
+ useEffect(() => {
+   const fetchUserAddress = async () => {
+     if (window.ethereum) {
+       const provider = new ethers.providers.Web3Provider(window.ethereum);
+       try {
+         await provider.send('eth_requestAccounts', []);
+         const signer = provider.getSigner();
+         const address = await signer.getAddress();
+         setUserAddress(address);
+         fetchUserTokenBalance(address); // Fetch token balance as soon as we have the user's address
+       } catch (error) {
+         console.error('Error fetching user address:', error);
+       }
+     }
+   };
 
-        // Create a provider
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+   fetchUserAddress();
+ }, []);
 
-        // Get signer
-        const signer = provider.getSigner();
+ // Fetch user's token balance
+ const fetchUserTokenBalance = async (address) => {
+   if (!address) return;
+   const provider = new ethers.providers.Web3Provider(window.ethereum);
+   const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, provider);
+   try {
+     const balance = await tokenContract.balanceOf(address);
+     const formattedBalance = ethers.utils.formatUnits(balance, 9); // Token has 9 decimals
+     setUserTokenBalance(formattedBalance);
+   } catch (error) {
+     console.error('Error fetching token balance:', error);
+   }
+ };
 
-        // Get the user's address
-        const userAddress = await signer.getAddress();
+ // Fetch unlock date for staking
+ useEffect(() => {
+   const fetchUnlockDate = async () => {
+     if (!userAddress) return;
+     const provider = new ethers.providers.Web3Provider(window.ethereum);
+     const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
+     try {
+       const unlockTime = await stakingContract.holderUnlockTime(userAddress);
+       const date = new Date(unlockTime.toNumber() * 1000).toLocaleString();
+       setUnlockDate(date);
+     } catch (error) {
+       console.error('Error fetching unlock date:', error);
+       setUnlockDate('Error fetching date');
+     }
+   };
 
-        // Create a contract instance
-        const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, provider);
+   fetchUnlockDate();
+ }, [userAddress]); // Depend on userAddress to refetch when it changes
 
-        // Fetch the balance
-        const balance = await tokenContract.balanceOf(userAddress);
-
-        // Convert the balance to a human-readable format for a token with 9 decimals
-        const formattedBalance = ethers.utils.formatUnits(balance, 9); // Specify 9 for the decimal places
-
-        // Update state with the balance
-        setUserTokenBalance(formattedBalance);
-      } catch (error) {
-        console.error('Error fetching token balance:', error);
-      }
-    }
-  };
-
-  fetchTokenBalance();
-}, []);
 
   // #################################################################################################
     // #################################################################################################
@@ -602,7 +625,6 @@ const [totalStaked, setTotalStaked] = useState(0);
 const [rewardsRemaining, setRewardsRemaining] = useState(0);
 const [lockedTokens, setLockedTokens] = useState(0);
 const [pendingRewards, setPendingRewards] = useState(0);
-const [unlockDate, setUnlockDate] = useState('');
 
 
 useEffect(() => {
@@ -638,13 +660,12 @@ const fetchData = async () => {
 
 
 
-
-
-  // #################################################################################################
   // #################################################################################################
 
 
 
+
+  // #################################################################################################
 
 
 
