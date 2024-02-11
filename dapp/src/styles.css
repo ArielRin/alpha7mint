@@ -165,3 +165,13 @@ header {
     min-width: 100%;
   }
 }
+
+
+.token-price-fraction {
+  font-size: larger;
+}
+
+.token-price-exponent {
+  font-size: smaller;
+  vertical-align: sub;
+}

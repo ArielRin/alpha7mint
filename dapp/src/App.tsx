@@ -89,7 +89,7 @@ function App() {
     setIsApprovalPending(true); // Set approval pending status to true
 
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
       const signer = provider.getSigner();
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, signer);
 
@@ -134,7 +134,7 @@ function App() {
     }
 
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
       const signer = provider.getSigner();
       const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, signer);
 
@@ -224,7 +224,7 @@ function App() {
 
   const fetchUserStakedBalance = async () => {
   try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
     const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
@@ -249,7 +249,7 @@ const [userAddress, setUserAddress] = useState('');
  useEffect(() => {
    const fetchUserAddress = async () => {
      if (window.ethereum) {
-       const provider = new ethers.providers.Web3Provider(window.ethereum);
+         const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
        try {
          await provider.send('eth_requestAccounts', []);
          const signer = provider.getSigner();
@@ -268,11 +268,11 @@ const [userAddress, setUserAddress] = useState('');
  // Fetch user's token balance
  const fetchUserTokenBalance = async (address) => {
    if (!address) return;
-   const provider = new ethers.providers.Web3Provider(window.ethereum);
+     const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
    const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, provider);
    try {
      const balance = await tokenContract.balanceOf(address);
-     const formattedBalance = ethers.utils.formatUnits(balance, 9); // Token has 9 decimals
+     const formattedBalance = ethers.utils.formatUnits(balance, 2); // Token has 9 decimals
      setUserTokenBalance(formattedBalance);
    } catch (error) {
      console.error('Error fetching token balance:', error);
@@ -283,7 +283,7 @@ const [userAddress, setUserAddress] = useState('');
  useEffect(() => {
    const fetchUnlockDate = async () => {
      if (!userAddress) return;
-     const provider = new ethers.providers.Web3Provider(window.ethereum);
+       const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
      const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
      try {
        const unlockTime = await stakingContract.holderUnlockTime(userAddress);
@@ -312,7 +312,7 @@ const [userAddress, setUserAddress] = useState('');
        try {
          setIsClaiming(true); // Disable the button
 
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
+           const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
          await provider.send('eth_requestAccounts', []); // Request account access
          const signer = provider.getSigner();
          const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, signer);
@@ -633,7 +633,7 @@ useEffect(() => {
 
 const fetchData = async () => {
   try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
     const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
     const userAddress = (await provider.listAccounts())[0]; // Assumes the user's wallet is connected
 
@@ -661,18 +661,162 @@ const fetchData = async () => {
 
 
   // #################################################################################################
+  const [tokenPriceUSD, setTokenPriceUSD] = useState('Loading...');
+
+  const [marketCap, setMarketCap] = useState('Loading...');
+  const [totalReserveInUSD, setTotalReserveInUSD] = useState('Loading...');
+
+  // ... (existing useEffect hooks)
+
+  // Fetch Market Cap and Total Reserve data
+  useEffect(() => {
+    const url = `https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${TOKEN_ADDRESS}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.data && data.data.attributes) {
+          if (data.data.attributes.fdv_usd) {
+            const fdvUsd = data.data.attributes.fdv_usd;
+            setMarketCap(`${parseFloat(fdvUsd).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`); // Format as currency
+          } else {
+            setMarketCap('Market Cap not available');
+          }
+
+          if (data.data.attributes.total_reserve_in_usd) {
+            const reserveUsd = data.data.attributes.total_reserve_in_usd;
+            setTotalReserveInUSD(`${parseFloat(reserveUsd).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`); // Format as currency
+          } else {
+            setTotalReserveInUSD('Total Reserve not available');
+          }
+        } else {
+          setMarketCap('Data not available');
+          setTotalReserveInUSD('Data not available');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setMarketCap('Error fetching data');
+        setTotalReserveInUSD('Error fetching data');
+      });
+  }, []);
+    // ##############################################################
+// token price
+useEffect(() => {
+  const fetchTokenPriceUSD = async () => {
+    const tokenAddress = '0x88ce0d545cf2ee28d622535724b4a06e59a766f0'; // Token address
+    const url = `https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${tokenAddress}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const priceUSD = data.data.attributes.price_usd;
+      if (priceUSD) {
+        setTokenPriceUSD(`${parseFloat(priceUSD).toFixed(9)} USD`); // Format the price to 6 decimal places and add USD suffix
+      } else {
+        setTokenPriceUSD('Price not available');
+      }
+    } catch (error) {
+      console.error('Error fetching token price:', error);
+      setTokenPriceUSD('Error fetching price');
+    }
+  };
+
+  fetchTokenPriceUSD();
+}, []); // Empty dependency array ensures this runs once on component mount
+
+    // ##############################################################
+
+
+      // ##############################################################
+      // ##############################################################
+
+  const [totalLiquidityUSD, setTotalLiquidityUSD] = useState('Loading...');
+
+  useEffect(() => {
+    if (totalReserveInUSD !== 'Loading...' && totalReserveInUSD !== 'Total Reserve not available' && totalReserveInUSD !== 'Error fetching data') {
+      // Extract the number from the formatted currency string
+      const reserveValue = Number(totalReserveInUSD.replace(/[^0-9.-]+/g, ""));
+      const liquidityValue = reserveValue * 2;
+      setTotalLiquidityUSD(`${liquidityValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`); // Format as currency
+    }
+  }, [totalReserveInUSD]); // Dependency on totalReserveInUSD
 
 
 
 
   // #################################################################################################
+  // Assuming tokenPriceUSD is a string like "0.123456 USD"
+  const pricePer100kTokens = () => {
+    // Remove " USD" and convert to number
+    const pricePerToken = parseFloat(tokenPriceUSD.replace(' USD', ''));
 
-
-
+    if (!isNaN(pricePerToken)) {
+      const totalCost = pricePerToken * 100000000; // Calculate total cost for 100,000 tokens
+      return totalCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' }); // Format as USD currency
+    } else {
+      return tokenPriceUSD; // Return original string if conversion is not possible
+    }
+  };
 
 
 
   // #################################################################################################
+  const calculateTVL = () => {
+  const pricePerToken = parseFloat(tokenPriceUSD.replace(' USD', ''));
+  const totalStakedTokens = parseFloat(totalStaked); // Assuming totalStaked is a string that can be converted to a number
+
+  if (!isNaN(pricePerToken) && !isNaN(totalStakedTokens)) {
+    const tvl = pricePerToken * totalStakedTokens; // Calculate TVL
+    return tvl.toLocaleString('en-US', { style: 'currency', currency: 'USD' }); // Format as USD currency
+  } else {
+    return 'Calculating...'; // Return this string if conversion is not possible or data is still loading
+  }
+};
+
+const formatTokenPrice = (price) => {
+  const priceNum = parseFloat(price);
+  if (!isNaN(priceNum)) {
+    // Separate the integer part and the fractional part
+    const parts = price.split('.');
+    const integerPart = parts[0];
+    const fractionalPart = parts[1].substring(0, 1); // Take only the first digit
+    const remainingFraction = parts[1].substring(1); // Take the remaining fraction
+
+    return (
+      <span className="token-price">
+        {integerPart}.
+        <span className="token-price-fraction">{fractionalPart}</span>
+        <sub className="token-price-exponent">{remainingFraction}</sub>
+      </span>
+    );
+  } else {
+    return 'Invalid Price';
+  }
+};
+
+
+
+
+
+
+
+const calculateTokenValueInUSD = () => {
+  // Remove any non-numeric characters (like " USD") and parse to float
+  const balance = parseFloat(userTokenBalance);
+  const pricePerToken = parseFloat(tokenPriceUSD.replace(' USD', ''));
+
+  if (!isNaN(balance) && !isNaN(pricePerToken)) {
+    // Calculate total value
+    const totalValue = balance * pricePerToken;
+    // Format as USD currency
+    return totalValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  } else {
+    return 'Calculating...'; // Return this string if conversion is not possible or data is still loading
+  }
+};
+
+
   // #################################################################################################
 
   return (
@@ -704,7 +848,7 @@ const fetchData = async () => {
               <Text fontSize="md" fontWeight="normal">Estimated Return: {apy}% P.A</Text>
 
                                           <Text fontSize="12px" fontWeight="normal" marginTop="22px">
-                                        Your Alpha7 Balance: {userTokenBalance}}
+                                        Your Alpha7 Balance: {userTokenBalance} ({calculateTokenValueInUSD()})
                                           </Text>
 
               <Input
@@ -729,6 +873,9 @@ const fetchData = async () => {
 
 
                                                     </Box>
+
+                                                      <p>You are Staking: {lockedTokens}</p>
+                                                      <p>Your Staking Unlock Date: {unlockDate}</p>
 
                                                                                             <Button
                                                                                               onClick={handleWithdraw}
@@ -774,12 +921,28 @@ const fetchData = async () => {
 
               <Box padding="4">
             <div>
-  <p>Tokens in Pool: {totalStaked}</p>
+            <Box padding="4">
+    <Text fontSize="xl" fontWeight="bold">Pool's Total Value Locked (TVL) {calculateTVL()}</Text>
+  <Text fontSize="xl" fontWeight="bold"> {totalStaked} Alpha7 Tokens Locked</Text>
+  </Box>
+  <p></p>
 
-  <p>Pool Value: $12,345.67</p>
-  <p>Rewards Remaining In Pool: {rewardsRemaining}</p>
-  <p>Your Locked Position: {lockedTokens}</p>
-  <p>Your Staking Unlock Date: {unlockDate}</p>
+  <Box padding="4">
+          <Text fontSize="xl" fontWeight="bold">Market Data</Text>
+          <Text>Total Liquidity (USD): {totalLiquidityUSD}</Text>
+          <Text>Market Cap: {marketCap}</Text>
+        </Box>
+
+        <Box padding="4">
+      <Text fontSize="xl" fontWeight="bold">Price per Token</Text>
+      <Text>${tokenPriceUSD} Per Token</Text>
+      </Box>
+
+        <Box padding="4">
+    <Text fontSize="xl" fontWeight="bold">Price per 100 Million Tokens</Text>
+    <Text>{pricePer100kTokens()}</Text>
+  </Box>
+
 
 
 
