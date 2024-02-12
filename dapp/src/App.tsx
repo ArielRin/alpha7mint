@@ -272,7 +272,7 @@ const [userAddress, setUserAddress] = useState('');
    const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, provider);
    try {
      const balance = await tokenContract.balanceOf(address);
-     const formattedBalance = ethers.utils.formatUnits(balance, 2); // Token has 9 decimals
+     const formattedBalance = ethers.utils.formatUnits(balance, 9); // Token has 9 decimals
      setUserTokenBalance(formattedBalance);
    } catch (error) {
      console.error('Error fetching token balance:', error);
