@@ -58,7 +58,7 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "Staking Locks Dapp 2024",
+  appName: "Alpha7 Dapp",
   chains,
 });
 

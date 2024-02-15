@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Link,
+  Flex,
   Container,
   Tabs,
   TabList,
@@ -59,6 +60,8 @@ const STAKING_CONTRACT_ADDRESS = '0x5Bc7905f75244C67E2d8FfEcE4D33052682B4d68';
 // #################################################################################################
 
 
+
+import NftMint0 from './Components/NftMint0/NftMint0';
 
 
 
@@ -376,7 +379,10 @@ const [userAddress, setUserAddress] = useState('');
 
     const maxSupply = 777;
     const remainingSupply = maxSupply - totalSupply;
-
+// ########################################################################
+// ########################################################################
+// ########################################################################
+// ########################################################################
 
   const { writeAsync: setNewCostFn, error: setNewCostError } = useContractWrite({
   ...contractConfig,
@@ -829,198 +835,150 @@ const calculateTokenValueInUSD = () => {
         </div>
       </header>
 
+                             <Box
+                               flex={1}
+                               p={0}
+                               m={0}
+                               display="flex"
+                               flexDirection="column"
+                               borderRadius="lg"
+                               bg="rgba(213, 143, 45, 0.7)"
+                               bgPosition="center"
+                               bgRepeat="no-repeat"
+                               bgSize="cover"
+                             >
 
 
-      <div className="container">
-      <div className="row row-1_0"></div>
-
-        <div className="row row-1">
-                  {/* Apply the logobody class to the image */}
-                  <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
-                  {/* Rest of your first row content */}
-                </div>
-        <div className="row row-3">
+                     <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '95px' }}>
+                       {/* Your content here */}
+                       <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+                     </div>
 
 
+                     <Flex direction={{ base: "column", md: "row" }} gap={0}>
+                     <Box
+                       flex={1}
+                       p={0}
 
-          <Box padding="4">
-              <Text fontSize="55px" fontWeight="bold">14 Day Staking</Text>
-              <Text fontSize="md" fontWeight="normal">Estimated Return: {apy}% P.A</Text>
-
-                                          <Text fontSize="12px" fontWeight="normal" marginTop="22px">
-                                        Your Alpha7 Balance: {userTokenBalance} ({calculateTokenValueInUSD()})
-                                          </Text>
-
-              <Input
-        placeholder="Amount to Stake"
-        value={stakeAmount}
-        onChange={(e) => setStakeAmount(e.target.value)}
-        type="number"
-        marginTop="3"
-        />
-                   <Box padding="" marginTop="14px">
-
-                   {/* Conditional rendering based on approval status */}
-                {!isApproved ? (
-                  <Button colorScheme="blue" onClick={handleApprove} mb={4} disabled={isApprovalPending}>
-                    {isApprovalPending ? 'Allowing...' : 'Enter Staking'}
-                  </Button>
-                ) : (
-                  <Button colorScheme="blue" onClick={handleDeposit} mb={4}>
-                    Stake Now!
-                  </Button>
-                )}
-
-
-                                                    </Box>
-
-                                                      <p>You are Staking: {lockedTokens}</p>
-                                                      <p>Your Staking Unlock Date: {unlockDate}</p>
-
-                                                                                            <Button
-                                                                                              onClick={handleWithdraw}
-                                                                                              isLoading={isWithdrawing}
-                                                                                              loadingText="Withdrawing..."
-                                                                                              colorScheme="teal"
-                                                                                            >
-                                                                                              Unstake
-                                                                                            </Button>
-
-
-
-              <Text fontSize="md" fontWeight="normal"marginTop="22px">
-              Rewards to Harvest: {pendingRewards}
-              </Text>
-
-              <Button
-
-              colorScheme="teal"
-              marginTop="3"
-               onClick={claimRewards} disabled={isClaiming} >
-                      {isClaiming ? 'Claiming...' : 'Claim Rewards'}
-                    </Button>
-
-
-                    <Text fontSize="md" fontWeight="normal" marginTop="40px">
-                    Its possible to remove your staked positions although you will incure a 21% early withdrawal tax. Please do this as a last resort.
-                    </Text>
-
-                                   {/* Emergency Withdraw Button */}
-                                   <Button
-                                     onClick={handleEmergencyWithdraw}
-                                     isLoading={isEmergencyWithdrawing}
-                                     loadingText="Emergency Withdrawing..."
-                                     colorScheme="red"
-                                     marginTop="3"
-                                   >
-                                     Withdraw with Penalty
-                                   </Button>
-
-            </Box>
-
-
-              <Box padding="4">
-            <div>
-            <Box padding="4">
-    <Text fontSize="xl" fontWeight="bold">Pool's Total Value Locked (TVL) {calculateTVL()}</Text>
-  <Text fontSize="xl" fontWeight="bold"> {totalStaked} Alpha7 Tokens Locked</Text>
-  </Box>
-  <p></p>
-
-  <Box padding="4">
-          <Text fontSize="xl" fontWeight="bold">Market Data</Text>
-          <Text>Total Liquidity (USD): {totalLiquidityUSD}</Text>
-          <Text>Market Cap: {marketCap}</Text>
-        </Box>
-
-        <Box padding="4">
-      <Text fontSize="xl" fontWeight="bold">Price per Token</Text>
-      <Text>${tokenPriceUSD} Per Token</Text>
-      </Box>
-
-        <Box padding="4">
-    <Text fontSize="xl" fontWeight="bold">Price per 100 Million Tokens</Text>
-    <Text>{pricePer100kTokens()}</Text>
-  </Box>
+                       minH="550px"
+                       display="flex"
+                       flexDirection="column"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.0)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
 
 
 
 
+                     <Box
+                       flex={1}
+                       p={0}
+                       m={2}
+                       minH="500px"
+                       display="flex"
+                       flexDirection="row"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.4)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+
+
+                     </Box>
+                     <Box
+                       flex={1}
+                       p={0}
+                       m={2}
+
+                       minH="250px"
+                       display="flex"
+                       flexDirection="row"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.4)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+
+                     </Box>
+                     </Box>
+
+                     <Box
+                       flex={1}
+                       p={0}
+                       minH="550px"
+                       display="flex"
+                       flexDirection="column"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.0)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+                     <Box
+                       flex={1}
+                       p={0}
+                       m={2}
+
+                       minH="300px"
+                       display="flex"
+                       flexDirection="row"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.4)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+                     </Box>
+                     <Box
+                       flex={1}
+                       p={0}
+                       m={2}
+
+                       minH="100px"
+                       display="flex"
+                       flexDirection="row"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.4)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+                     </Box>
+                     <Box
+                       flex={1}
+                       p={0}
+                       m={2}
+
+                       minH="100px"
+                       display="flex"
+                       flexDirection="row"
+                       borderRadius="lg"
+                       bg="rgba(31, 31, 31, 0.4)"
+                       bgPosition="center"
+                       bgRepeat="no-repeat"
+                       bgSize="cover"
+                     >
+                     </Box>
+                     </Box>
+                     </Flex>
+                     {/* Third Row: Your Collected AlphaDawgz */}
+                     <div className="row row-3" style={{ minHeight: '200px' }}>
+                       {/* Your content here */}
+                     </div>
+
+                     {/* Fourth Row: Links */}
+                     <div className="row row-4" style={{ minHeight: '100px' }}>
+                       {/* Your content here */}
+                     </div>
+                </Box>
 
 
 
-</div>
-
-            </Box>
-
-                                                                  </div>
-
-                                                                  <div className="row row-1_0"></div>
-                                                                  <div className="row row-3">
-
-                                                                                                              <div>
-                                                                                                              <Text className="pricecost" style={{ textAlign: 'center', fontWeight: 'bolder' }}>
-                                                                                                                Mint your AlphaDawgz for {cost} BNB Each!
-                                                                                                              </Text>
-                                                                                                              <Box marginTop='4' display='flex' alignItems='center' justifyContent='center'>
-                                                                                                                <Button
-                                                                                                                  marginTop='1'
-                                                                                                                  textColor='white'
-                                                                                                                  bg='#094da7'
-                                                                                                                  _hover={{
-                                                                                                                    bg: '#0b6be8',
-                                                                                                                  }}
-                                                                                                                  onClick={handleDecrement}
-                                                                                                                  disabled={!isConnected || mintLoading || mintAmount === 1}
-                                                                                                                >
-                                                                                                                  -
-                                                                                                                </Button>
-                                                                                                                <Text marginX='3' textAlign='center' fontSize='lg'>
-                                                                                                                  {mintAmount}
-                                                                                                                </Text>
-                                                                                                                <Button
-                                                                                                                  marginTop='1'
-                                                                                                                  textColor='white'
-                                                                                                                  bg='#094da7'
-                                                                                                                  _hover={{
-                                                                                                                    bg: '#0b6be8',
-                                                                                                                  }}
-                                                                                                                  onClick={handleIncrement}
-                                                                                                                  disabled={!isConnected || mintLoading || mintAmount === 200}
-                                                                                                                >
-                                                                                                                  +
-                                                                                                                </Button>
-                                                                                                              </Box>
-
-                                                                                                              <Box marginTop='2' display='flex' alignItems='center' justifyContent='center'>
-                                                                                                                <Button
-                                                                                                                  disabled={!isConnected || mintLoading}
-                                                                                                                  marginTop='6'
-                                                                                                                  onClick={onMintClick}
-                                                                                                                  textColor='white'
-                                                                                                                  bg='#094da7'
-                                                                                                                  _hover={{
-                                                                                                                    bg: '#0b6be8',
-                                                                                                                  }}
-                                                                                                                >
-                                                                                                                  {isConnected ? `Mint ${mintAmount} Now` : ' Mint on (Connect Wallet)'}
-                                                                                                                </Button>
-                                                                                                              </Box>
-                                                                                                              <Button
-                                                                                                                      marginTop='6'
-                                                                                                                      onClick={handleAddToken}
-                                                                                                                      textColor='white'
-                                                                                                                      bg='#094da7'
-                                                                                                                      _hover={{
-                                                                                                                        bg: '#0b6be8',
-                                                                                                                      }}
-                                                                                                                    >
-                                                                                                                      Add Alpha7 Token to MetaMask
-                                                                                                                    </Button>
-
-                                                                                                      </div>
-                                                                          </div>
-      </div>
     </>
   );
 }

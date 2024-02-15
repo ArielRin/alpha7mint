@@ -1,0 +1,117 @@
+
+//
+// <div className="row row-3">
+//
+//
+//
+// <Box padding="4">
+// <Text fontSize="55px" fontWeight="bold">14 Day Staking</Text>
+// <Text fontSize="md" fontWeight="normal">Estimated Return: {apy}% P.A</Text>
+//
+//                           <Text fontSize="12px" fontWeight="normal" marginTop="22px">
+//                         Your Alpha7 Balance: {userTokenBalance} ({calculateTokenValueInUSD()})
+//                           </Text>
+//
+// <Input
+// placeholder="Amount to Stake"
+// value={stakeAmount}
+// onChange={(e) => setStakeAmount(e.target.value)}
+// type="number"
+// marginTop="3"
+// />
+//    <Box padding="" marginTop="14px">
+//
+//    {/* Conditional rendering based on approval status */}
+// {!isApproved ? (
+//   <Button colorScheme="blue" onClick={handleApprove} mb={4} disabled={isApprovalPending}>
+//     {isApprovalPending ? 'Allowing...' : 'Enter Staking'}
+//   </Button>
+// ) : (
+//   <Button colorScheme="blue" onClick={handleDeposit} mb={4}>
+//     Stake Now!
+//   </Button>
+// )}
+//
+//
+//                                     </Box>
+//
+//                                       <p>You are Staking: {lockedTokens}</p>
+//                                       <p>Your Staking Unlock Date: {unlockDate}</p>
+//
+//                                                                             <Button
+//                                                                               onClick={handleWithdraw}
+//                                                                               isLoading={isWithdrawing}
+//                                                                               loadingText="Withdrawing..."
+//                                                                               colorScheme="teal"
+//                                                                             >
+//                                                                               Unstake
+//                                                                             </Button>
+//
+//
+//
+// <Text fontSize="md" fontWeight="normal"marginTop="22px">
+// Rewards to Harvest: {pendingRewards}
+// </Text>
+//
+// <Button
+//
+// colorScheme="teal"
+// marginTop="3"
+// onClick={claimRewards} disabled={isClaiming} >
+//       {isClaiming ? 'Claiming...' : 'Claim Rewards'}
+//     </Button>
+//
+//
+//     <Text fontSize="md" fontWeight="normal" marginTop="40px">
+//     Its possible to remove your staked positions although you will incure a 21% early withdrawal tax. Please do this as a last resort.
+//     </Text>
+//
+//                    {/* Emergency Withdraw Button */}
+//                    <Button
+//                      onClick={handleEmergencyWithdraw}
+//                      isLoading={isEmergencyWithdrawing}
+//                      loadingText="Emergency Withdrawing..."
+//                      colorScheme="red"
+//                      marginTop="3"
+//                    >
+//                      Withdraw with Penalty
+//                    </Button>
+//
+// </Box>
+//
+//
+// <Box padding="4">
+// <div>
+// <Box padding="4">
+// <Text fontSize="xl" fontWeight="bold">Pool's Total Value Locked (TVL) {calculateTVL()}</Text>
+// <Text fontSize="xl" fontWeight="bold"> {totalStaked} Alpha7 Tokens Locked</Text>
+// </Box>
+// <p></p>
+//
+// <Box padding="4">
+// <Text fontSize="xl" fontWeight="bold">Market Data</Text>
+// <Text>Total Liquidity (USD): {totalLiquidityUSD}</Text>
+// <Text>Market Cap: {marketCap}</Text>
+// </Box>
+//
+// <Box padding="4">
+// <Text fontSize="xl" fontWeight="bold">Price per Token</Text>
+// <Text>${tokenPriceUSD} Per Token</Text>
+// </Box>
+//
+// <Box padding="4">
+// <Text fontSize="xl" fontWeight="bold">Price per 100 Million Tokens</Text>
+// <Text>{pricePer100kTokens()}</Text>
+// </Box>
+//
+//
+//
+//
+//
+//
+//
+// </div>
+//
+// </Box>
+//
+//                                                   </div>
