@@ -25,9 +25,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import abiFile from './abiFile.json';
 import './styles.css';
-import backgroundGif from './gold.gif';
+import mainbackgroundImage from './bkg.png';
 import tokenGif from './token.gif';
 import tokenLogo from './token.png';
+import dawgImage from './token.gif';
+
+
 
 import MainTextLogo from './headerlogo.png';
 
@@ -843,6 +846,7 @@ const calculateTokenValueInUSD = () => {
                                flexDirection="column"
                                borderRadius="lg"
                                bg="rgba(213, 143, 45, 0.7)"
+                               bgImage={`url(${mainbackgroundImage})`}
                                bgPosition="center"
                                bgRepeat="no-repeat"
                                bgSize="cover"
@@ -881,11 +885,18 @@ const calculateTokenValueInUSD = () => {
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.4)"
+                       bg="rgba(31, 31, 31, 0.8)"
                        bgPosition="center"
                        bgRepeat="no-repeat"
                        bgSize="cover"
                      >
+                     <img
+                       src={dawgImage}
+
+                       alt="Main Text Logo"
+                       className="logobody"
+
+                     />
 
 
                      </Box>
@@ -898,7 +909,7 @@ const calculateTokenValueInUSD = () => {
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.4)"
+                       bg="rgba(31, 31, 31, 0.8)"
                        bgPosition="center"
                        bgRepeat="no-repeat"
                        bgSize="cover"
@@ -928,7 +939,7 @@ const calculateTokenValueInUSD = () => {
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.4)"
+                       bg="rgba(31, 31, 31, 0.8)"
                        bgPosition="center"
                        bgRepeat="no-repeat"
                        bgSize="cover"
@@ -943,7 +954,7 @@ const calculateTokenValueInUSD = () => {
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.4)"
+                       bg="rgba(31, 31, 31, 0.8)"
                        bgPosition="center"
                        bgRepeat="no-repeat"
                        bgSize="cover"
@@ -958,7 +969,7 @@ const calculateTokenValueInUSD = () => {
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.4)"
+                       bg="rgba(31, 31, 31, 0.8)"
                        bgPosition="center"
                        bgRepeat="no-repeat"
                        bgSize="cover"
