@@ -71,8 +71,8 @@ import NftMint0 from './Components/NftMint0/NftMint0';
 function App() {
 
 
+const [web3, setWeb3] = useState(null);
 
-  // #################################################################################################
   const [stakeAmount, setStakeAmount] = useState('');
   const toast = useToast();
 
@@ -827,6 +827,40 @@ const calculateTokenValueInUSD = () => {
 
 
   // #################################################################################################
+  const [nfts, setNfts] = useState([]);
+
+useEffect(() => {
+  async function fetchNFTs() {
+    if (!address || !window.ethereum) return;
+
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(abiFile, CONTRACT_ADDRESS);
+
+    try {
+      const tokenIds = await contract.methods.walletOfOwner(address).call();
+      const nftsData = await Promise.all(tokenIds.map(async (tokenId) => {
+        const tokenURI = await contract.methods.tokenURI(tokenId).call();
+        const response = await fetch(tokenURI);
+        const metadata = await response.json();
+        return { tokenId, metadata };
+      }));
+
+      setNfts(nftsData);
+    } catch (error) {
+      console.error('Failed to fetch NFTs:', error);
+    }
+  }
+
+  fetchNFTs();
+}, [address]);
+
+
+
+  // #################################################################################################
+
+
+
+  // #################################################################################################
 
   return (
     <>
@@ -853,18 +887,17 @@ const calculateTokenValueInUSD = () => {
                              >
 
 
-                     <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '95px' }}>
-                       {/* Your content here */}
-                       <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
-                     </div>
+                     <div className="row row-1" style={{ minHeight: '200px' }}>
+
+                    </div>
+                     <Flex direction={{ base: "column", md: "row"  }} gap={0}>
 
 
-                     <Flex direction={{ base: "column", md: "row" }} gap={0}>
                      <Box
                        flex={1}
                        p={0}
 
-                       minH="550px"
+                       minH="650px"
                        display="flex"
                        flexDirection="column"
                        borderRadius="lg"
@@ -930,12 +963,14 @@ const calculateTokenValueInUSD = () => {
                        bgRepeat="no-repeat"
                        bgSize="cover"
                      >
+
+
                      <Box
                        flex={1}
                        p={0}
                        m={2}
 
-                       minH="300px"
+                       minH="400px"
                        display="flex"
                        flexDirection="row"
                        borderRadius="lg"
@@ -944,6 +979,11 @@ const calculateTokenValueInUSD = () => {
                        bgRepeat="no-repeat"
                        bgSize="cover"
                      >
+
+                                                               <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+                                                                 {/* Your content here */}
+                                                                 <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+                                                               </div>
                      </Box>
                      <Box
                        flex={1}
@@ -979,7 +1019,31 @@ const calculateTokenValueInUSD = () => {
                      </Flex>
                      {/* Third Row: Your Collected AlphaDawgz */}
                      <div className="row row-3" style={{ minHeight: '200px' }}>
-                       {/* Your content here */}
+                     <div style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '20px',
+                        }}>
+                          {nfts.map((nft, index) => (
+                            <div key={index} style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              width: '100%', // Full width on smaller screens
+                              maxWidth: '200px', // Maximum width on larger screens
+                              margin: '10px',
+                              padding: '10px',
+                              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                              borderRadius: '10px',
+                            }}>
+                              <h3 style={{ textAlign: 'center' }}>Token ID: {nft.tokenId}</h3>
+                              <img src={nft.metadata.image} alt={nft.metadata.name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
+                              <p style={{ textAlign: 'center' }}>{nft.metadata.name}</p>
+                            </div>
+                          ))}
+                        </div>
                      </div>
 
                      {/* Fourth Row: Links */}
