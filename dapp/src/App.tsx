@@ -60,6 +60,11 @@ const STAKING_CONTRACT_ADDRESS = '0x5Bc7905f75244C67E2d8FfEcE4D33052682B4d68';
 // #################################################################################################
 // #################################################################################################
 // #################################################################################################
+
+// TheDawgPound
+
+import dawgPoundAbi from './dawgPoundAbi.json';
+const POUND_CONTRACT_ADDRESS = '0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E';
 // #################################################################################################
 
 
@@ -829,34 +834,84 @@ const calculateTokenValueInUSD = () => {
   // #################################################################################################
   const [nfts, setNfts] = useState([]);
 
-useEffect(() => {
-  async function fetchNFTs() {
-    if (!address || !window.ethereum) return;
+  useEffect(() => {
+   async function fetchNFTs() {
+     if (!address) return;
 
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(abiFile, CONTRACT_ADDRESS);
+     const web3 = new Web3(window.ethereum);
+     const nftContract = new web3.eth.Contract(abiFile, CONTRACT_ADDRESS);
+     const poundContract = new web3.eth.Contract(dawgPoundAbi, POUND_CONTRACT_ADDRESS);
 
-    try {
-      const tokenIds = await contract.methods.walletOfOwner(address).call();
-      const nftsData = await Promise.all(tokenIds.map(async (tokenId) => {
-        const tokenURI = await contract.methods.tokenURI(tokenId).call();
-        const response = await fetch(tokenURI);
-        const metadata = await response.json();
-        return { tokenId, metadata };
-      }));
+     try {
+       const tokenIds = await nftContract.methods.walletOfOwner(address).call();
+       const nftsData = await Promise.all(tokenIds.map(async (tokenId) => {
+         try {
+           const tokenURI = await nftContract.methods.tokenURI(tokenId).call();
+           const response = await fetch(tokenURI);
+           const metadata = await response.json();
+           const isInPound = await poundContract.methods.poundStatus(tokenId).call();
+           return { tokenId, metadata, isInPound: isInPound.isInPound }; // Adjusted to access the specific property
 
-      setNfts(nftsData);
-    } catch (error) {
-      console.error('Failed to fetch NFTs:', error);
+         } catch (error) {
+           console.error(`Failed to fetch data for tokenId ${tokenId}:`, error);
+           return null;
+         }
+       }));
+
+       // Filter out any null values
+       setNfts(nftsData.filter(nft => nft !== null));
+     } catch (error) {
+       console.error('Failed to fetch NFTs:', error);
+     }
+   }
+
+   fetchNFTs();
+ }, [address]);
+
+
+
+  useEffect(() => {
+    // Initialize provider and signer
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    // Initialize the poundContract with signer to perform transactions
+    const poundContract = new ethers.Contract(POUND_CONTRACT_ADDRESS, dawgPoundAbi, signer);
+
+    async function fetchPoundStatus(tokenId) {
+      try {
+        // Now poundContract is accessible here
+        const { isInPound } = await poundContract.poundStatus(tokenId);
+        console.log(`Token ID: ${tokenId}, isInPound: ${isInPound}`);
+      } catch (error) {
+        console.error(`Error fetching pound status for tokenId ${tokenId}:`, error);
+      }
     }
-  }
 
-  fetchNFTs();
-}, [address]);
-
-
+    // Call fetchPoundStatus for a specific tokenId
+    fetchPoundStatus(1); // Example usage
+  }, []); // Dependency array is empty, meaning this effect runs once on component mount
 
   // #################################################################################################
+  const [ownedNFTs, setOwnedNFTs] = useState([]);
+  const [loadingNFTs, setLoadingNFTs] = useState(true);
+
+  const fetchOwnedNFTs = async () => {
+    // Simplified logic to check basic functionality
+    console.log("Fetching NFTs...");
+    // Your simplified fetch logic here
+  };
+
+
+  // Right before your return statement in the component
+  console.log('Rendering NFTs:', ownedNFTs);
+
+  useEffect(() => {
+    console.log('Updated NFTs:', ownedNFTs);
+  }, [ownedNFTs]);
+
+
+
 
 
 
@@ -1019,31 +1074,35 @@ useEffect(() => {
                      </Flex>
                      {/* Third Row: Your Collected AlphaDawgz */}
                      <div className="row row-3" style={{ minHeight: '200px' }}>
-                     <div style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          gap: '20px',
-                        }}>
-                          {nfts.map((nft, index) => (
-                            <div key={index} style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'center',
-                              width: '100%', // Full width on smaller screens
-                              maxWidth: '200px', // Maximum width on larger screens
-                              margin: '10px',
-                              padding: '10px',
-                              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                              borderRadius: '10px',
-                            }}>
-                              <h3 style={{ textAlign: 'center' }}>Token ID: {nft.tokenId}</h3>
-                              <img src={nft.metadata.image} alt={nft.metadata.name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
-                              <p style={{ textAlign: 'center' }}>{nft.metadata.name}</p>
-                            </div>
-                          ))}
-                        </div>
+                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+           {nfts.length > 0 ? (
+             nfts.map((nft, index) => (
+               <div key={index} style={{
+                 padding: '20px',
+                 margin: '10px',
+                 border: '1px solid rgba(255, 255, 255, 0.2)',
+                 borderRadius: '15px',
+                 background: 'rgba(255, 255, 255, 0.1)',
+                 backdropFilter: 'blur(5px)',
+                 display: 'flex',
+                 flexDirection: 'column',
+                 alignItems: 'center',
+                 maxWidth: '200px',
+                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+               }}>
+                 <h3>Token ID: {nft.tokenId}</h3>
+                 {nft.metadata.image && (
+                   <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+                 )}
+                 <p>Name: {nft.metadata.name}</p>
+                 <p>Is in Pound: {nft.isInPound.toString()}</p>
+               </div>
+             ))
+           ) : (
+             <p>No NFTs found</p>
+           )}
+         </div>
+
                      </div>
 
                      {/* Fourth Row: Links */}
