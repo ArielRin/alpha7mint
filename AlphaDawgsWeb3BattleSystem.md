@@ -5,7 +5,7 @@
 
 Equal Ground, High Rewards: In the Alpha Dawgz arena, each dawg starts equal, no predefined stats tipping the scales. It's the owner's guts, glory, and strategic acumen that carve the path to victory. Bet your Alpha7 tokens, and with each win, pile up your digital treasure chest.
 
-Climbing the Betting Ladder: Your dawg's battle history is not just a number; it's a rite of passage. The more your dawg fights, the higher the bets it can command. Yet, there's no rush to escalate; the choice is yours. Increase the stakes when you feel the iron will of your dawg is at its peak.
+Climbing the Betting Ladder: Your dawg's battle history is not just a number; it's a rite of passage. The more your dawg battles, the higher the bets it can command. Yet, there's no rush to escalate; the choice is yours. Increase the stakes when you feel the iron will of your dawg is at its peak.
 
 Seasonal Glory, Timeless Rewards: Every season, the dawgz battle it out for prizes that go beyond the usual. The top dawg of the season isn't just crowned with glory but rewarded with Alpha7 tokens that carry the weight of DeFi power. The most dedicated and successful dawgz will find themselves at the pinnacle of a prize structure that reflects their owner's strategic gameplay and persistence.
 
@@ -41,7 +41,7 @@ At its heart, Alpha Dawgz 2024 is a PvP battle game where players stake their NF
 
 ### Betting and Battling
 
-Players bet Alpha7 tokens on their dawgz and are matched with an opponent who has wagered the same amount. This ensures fairness in each battle. The betting starts at a few dollars in Alpha7 tokens, and as your dawg participates in more fights, the potential betting amount increases. This allows players to start small and gradually move to higher stakes as they become more comfortable and their dawgz more seasoned. However, there is no obligation to increase the bet. Players can choose to stay at lower stakes if they prefer.
+Players bet Alpha7 tokens on their dawgz and are matched with an opponent who has wagered the same amount. This ensures fairness in each battle. The betting starts at a few dollars in Alpha7 tokens, and as your dawg participates in more battles, the potential betting amount increases. This allows players to start small and gradually move to higher stakes as they become more comfortable and their dawgz more seasoned. However, there is no obligation to increase the bet. Players can choose to stay at lower stakes if they prefer.
 
 ### The Dawg Pound
 
