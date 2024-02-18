@@ -49,7 +49,7 @@ Defeated dawgz spend seven days in the Dawg Pound, where they are unable to earn
 
 ## Ranking and Rewards
 
-Alpha Dawgz features a ranking leaderboard system, where dawgz are ranked based on their battle history and winnings. The game runs on a seasonal model, with rewards distributed at the end of each season. The top-ranked dawg of the season earns significant rewards in Alpha7 tokens, incentivizing players to engage in battles and climb the ranks.
+Alpha Dawgz features a ranking leaderboard system, where dawgz are ranked based on their battle history and winnings. The game runs on a seasonal model, with additional prizes distributed for leader boards champions at the end of each season. The top-ranked dawg of the season earns significant rewards in Alpha7 tokens, incentivizing players to engage in battles and climb the ranks.
 
 ## The Marketplace
 
