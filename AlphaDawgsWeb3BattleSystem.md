@@ -1,7 +1,7 @@
-Cheyne Hay, [18 Feb 2024 at 7:03:07 pm (18 Feb 2024 at 7:08:38 pm)]:
-...Step into the digital coliseum of Alpha Dawgz 2024, the browser-based beacon of NFT gaming that's setting a new standard for DeFi ecosystems. Here, the stakes are as real as the tokens you earn and the battles as fierce as the market is free.
 
-## Unleash Your Digital Gladiator
+# Alpha Dawgz Battle System 
+
+## Unleash Your Dawgz!
 
 Equal Ground, High Rewards: In the Alpha Dawgz arena, each dawg starts equal, no predefined stats tipping the scales. It's the owner's guts, glory, and strategic acumen that carve the path to victory. Bet your Alpha7 tokens, and with each win, pile up your digital treasure chest.
 
