@@ -41,7 +41,7 @@ At its heart, Alpha Dawgz 2024 is a PvP battle game where players stake their NF
 
 ### Betting and Battling
 
-Players bet Alpha7 tokens on their dawgz and are matched with an opponent who has wagered the same amount. This ensures fairness in each battle. The betting starts at $1, and as your dawg participates in more fights, the potential betting amount increases. This allows players to start small and gradually move to higher stakes as they become more comfortable and their dawgz more seasoned. However, there is no obligation to increase the bet. Players can choose to stay at lower stakes if they prefer.
+Players bet Alpha7 tokens on their dawgz and are matched with an opponent who has wagered the same amount. This ensures fairness in each battle. The betting starts at a few dollars in Alpha7 tokens, and as your dawg participates in more fights, the potential betting amount increases. This allows players to start small and gradually move to higher stakes as they become more comfortable and their dawgz more seasoned. However, there is no obligation to increase the bet. Players can choose to stay at lower stakes if they prefer.
 
 ### The Dawg Pound
 
