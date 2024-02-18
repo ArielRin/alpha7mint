@@ -21,7 +21,7 @@ A Dynamic Economy: The flow of Alpha7 tokens in the marketplace is driven by the
 
 Accessibility is Key: Alpha Dawgz 2024 shatters barriers. If your device can connect to a wallet, you're ready to enter the arena. This is DeFi gaming that's truly inclusive, breaking free from the confines of app stores and traditional gaming platforms.
 
-A New Wave of DeFi: We're not just playing games; we're redefining DeFi. The victories in Alpha Dawgz carry real economic weight, mirroring the very principles of decentralized finance where each action can have a ripple effect on your digital assets.
+A New Wave of DeFi: We're not just playing games, we're setting to redefining web3 gaming. The victories in Alpha Dawgz carry real economic weight, mirroring the very principles of decentralized finance where each action can have a ripple effect on your digital assets.
 
 A Community of Competitors: Alpha Dawgz is a community where players are stakeholders. Your success in the arena directly contributes to the game's ecosystem, ensuring a gaming experience that's continually evolving, challenging, and rewarding.
 
@@ -53,7 +53,7 @@ Alpha Dawgz features a ranking leaderboard system, where dawgz are ranked based 
 
 ## The Marketplace
 
-The in-game marketplace is a core feature of Alpha Dawgz 2024. It's where players can trade dawgz with proven battle records. These dawgz carry their history with them, making them more valuable, especially for new players who wish to enter the game at a higher level of play. A dawg with a history of winning and the capability to engage in $100+ battles is a hot commodity, adding a deep economic layer to the game.
+Tradable NFT's, on BSC popular marketplaces will be a feature of Alpha Dawgz. It's where players can trade dawgz with proven battle records. These dawgz carry their history with them, making them more valuable, especially for new players who wish to enter the game at a higher level of play. A dawg with a history of winning and the capability to engage in $100+ battles is a hot commodity, adding a deep economic layer to the game.
 
 ## Monetization and the Economy
 
