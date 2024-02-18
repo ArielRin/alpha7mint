@@ -941,10 +941,26 @@ const calculateTokenValueInUSD = () => {
                                bgSize="cover"
                              >
 
-
+1
                      <div className="row row-1" style={{ minHeight: '200px' }}>
-
+div1
                     </div>
+
+                    <img
+                      src={dawgImage}
+
+                      alt="Main Text Logo"
+                      className="logobody"
+
+                    />
+                    {/* Third Row: Your Collected AlphaDawgz */}
+
+
+
+
+                    {/* Fourth Row: Links */}
+
+
                      <Flex direction={{ base: "column", md: "row"  }} gap={0}>
 
 
@@ -952,7 +968,7 @@ const calculateTokenValueInUSD = () => {
                        flex={1}
                        p={0}
 
-                       minH="650px"
+                       minH="700px"
                        display="flex"
                        flexDirection="column"
                        borderRadius="lg"
@@ -962,48 +978,36 @@ const calculateTokenValueInUSD = () => {
                        bgSize="cover"
                      >
 
+                     <div className="row row-4" style={{ marginTop: '40px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+                   <h2 style={{ width: '100%', textAlign: 'center' }}>Good Dawgs</h2>
+                   {nfts.filter(nft => !nft.isInPound).length > 0 ? (
+                   nfts.filter(nft => !nft.isInPound).map((nft, index) => (
+                   <div key={index} style={{
+                   padding: '20px',
+                   margin: '10px',
+                   border: '1px solid rgba(255, 255, 255, 0.2)',
+                   borderRadius: '15px',
+                   background: 'rgba(255, 255, 255, 0.1)',
+                   backdropFilter: 'blur(5px)',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   alignItems: 'center',
+                   maxWidth: '200px',
+                   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                   }}>
+                   {nft.metadata.image && (
+                   <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+                   )}
+                   <p>Name: {nft.metadata.name}</p>
+                   </div>
+                   ))
+                   ) : (
+                   <p style={{ width: '100%', textAlign: 'center' }}>No NFTs found that are not in Pound</p>
+                   )}
+                   </div>
 
 
 
-                     <Box
-                       flex={1}
-                       p={0}
-                       m={2}
-                       minH="500px"
-                       display="flex"
-                       flexDirection="row"
-                       borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.8)"
-                       bgPosition="center"
-                       bgRepeat="no-repeat"
-                       bgSize="cover"
-                     >
-                     <img
-                       src={dawgImage}
-
-                       alt="Main Text Logo"
-                       className="logobody"
-
-                     />
-
-
-                     </Box>
-                     <Box
-                       flex={1}
-                       p={0}
-                       m={2}
-
-                       minH="250px"
-                       display="flex"
-                       flexDirection="row"
-                       borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.8)"
-                       bgPosition="center"
-                       bgRepeat="no-repeat"
-                       bgSize="cover"
-                     >
-
-                     </Box>
                      </Box>
 
                      <Box
@@ -1019,27 +1023,8 @@ const calculateTokenValueInUSD = () => {
                        bgSize="cover"
                      >
 
+3
 
-                     <Box
-                       flex={1}
-                       p={0}
-                       m={2}
-
-                       minH="400px"
-                       display="flex"
-                       flexDirection="row"
-                       borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.8)"
-                       bgPosition="center"
-                       bgRepeat="no-repeat"
-                       bgSize="cover"
-                     >
-
-                                                               <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
-                                                                 {/* Your content here */}
-                                                                 <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
-                                                               </div>
-                     </Box>
                      <Box
                        flex={1}
                        p={0}
@@ -1054,62 +1039,233 @@ const calculateTokenValueInUSD = () => {
                        bgRepeat="no-repeat"
                        bgSize="cover"
                      >
-                     </Box>
-                     <Box
-                       flex={1}
-                       p={0}
-                       m={2}
+                     <div className="row row-3"  style={{ marginTop: '0px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+                   <h2 style={{ width: '100%', textAlign: 'center' }}>NFTs In Pound (Days Until Unlock)</h2>
+                   {nfts.filter(nft => nft.isInPound).length > 0 ? (
+                     nfts.filter(nft => nft.isInPound).map((nft, index) => {
+                       // Calculate days remaining until unlock
+                       const unlockTime = new Date(nft.unlockTime * 1000); // Convert Unix timestamp to milliseconds
+                       const currentTime = new Date();
+                       const differenceInTime = unlockTime - currentTime; // Difference in milliseconds
+                       const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24)); // Convert to days
 
-                       minH="100px"
-                       display="flex"
-                       flexDirection="row"
-                       borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.8)"
-                       bgPosition="center"
-                       bgRepeat="no-repeat"
-                       bgSize="cover"
-                     >
+                       return (
+                         <div key={index} style={{
+                           padding: '20px',
+                           margin: '10px',
+                           border: '1px solid rgba(255, 255, 255, 0.2)',
+                           borderRadius: '15px',
+                           background: 'rgba(255, 255, 255, 0.1)',
+                           backdropFilter: 'blur(5px)',
+                           display: 'flex',
+                           flexDirection: 'column',
+                           alignItems: 'center',
+                           maxWidth: '200px',
+                           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                         }}>
+                           {nft.metadata.image && (
+                             <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+                           )}
+                           <p>Name: {nft.metadata.name}</p>
+                           {/* Only display if NFT is in pound */}
+                           {nft.isInPound && differenceInDays > 0 && (
+                             <p>Days Until Unlock: {differenceInDays}</p>
+                           )}
+                           {/* Handle case where NFT is unlocked but still marked as in pound */}
+                           {nft.isInPound && differenceInDays <= 0 && (
+                             <p>Unlocking...</p>
+                           )}
+                         </div>
+                       );
+                     })
+                   ) : (
+                     <p style={{ width: '100%', textAlign: 'center' }}>No NFTs found that are in Pound</p>
+                   )}
+                 </div>
                      </Box>
                      </Box>
                      </Flex>
-                     {/* Third Row: Your Collected AlphaDawgz */}
-                     <div className="row row-3" style={{ minHeight: '200px' }}>
-                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
-           {nfts.length > 0 ? (
-             nfts.map((nft, index) => (
+
+                </Box>
+                <Box
+                  flex={1}
+                  p={0}
+                  m={0}
+                  display="flex"
+                  flexDirection="column"
+                  borderRadius="lg"
+                  bg="rgba(213, 143, 45, 0.7)"
+                  bgImage={`url(${mainbackgroundImage})`}
+                  bgPosition="center"
+                  bgRepeat="no-repeat"
+                  bgSize="cover"
+                >
+
+
+        <div className="row row-1" style={{ minHeight: '200px' }}>
+
+       </div>
+        <Flex direction={{ base: "column", md: "row"  }} gap={0}>
+
+
+        <Box
+          flex={1}
+          p={0}
+
+          minH="650px"
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.0)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+
+
+
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+          minH="500px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+        <img
+          src={dawgImage}
+
+          alt="Main Text Logo"
+          className="logobody"
+
+        />
+
+
+        </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="250px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+        </Box>
+        </Box>
+
+        <Box
+          flex={1}
+          p={0}
+          minH="550px"
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.0)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="400px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+                                                  <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+                                                    {/* Your content here */}
+                                                    <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+                                                  </div>
+        </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="100px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+        </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="100px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+        </Box>
+        </Box>
+        </Flex>
+        {/* Third Row: Your Collected AlphaDawgz */}
+        <div className="row row-3" style={{ minHeight: '200px' }}>
+        <div style={{
+             display: 'flex',
+             flexWrap: 'wrap',
+             justifyContent: 'center',
+             alignItems: 'center',
+             gap: '20px',
+           }}>
+             {nfts.map((nft, index) => (
                <div key={index} style={{
-                 padding: '20px',
-                 margin: '10px',
-                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                 borderRadius: '15px',
-                 background: 'rgba(255, 255, 255, 0.1)',
-                 backdropFilter: 'blur(5px)',
                  display: 'flex',
                  flexDirection: 'column',
                  alignItems: 'center',
-                 maxWidth: '200px',
-                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                 width: '100%', // Full width on smaller screens
+                 maxWidth: '200px', // Maximum width on larger screens
+                 margin: '10px',
+                 padding: '10px',
+                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                 borderRadius: '10px',
                }}>
-                 <h3>Token ID: {nft.tokenId}</h3>
-                 {nft.metadata.image && (
-                   <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
-                 )}
-                 <p>Name: {nft.metadata.name}</p>
-                 <p>Is in Pound: {nft.isInPound.toString()}</p>
+                 <h3 style={{ textAlign: 'center' }}>Token ID: {nft.tokenId}</h3>
+                 <img src={nft.metadata.image} alt={nft.metadata.name} style={{ width: '100%', height: 'auto', marginBottom: '10px' }} />
+                 <p style={{ textAlign: 'center' }}>{nft.metadata.name}</p>
                </div>
-             ))
-           ) : (
-             <p>No NFTs found</p>
-           )}
-         </div>
+             ))}
+           </div>
+        </div>
 
-                     </div>
-
-                     {/* Fourth Row: Links */}
-                     <div className="row row-4" style={{ minHeight: '100px' }}>
-                       {/* Your content here */}
-                     </div>
-                </Box>
+        {/* Fourth Row: Links */}
+        <div className="row row-4" style={{ minHeight: '100px' }}>
+          {/* Your content here */}
+        </div>
+   </Box>
 
 
 
