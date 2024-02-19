@@ -934,22 +934,15 @@ const [battleId, setBattleId] = useState('');
    const init = async () => {
      const provider = new ethers.providers.Web3Provider(window.ethereum);
      const signer = provider.getSigner();
-     const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, battleAbi, signer);
+     const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
      setBattleContract(battleContract);
    };
    init();
  }, []);
 
-
  const handleEnterBattle = async () => {
-   if (!tokenId) {
-     toast('Please enter a token ID.');
-     return;
-   }
-
    try {
-     // Note: Adjust the value as per your contract's requirements
-     const tx = await battleContract.enterBattle(tokenId, { value: ethers.utils.parseEther("0.0001") });
+     const tx = await battleContract.enterBattle(tokenId, { value: ethers.utils.parseEther("0.00001") });
      await tx.wait();
      console.log('Entered battle with token ID:', tokenId);
      toast('Entered battle successfully!');
@@ -958,7 +951,6 @@ const [battleId, setBattleId] = useState('');
      toast('Failed to enter battle. See console for details.');
    }
  };
-
 
  const handleMarkReady = async () => {
    if (!inputBattleId) {
@@ -1092,50 +1084,10 @@ const [battleId, setBattleId] = useState('');
 
 
 
-
   // #################################################################################################
   // #################################################################################################
   // #################################################################################################
     //
-     const [nftsAwaiting, setNftsAwaiting] = useState([]);
-
-     useEffect(() => {
-       const init = async () => {
-         await fetchActiveBattlesAndNFTs();
-       };
-       init();
-     }, []);
-
-     const fetchActiveBattlesAndNFTs = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-  const nftContract = new ethers.Contract(CONTRACT_ADDRESS, abiFile, provider);
-
-  const activeBattleIds = await battleContract.methods.getActiveBattles().call();
-  const nftDetailsPromises = activeBattleIds.map(async (id) => {
-    const lottery = await battleContract.methods.lotteries(id).call();
-    if (!lottery.completed) {
-      try {
-        const tokenURI = await nftContract.methods.tokenURI(lottery.winnerTokenId).call();
-        const metaResponse = await fetch(tokenURI);
-        const metadata = await metaResponse.json();
-        return {
-          battleId: id,
-          tokenId: lottery.winnerTokenId,
-          image: metadata.image,
-        };
-      } catch (error) {
-        console.error(`Failed to fetch URI for token ID ${lottery.winnerTokenId}:`, error);
-        // Handle the error appropriately - perhaps return null or a placeholder data structure
-        return null; // Example placeholder
-      }
-    }
-    return null; // For completed lotteries or other reasons to skip
-  });
-
-  const nftDetails = (await Promise.all(nftDetailsPromises)).filter(detail => detail !== null);
-  setNftsAwaiting(nftDetails);
-};
 
 
 
@@ -1499,16 +1451,10 @@ const [battleId, setBattleId] = useState('');
           bgSize="cover"
         >
 
-        <div>
-<h2>NFTs Awaiting Another Contestant</h2>
-{nftsAwaiting.map((nft, index) => (
-<div key={index}>
-<p>Battle ID: {nft.battleId}</p>
-<p>Token ID: {nft.tokenId}</p>
-<img src={nft.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px' }} />
-</div>
-))}
-</div>
+                                                  <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+                                                    {/* Your content here */}
+                                                    <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+                                                  </div>
         </Box>
         <Box
           flex={1}
