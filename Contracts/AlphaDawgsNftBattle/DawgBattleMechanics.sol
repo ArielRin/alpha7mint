@@ -1,15 +1,8 @@
-
 // SPDX-License-Identifier: MIT
+// AlphaDawgs Battle System
 // File: @openzeppelin/contracts@4.5.0/utils/Context.sol
-// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
-
-
-
-
 
 /*
-
-
                                                   --------------------------------================.
                                                  *@@@@@%%%%%%%%%%%%@@@@@%%%%%%%%%%%%@%@@@@@@@@@@@=
                                                 #@@@%+:::::::::::::::::::::::::::::::::::-*@@@@@-
@@ -39,18 +32,17 @@ AlphaDawgs Battle System
 
 NFT Contract AlphaDawgs: 0xca695feb6b1b603ca9fec66aaa98be164db4e660
 Treasury Fee to Developer Wallet: 0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7
-The Dawg Pound Contract: 0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E
 
 
-# Technical Document: AlphaDawgsBattleSystem Contract Mechanics
+# Technical Document: TwoUserNFTBattle Contract Mechanics
 
 ## Overview
 
-The AlphaDawgsBattleSystem contract is a decentralized application (dApp) deployed on the BSC blockchain, facilitating a competitive game between two participants using Non-Fungible Tokens (NFTs) from a specific collection. This document provides a detailed overview of the game mechanics, smart contract functionality, and the interaction flow between participants.
+The TwoUserNFTBattle contract is a decentralized application (dApp) deployed on the BSC blockchain, facilitating a competitive game between two participants using Non-Fungible Tokens (NFTs) from a specific collection. This document provides a detailed overview of the game mechanics, smart contract functionality, and the interaction flow between participants.
 
 ## Contract Objective
 
-The primary objective of the AlphaDawgsBattleSystem contract is to offer a blockchain-based platform where users can engage in head-to-head battles using NFTs as their avatars or representatives. Each battle round requires two participants, each entering the battle by staking an NFT (verified to be from a predetermined collection) and paying an entry fee in Ether (ETH). The winner of the battle is determined through a randomized algorithm, with the victor receiving a majority portion of the total entry fees.
+The primary objective of the TwoUserNFTBattle contract is to offer a blockchain-based platform where users can engage in head-to-head battles using NFTs as their avatars or representatives. Each battle round requires two participants, each entering the battle by staking an NFT (verified to be from a predetermined collection) and paying an entry fee in Ether (ETH). The winner of the battle is determined through a randomized algorithm, with the victor receiving a majority portion of the total entry fees.
 
 ## Key Features
 
@@ -106,28 +98,16 @@ Participants interact with the contract through Ethereum transactions, specifica
 
 ## Conclusion
 
-The AlphaDawgsBattleSystem contract introduces a novel use case for NFTs, allowing owners to engage in competitive battles on the blockchain. By leveraging the inherent properties of NFTs for entry and utilizing smart contract capabilities for secure, transparent operations, the game offers a unique and engaging experience for participants. Future improvements can enhance the game's fairness, engagement, and overall appeal to a broader audience.
+The TwoUserNFTBattle contract introduces a novel use case for NFTs, allowing owners to engage in competitive battles on the blockchain. By leveraging the inherent properties of NFTs for entry and utilizing smart contract capabilities for secure, transparent operations, the game offers a unique and engaging experience for participants. Future improvements can enhance the game's fairness, engagement, and overall appeal to a broader audience.
 
 Made by InHaus Development
 https://t.me/InHausDevelopment
 
-
-
-
-v1.2 with battleId statistics
-tokenId statistics
-pound operator feature
-
-
-v1.3
-participate in multiple battles simultaneously same bet arena different battleid
-
-
-
+@openzeppelin/contracts@4.5.0/access/Ownable.sol
 
 */
 
-
+// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
 
@@ -514,138 +494,135 @@ interface IERC721 is IERC165 {
     ) external;
 }
 
-// File: Copy_DawgBattleMechanics.sol
-
+// File: DawgBattleMechanics.sol
 
 
 
 pragma solidity ^0.8.0;
 
 
-interface IExternalContract {
-    function setPoundStatus(uint256 tokenId, bool isInPound) external;
-}
+
+
 
 contract AlphaDawgsBattleSystemBETA1 is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _battleIdCounter;
-
-    IERC721 public nftContract;
-    IExternalContract public externalContract;
-
-    bool public isPoundFunctionalityEnabled = false;
-
-    uint256 public constant ENTRY_FEE = 0.00001 ether;
-    address public treasuryAddress;
-    uint256 public devFeePercentage = 7;
 
     struct Battle {
         uint256 id;
         address[2] entrants;
         uint256[2] tokenIds;
         uint256 startTime;
-        bool[2] readyNow; // Tracks if each dawg has marked ready.
+        bool[2] readyNow;
         bool completed;
-        uint256 totalPot;
-        uint256 winnerTokenId;
-        uint256 loserTokenId;
     }
 
     struct TokenStats {
         uint256 valueEarned;
         uint256 timesWon;
         uint256 timesLost;
-        uint256[] activeBattles;
-        uint256[] wonBattles;
-        uint256[] lostBattles;
     }
 
     mapping(uint256 => Battle) public lotteries;
+    mapping(uint256 => uint256) public winningTokenId;
+    mapping(uint256 => uint256) public losingTokenId;
+    // AlphaDawg Token ID to stats
     mapping(uint256 => TokenStats) public tokenStats;
 
-    event BattleEntered(uint256 indexed battleId, address entrant, uint256 tokenId, uint256 totalPot);
-    event WinnerDeclared(uint256 indexed battleId, uint256 winnerTokenId, uint256 loserTokenId, uint256 prize, uint256 devFee);
+    IERC721 public nftContract;
+    uint256 public constant ENTRY_FEE = 0.00001 ether;
+    uint256 public constant DURATION = 30 minutes;
+    uint256 public constant BLOCKS_AFTER = 15;
+    address public treasuryAddress;
+
+    // of course the default dev fee is 7%
+    uint256 public devFeePercentage = 7;
+
+    uint256 public totalETHEntered;
+    uint256 public totalDevFeesEarned;
+
+    event BattleEntered(uint256 indexed battleId, address entrant, uint256 tokenId);
+    event BattleReady(uint256 indexed battleId, address entrant);
+    event WinnerDeclared(uint256 indexed battleId, address winner, uint256 winningTokenId, uint256 losingTokenId, uint256 prize, uint256 devFee);
     event TreasuryAddressChanged(address newTreasuryAddress);
     event DevFeePercentageChanged(uint256 newDevFeePercentage);
 
-    constructor(address _nftContract, address _treasuryAddress, address _externalTheDawgPoundAddress) {
+    constructor(address _nftContract, address _treasuryAddress) {
         require(_nftContract != address(0), "NFT contract address cannot be zero address");
+        require(_treasuryAddress != address(0), "Treasury address cannot be zero address");
         nftContract = IERC721(_nftContract);
         treasuryAddress = _treasuryAddress;
-        externalContract = IExternalContract(_externalTheDawgPoundAddress);
-    }
-
-    function setExternalContract(address _externalTheDawgPoundAddress) external onlyOwner {
-        externalContract = IExternalContract(_externalTheDawgPoundAddress);
-    }
-
-    function togglePoundFunctionality(bool _isEnabled) external onlyOwner {
-        isPoundFunctionalityEnabled = _isEnabled;
     }
 
     function enterBattle(uint256 tokenId) external payable {
         require(msg.value == ENTRY_FEE, "Incorrect entry fee");
         require(nftContract.ownerOf(tokenId) == msg.sender, "Not the NFT owner");
 
-        // Allow users to participate in multiple battles simultaneously
-        _createNewBattle(msg.sender, tokenId);
-    }
-
-    function _createNewBattle(address entrant, uint256 tokenId) private {
         _battleIdCounter.increment();
         uint256 battleId = _battleIdCounter.current();
-        lotteries[battleId] = Battle({
-            id: battleId,
-            entrants: [entrant, address(0)],
-            tokenIds: [tokenId, 0],
-            startTime: 0,
-            readyNow: [false, false],
-            completed: false,
-            totalPot: msg.value,
-            winnerTokenId: 0,
-            loserTokenId: 0
-        });
-        tokenStats[tokenId].activeBattles.push(battleId);
-        emit BattleEntered(battleId, entrant, tokenId, msg.value);
-    }
-
-    function markReady(uint256 battleId, bool isReady) external {
-        require(battleId <= _battleIdCounter.current(), "Battle does not exist");
         Battle storage battle = lotteries[battleId];
-        require(!battle.completed, "Battle already completed");
+        // Initialize battle ID for mappins n stuff
+        battle.id = battleId;
 
-        // Mark the entrant's readiness
-        if (battle.entrants[0] == msg.sender && battle.tokenIds[0] != 0) {
-            battle.readyNow[0] = isReady;
-        } else if (battle.entrants[1] == msg.sender && battle.tokenIds[1] != 0) {
-            battle.readyNow[1] = isReady;
+        require(battle.entrants[0] != msg.sender && battle.entrants[1] != msg.sender, "Already entered");
+        // Track total ETH entered
+        totalETHEntered += msg.value;
+
+        if (battle.entrants[0] == address(0)) {
+            battle.entrants[0] = msg.sender;
+            battle.tokenIds[0] = tokenId;
+        } else if (battle.entrants[1] == address(0)) {
+            battle.entrants[1] = msg.sender;
+            battle.tokenIds[1] = tokenId;
+            battle.startTime = block.timestamp;
         } else {
-            revert("Not a participant in this battle");
+            revert("Battle full");
         }
 
-        // Automatically declare a winner if conditions are met
-        if (battle.readyNow[0] && battle.readyNow[1]) {
+        emit BattleEntered(battleId, msg.sender, tokenId);
+    }
+
+    function markReady(uint256 battleId) external {
+        Battle storage battle = lotteries[battleId];
+        require(battle.entrants[0] == msg.sender || battle.entrants[1] == msg.sender, "Not an entrant");
+        if (battle.entrants[0] == msg.sender) {
+            battle.readyNow[0] = true;
+        } else if (battle.entrants[1] == msg.sender) {
+            battle.readyNow[1] = true;
+        }
+
+        if (battle.readyNow[0] && battle.readyNow[1] || block.timestamp >= battle.startTime + DURATION) {
             _declareWinner(battleId);
         }
     }
 
     function _declareWinner(uint256 battleId) internal {
         Battle storage battle = lotteries[battleId];
-        uint256 winnerIndex = uint256(keccak256(abi.encodePacked(block.timestamp, battleId))) % 2;
+        require(!battle.completed, "Battle already completed");
+
+        uint256 winnerIndex = uint256(blockhash(block.number - BLOCKS_AFTER)) % 2;
+        address winner = battle.entrants[winnerIndex];
+        uint256 winnerTokenId = battle.tokenIds[winnerIndex];
+        uint256 loserTokenId = battle.tokenIds[1 - winnerIndex];
+
+        winningTokenId[battleId] = winnerTokenId;
+        losingTokenId[battleId] = loserTokenId;
+
         battle.completed = true;
-        battle.winnerTokenId = battle.tokenIds[winnerIndex];
-        battle.loserTokenId = battle.tokenIds[1 - winnerIndex];
+        uint256 prize = address(this).balance * (100 - devFeePercentage) / 100;
+        uint256 devFee = address(this).balance - prize;
+        // Track total dev fees earned
+        totalDevFeesEarned += devFee;
 
-        if (isPoundFunctionalityEnabled) {
-            externalContract.setPoundStatus(battle.loserTokenId, true);
-        }
-
-        uint256 prize = battle.totalPot * (100 - devFeePercentage) / 100;
-        uint256 devFee = battle.totalPot - prize;
+        payable(winner).transfer(prize);
         payable(treasuryAddress).transfer(devFee);
-        payable(battle.entrants[winnerIndex]).transfer(prize);
 
-        emit WinnerDeclared(battleId, battle.winnerTokenId, battle.loserTokenId, prize, devFee);
+        // Update token stats
+        tokenStats[winnerTokenId].valueEarned += prize;
+        tokenStats[winnerTokenId].timesWon += 1;
+        tokenStats[loserTokenId].timesLost += 1;
+
+        emit WinnerDeclared(battleId, winner, winnerTokenId, loserTokenId, prize, devFee);
     }
 
     function setTreasuryAddress(address _newTreasuryAddress) external onlyOwner {
@@ -664,30 +641,7 @@ contract AlphaDawgsBattleSystemBETA1 is ReentrancyGuard, Ownable {
         nftContract.transferFrom(address(this), owner(), tokenId);
     }
 
-    function getActiveBattles() external view returns (uint256[] memory) {
-    uint256 activeCount = 0;
-    // First, determine the number of active battles
-    for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
-        if (!lotteries[i].completed) {
-            activeCount++;
-        }
-    }
-
-    // Then, collect the IDs of active battles
-    uint256[] memory activeBattles = new uint256[](activeCount);
-    uint256 currentIndex = 0;
-    for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
-        if (!lotteries[i].completed) {
-            activeBattles[currentIndex] = i;
-            currentIndex++;
-        }
-    }
-
-    return activeBattles;
-    }
-
-
-    // Fallback function to handle receiving ETH directly
+     // Fallback function to handle receiving ETH directly
     receive() external payable {}
     fallback() external payable {}
 }
