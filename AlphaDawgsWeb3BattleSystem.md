@@ -33,7 +33,6 @@ Alpha Dawgz 2024 isn't just another NFT game; it's a DeFi revolution. It's a cal
 
 # How Alpha Dawgz 2024 Works: The Game Mechanics Explained
 
-Alpha Dawgz 2024 is not just a game; it's a revolution in the NFT and decentralized finance (DeFi) space. Here’s a detailed walkthrough of how the game works, combining the thrill of gaming with the principles of DeFi.
 
 ## The Core Gameplay
 
@@ -45,7 +44,7 @@ Players bet Alpha7 tokens on their dawgz and are matched with an opponent who ha
 
 ### The Dawg Pound
 
-Defeated dawgz spend seven days in the Dawg Pound, where they are unable to earn rewards or participate in battles. This adds a layer of risk management, as players must consider the potential of losing their dawgz for a period of time when deciding whether to enter a battle.
+In some higher risk arenas defeated dawgz spend seven days in the Dawg Pound, where they are unable to earn rewards or participate in battles. This adds a layer of risk management, as players must consider the potential of losing their dawgz for a period of time when deciding whether to enter a battle.
 
 ## Ranking and Rewards
 
