@@ -65,6 +65,11 @@ const STAKING_CONTRACT_ADDRESS = '0x5Bc7905f75244C67E2d8FfEcE4D33052682B4d68';
 
 import dawgPoundAbi from './dawgPoundAbi.json';
 const POUND_CONTRACT_ADDRESS = '0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E';
+
+
+import dawgBattleAbi from './dawgBattleAbi.json';
+const BATTLE_CONTRACT_ADDRESS = '0x0cD4426c012261b1dD53611DfC1F8db70e60d5c3';
+
 // #################################################################################################
 
 
