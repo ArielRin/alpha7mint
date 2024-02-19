@@ -9,14 +9,6 @@ Climbing the Betting Ladder: Your dawg's battle history is not just a number; it
 
 Seasonal Glory, Timeless Rewards: Every season, the dawgz battle it out for prizes that go beyond the usual. The top dawg of the season isn't just crowned with glory but rewarded with Alpha7 tokens that carry the weight of DeFi power. The most dedicated and successful dawgz will find themselves at the pinnacle of a prize structure that reflects their owner's strategic gameplay and persistence.
 
-## The Marketplace: Where Valor Becomes Value
-
-Trade Champions, Not Just Tokens: The Alpha Dawgz marketplace is a bustling economy where each dawg's value is underpinned by its history in the arena. Buy a dawg, and you're investing in its past victories and potential for future triumphs.
-
-Seasoned Warriors for the Taking: Imagine stepping into the marketplace and acquiring a dawg that can instantly enter $100+ value battles. Each dawg's winnings and experience are etched into its very code, making it a coveted asset for any player looking to make an immediate impact.
-
-A Dynamic Economy: The flow of Alpha7 tokens in the marketplace is driven by the trading of these valorous dawgz. As owners trade and strategize, they contribute to a vibrant, self-sustaining economy that reflects the real-world dynamics of supply and demand, reputation, and potential.
-
 ## Beyond the Game: A New DeFi Reality
 
 Accessibility is Key: Alpha Dawgz 2024 shatters barriers. If your device can connect to a wallet, you're ready to enter the arena. This is DeFi gaming that's truly inclusive, breaking free from the confines of app stores and traditional gaming platforms.
