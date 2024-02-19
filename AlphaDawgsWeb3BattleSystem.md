@@ -28,7 +28,7 @@ Alpha Dawgz 2024 isn't just another NFT game; it's a DeFi revolution. It's a cal
 
 ## The Core Gameplay
 
-At its heart, Alpha Dawgz 2024 is a PvP battle game where players stake their NFTs against one another in a fight for dominance. Every dawg has an equal chance to win; no hidden stats or advantages skew the odds. It’s a game of chance, strategy, and nerve.
+Alpha Dawgz 2024 is a PvP battle game where players stake their NFTs against one another in a fight for dominance. Every dawg has an equal chance to win; no hidden stats or advantages skew the odds. It’s a game of chance, strategy, and nerve.
 
 ### Betting and Battling
 
