@@ -70,12 +70,10 @@ const POUND_CONTRACT_ADDRESS = '0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E';
 
 
 import dawgBattleAbi from './dawgBattleAbi.json';
-const BATTLE_CONTRACT_ADDRESS = '0x45E81B97Cb558a87467Fe64015a0a2313097C7DC';
+const BATTLE_CONTRACT_ADDRESS = '0xcc516fD12bcfEdd1DA1943C3970260e3A502c3Cc';
 
 // #################################################################################################
-
-
-
+// #################################################################################################
 import NftMint0 from './Components/NftMint0/NftMint0';
 
 
@@ -921,176 +919,145 @@ const calculateTokenValueInUSD = () => {
 
 
 
-
   // #################################################################################################
+  // #################################################################################################
+  // #################################################################################################
+    //BATTLE
+    const [activeBattles, setActiveBattles] = useState<number[]>([]);
 
-
-const [tokenId, setTokenId] = useState('');
-const [battleId, setBattleId] = useState('');
- const [inputBattleId, setInputBattleId] = useState('');
- const [battleContract, setBattleContract] = useState(null);
-
- useEffect(() => {
-   const init = async () => {
-     const provider = new ethers.providers.Web3Provider(window.ethereum);
-     const signer = provider.getSigner();
-     const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
-     setBattleContract(battleContract);
-   };
-   init();
- }, []);
-
- const handleEnterBattle = async () => {
-   try {
-     const tx = await battleContract.enterBattle(tokenId, { value: ethers.utils.parseEther("0.00001") });
-     await tx.wait();
-     console.log('Entered battle with token ID:', tokenId);
-     toast('Entered battle successfully!');
-   } catch (error) {
-     console.error('Error entering battle:', error);
-     toast('Failed to enter battle. See console for details.');
-   }
- };
-
- const handleMarkReady = async () => {
-   if (!inputBattleId) {
-     toast('No battle ID provided.');
-     return;
-   }
-   try {
-     const tx = await battleContract.markReady(inputBattleId);
-     await tx.wait();
-     console.log('Marked ready for battle ID:', inputBattleId);
-     toast('Marked ready for battle successfully!');
-   } catch (error) {
-     console.error('Error marking ready:', error);
-     toast('Failed to mark ready. See console for details.');
-   }
- };
-
-
-    // #################################################################################################
-    // #################################################################################################
-    // #################################################################################################
-    // #################################################################################################
-    // #################################################################################################
-
-     const [isBattleCompleted, setIsBattleCompleted] = useState(false);
-     const [winnerTokenId, setWinnerTokenId] = useState(null);
-     const [showAnimation, setShowAnimation] = useState(false);
-
-       // #################################################################################################
-     // #################################################################################################
-     // #################################################################################################
-     // #################################################################################################
-     // #################################################################################################
-
-
-
-      const [userTokenId, setUserTokenId] = useState(''); // Assuming you might also need the user's token ID
-      const [battleOutcome, setBattleOutcome] = useState('');
-
-      const checkBattleOutcome = async () => {
-    setLoading(true);
-    setShowAnimation(false); // Reset animation state
-    setBattleOutcome(''); // Reset outcome message
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(dawgBattleAbi, BATTLE_CONTRACT_ADDRESS);
+useEffect(() => {
+  const fetchActiveBattles = async () => {
+    // Assuming you have MetaMask or another Ethereum provider available
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
     try {
-      const lotteryDetails = await contract.methods.lotteries(battleId).call();
-      if (lotteryDetails.completed) {
-        setShowAnimation(true); // Start showing animation
-        // Wait for 7 seconds to simulate checking the battle outcome
-        setTimeout(async () => {
-          const winnerId = await contract.methods.winningTokenId(battleId).call();
-          if (parseInt(winnerId) === parseInt(userTokenId)) {
-            setBattleOutcome('Congratulations! Your Dawg won the battle.');
-          } else {
-            setBattleOutcome('Sorry, your Dawg lost the battle.');
-          }
-          setShowAnimation(false); // Stop showing animation
-          setLoading(false);
-        }, 7000); // Adjust time as needed
-      } else {
-        setBattleOutcome('Battle is not completed yet.');
-        setLoading(false);
-      }
+      const battles = await contract.getActiveBattleIds();
+      setActiveBattles(battles.map((battle: ethers.BigNumber) => battle.toNumber()));
     } catch (error) {
-      console.error('Error checking battle outcome:', error);
-      setBattleOutcome('Failed to check the battle. See console for details.');
-      setLoading(false);
+      console.error("Error fetching active battle IDs:", error);
     }
   };
 
+  fetchActiveBattles();
+}, []);
+
+
+
+
+  // #################################################################################################
+
 
   // #################################################################################################
   // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-
-  const [activeBattles, setActiveBattles] = useState([]);
-
-  const [selectedBattleId, setSelectedBattleId] = useState('');
-  const [tokenStats, setTokenStats] = useState({});
+  const [battleDetails, setBattleDetails] = useState([]);
 
   useEffect(() => {
-    const initWeb3 = async () => {
-      if (window.ethereum) {
-        const web3 = new Web3(window.ethereum);
-        setWeb3(web3);
-        const contract = new web3.eth.Contract(dawgBattleAbi, BATTLE_CONTRACT_ADDRESS);
-        setBattleContract(contract);
+    const fetchActiveBattles = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+
+      try {
+        const activeBattles = await contract.getActiveBattleIds();
+        const battlesDetailsPromises = activeBattles.map(async (battleId) => {
+          const details = await contract.getBattleDetails(battleId);
+          return {
+            battleId: details.id.toNumber(),
+            initiatorTokenId: details.initiatorTokenId.toNumber(),
+            secondaryTokenId: details.secondaryTokenId.toNumber(),
+            startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
+            initiatorReady: details.initiatorReady,
+            completed: details.completed,
+            totalValueInBattle: ethers.utils.formatEther(details.totalValueInBattle),
+          };
+        });
+        const battlesDetails = await Promise.all(battlesDetailsPromises);
+        setBattleDetails(battlesDetails);
+      } catch (error) {
+        console.error("Error fetching battle details:", error);
       }
     };
-    initWeb3();
+
+    fetchActiveBattles();
   }, []);
 
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
-  // #################################################################################################
 
 
 
-  const fetchActiveBattles = async () => {
-    if (!battleContract) return;
+  // #################################################################################################
 
-    setLoading(true);
+  const [currentUser, setCurrentUser] = useState("");
+
+useEffect(() => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const getUserAddress = async () => {
+    const accounts = await provider.listAccounts();
+    if (accounts) setCurrentUser(accounts[0]);
+  };
+
+  getUserAddress();
+}, []);
+
+  // #################################################################################################
+
+
+  // #################################################################################################
+  // Function to mark the initiator as ready for a battle
+  const handleMarkReady = async (battleId) => {
     try {
-      const activeBattleIds = await battleContract.methods.getActiveBattles().call();
-      const battles = await Promise.all(activeBattleIds.map(async (id) => {
-        const lottery = await battleContract.methods.lotteries(id).call();
-        return { id, ...lottery };
-      }));
+      // Ensure that there's an Ethereum provider (e.g., MetaMask) available
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []); // Request account access if needed
+        const signer = provider.getSigner(); // Get the signer to sign transactions
 
-      setActiveBattles(battles);
+        // Create a new instance of the contract with a signer, which allows update methods
+        const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
+
+        // Call the markReady function from the contract
+        const tx = await battleContract.markReady(battleId);
+        await tx.wait(); // Wait for the transaction to be mined
+
+        console.log("Transaction successful:", tx.hash);
+        // Optionally, refresh the data on the page to reflect the change
+      } else {
+        console.error("Ethereum object doesn't exist!");
+      }
     } catch (error) {
-      console.error("Failed to fetch active battles:", error);
-    } finally {
-      setLoading(false);
+      console.error("Failed to mark ready:", error);
     }
   };
 
-  useEffect(() => {
-    fetchActiveBattles();
-  }, [battleContract]); // Re-fetch when the contract is set
+  // #################################################################################################
+  const handleStartBattleManually = async (battleId) => {
+  try {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []); // Request account access if needed
+      const signer = provider.getSigner(); // Get the signer to sign transactions
 
+      // Assuming you have your contract ABI and address
+      const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
+      // Call the startBattleManually function from the contract
+      const tx = await battleContract.startBattleManually(battleId);
+      await tx.wait(); // Wait for the transaction to be mined
 
-
+      console.log("Battle started manually:", tx.hash);
+      // Optionally, refresh the data on the page to reflect the change
+    } else {
+      console.error("Ethereum object doesn't exist!");
+    }
+  } catch (error) {
+    console.error("Failed to start battle manually:", error);
+  }
+};
 
   // #################################################################################################
   // #################################################################################################
   // #################################################################################################
-    //
-
-
-
+  // #################################################################################################
+  // #################################################################################################
   // #################################################################################################
   // #################################################################################################
   // #################################################################################################
@@ -1130,76 +1097,31 @@ const [battleId, setBattleId] = useState('');
   1
                       </div>
                      <div className="row row-1" style={{ minHeight: '200px' }}>
+                     <div>
+     <h2>Active Battles</h2>
+     {battleDetails.map((battle, index) => (
+       <Box key={index} p="5" borderWidth="1px" borderRadius="lg" boxShadow="sm">
 
-                     <Flex flexDirection="column" gap="2">
-  <Text>enter Dawgs ID to Get into Battle the price to play is 0.0001bnb (approx 3 cents)</Text>
-  <Input placeholder="Enter the Dawgs ID" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
-  <Button onClick={handleEnterBattle}>Enter Battle</Button>
+         <Text>Battle ID: {battle.battleId}</Text>
+         <Text>Initiator Token ID: {battle.initiatorTokenId}</Text>
+         <img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" />
+         <Text>Secondary Token ID: {battle.secondaryTokenId}</Text>
+         <img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" />
+         <Text>Start Time: {battle.startTime}</Text>
+         <Text>Initiator Ready: {battle.initiatorReady ? 'Yes' : 'No'}</Text>
+         <Text>Completed: {battle.completed ? 'Yes' : 'No'}</Text>
+         <Text>Total Value in Battle: {battle.totalValueInBattle} ETH</Text>
+         {/* Always show the "Mark Ready" button */}
+         <Button colorScheme="blue" onClick={() => handleMarkReady(battle.battleId)} mt="2">
+           Mark Ready
+         </Button>
+         <Button colorScheme="blue" onClick={() => handleStartBattleManually(battle.battleId)}>
+      Start Battle Manually
+    </Button>
+       </Box>
+     ))}
+   </div>
 
-  <Text>Battle ID:</Text>
-  <Input  placeholder="Enter Battle ID" value={inputBattleId} onChange={(e) => setInputBattleId(e.target.value)} />
-  <Button onClick={handleMarkReady} isDisabled={!inputBattleId}>Ready to Fight</Button>
-
-
-  <div>
-        <input
-          type="text"
-          placeholder="Enter Battle ID"
-          value={battleId}
-            style={{ color: 'black' }}
-          onChange={(e) => setBattleId(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Enter Your Token ID"
-          value={userTokenId}
-            style={{ color: 'black' }} // Add this line to make text black
-          onChange={(e) => setUserTokenId(e.target.value)}
-        />
-        <button onClick={checkBattleOutcome} disabled={loading || showAnimation}>Check Battle Outcome</button>
-        {showAnimation && <img src={battleAnimationGif} alt="Battle Animation" />}
-        {!loading && <div>{battleOutcome}</div>}
-      </div>
-
-      <Box
-        flex={1}
-        p={0}
-        m={2}
-
-        minH="400px"
-        display="flex"
-        flexDirection="row"
-        borderRadius="lg"
-        bg="rgba(31, 31, 31, 0.8)"
-        bgPosition="center"
-        bgRepeat="no-repeat"
-        bgSize="cover"
-      >
-      <div>
-        {loading ? <p>Loading active battles...</p> : activeBattles.map((battle) => (
-          <div key={battle.id}>
-            <p>Battle ID: {battle.id}</p>
-            <p>Start Time: {new Date(parseInt(battle.startTime) * 1000).toLocaleString()}</p>
-            <p>Completed: {battle.completed ? 'Yes' : 'No'}</p>
-            <p>Total Pot: {battle.totalPot}</p>
-            <button onClick={() => setSelectedBattleId(battle.id)}>Select</button>
-          </div>
-        ))}
-
-        {selectedBattleId && (
-          <div>
-            <p>Selected Battle ID: {selectedBattleId}</p>
-            <button onClick={async () => {
-              await battleContract.methods.markReady(selectedBattleId, true).send({ from: window.ethereum.selectedAddress });
-              alert('Marked ready!');
-              fetchActiveBattles(); // Refresh the list of active battles
-            }}>Mark Ready</button>
-          </div>
-        )}
-      </div>
-
-      </Box>
-</Flex>
                     </div>
 
                     <img
