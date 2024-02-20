@@ -1,0 +1,31 @@
+
+   <div>
+<h2>Active Battles</h2>
+{battleDetails.map((battle, index) => (
+<Box key={index} p="5" borderWidth="1px" borderRadius="lg">
+<Text>Battle ID: {battle.battleId}</Text>
+<Flex justifyContent="space-around" alignItems="center">
+<Box textAlign="center">
+<Text>Initiator Token ID: {battle.initiatorTokenId}</Text>
+<img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" style={{ width: '100px', height: '100px' }} />
+</Box>
+<Box textAlign="center">
+<Text>Secondary Token ID: {battle.secondaryTokenId}</Text>
+<img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" style={{ width: '100px', height: '100px' }} />
+</Box>
+</Flex>
+<Text>Start Time: {battle.startTime}</Text>
+<Text>Initiator Ready: {battle.initiatorReady ? 'Yes' : 'No'}</Text>
+<Text>Completed: {battle.completed ? 'Yes' : 'No'}</Text>
+<Text>Total Value in Battle: {battle.totalValueInBattle} ETH</Text>
+{/* Here you can add your Mark Ready and Start Battle Manually buttons */}
+{/* Always show the "Mark Ready" button */}
+<Button colorScheme="blue" onClick={() => handleMarkReady(battle.battleId)} mt="2">
+  Mark Ready
+</Button>
+<Button colorScheme="blue" onClick={() => handleStartBattleManually(battle.battleId)}>
+Start Battle Manually
+</Button>
+</Box>
+))}
+</div>

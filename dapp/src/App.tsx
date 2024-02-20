@@ -14,6 +14,7 @@ import {
   Input,
   Button,
   Text,
+  Image,
   useToast,
 } from '@chakra-ui/react';
 
@@ -70,7 +71,7 @@ const POUND_CONTRACT_ADDRESS = '0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E';
 
 
 import dawgBattleAbi from './dawgBattleAbi.json';
-const BATTLE_CONTRACT_ADDRESS = '0xcc516fD12bcfEdd1DA1943C3970260e3A502c3Cc';
+const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182'; // v7_2_1_2
 
 // #################################################################################################
 // #################################################################################################
@@ -969,6 +970,8 @@ useEffect(() => {
             initiatorReady: details.initiatorReady,
             completed: details.completed,
             totalValueInBattle: ethers.utils.formatEther(details.totalValueInBattle),
+            initiatorComment: details.initiatorComment, // Added initiator comment
+            secondaryEntrantComment: details.secondaryEntrantComment, // Added secondary entrant comment
           };
         });
         const battlesDetails = await Promise.all(battlesDetailsPromises);
@@ -980,10 +983,6 @@ useEffect(() => {
 
     fetchActiveBattles();
   }, []);
-
-
-
-
   // #################################################################################################
 
   const [currentUser, setCurrentUser] = useState("");
@@ -1097,30 +1096,8 @@ useEffect(() => {
   1
                       </div>
                      <div className="row row-1" style={{ minHeight: '200px' }}>
-                     <div>
-     <h2>Active Battles</h2>
-     {battleDetails.map((battle, index) => (
-       <Box key={index} p="5" borderWidth="1px" borderRadius="lg" boxShadow="sm">
 
-         <Text>Battle ID: {battle.battleId}</Text>
-         <Text>Initiator Token ID: {battle.initiatorTokenId}</Text>
-         <img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" />
-         <Text>Secondary Token ID: {battle.secondaryTokenId}</Text>
-         <img src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" />
-         <Text>Start Time: {battle.startTime}</Text>
-         <Text>Initiator Ready: {battle.initiatorReady ? 'Yes' : 'No'}</Text>
-         <Text>Completed: {battle.completed ? 'Yes' : 'No'}</Text>
-         <Text>Total Value in Battle: {battle.totalValueInBattle} ETH</Text>
-         {/* Always show the "Mark Ready" button */}
-         <Button colorScheme="blue" onClick={() => handleMarkReady(battle.battleId)} mt="2">
-           Mark Ready
-         </Button>
-         <Button colorScheme="blue" onClick={() => handleStartBattleManually(battle.battleId)}>
-      Start Battle Manually
-    </Button>
-       </Box>
-     ))}
-   </div>
+
 
                     </div>
 
@@ -1201,66 +1178,52 @@ useEffect(() => {
                        bgSize="cover"
                      >
 
-3
+Active Battles
 
-                     <Box
-                       flex={1}
-                       p={0}
-                       m={2}
 
-                       minH="100px"
-                       display="flex"
-                       flexDirection="row"
-                       borderRadius="lg"
-                       bg="rgba(31, 31, 31, 0.8)"
-                       bgPosition="center"
-                       bgRepeat="no-repeat"
-                       bgSize="cover"
-                     >
-                     <div className="row row-3"  style={{ marginTop: '0px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
-                   <h2 style={{ width: '100%', textAlign: 'center' }}>NFTs In Pound (Days Until Unlock)</h2>
-                   {nfts.filter(nft => nft.isInPound).length > 0 ? (
-                     nfts.filter(nft => nft.isInPound).map((nft, index) => {
-                       // Calculate days remaining until unlock
-                       const unlockTime = new Date(nft.unlockTime * 1000); // Convert Unix timestamp to milliseconds
-                       const currentTime = new Date();
-                       const differenceInTime = unlockTime - currentTime; // Difference in milliseconds
-                       const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24)); // Convert to days
+<Box>
+    {battleDetails.map((battle, index) => (
+      <Box key={index} p="5" borderWidth="1px" borderRadius="lg" mb="5">
+        {/* First row: Battle ID */}
+        <Text style={{ fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Active Battle ID: {battle.battleId} </Text>
 
-                       return (
-                         <div key={index} style={{
-                           padding: '20px',
-                           margin: '10px',
-                           border: '1px solid rgba(255, 255, 255, 0.2)',
-                           borderRadius: '15px',
-                           background: 'rgba(255, 255, 255, 0.1)',
-                           backdropFilter: 'blur(5px)',
-                           display: 'flex',
-                           flexDirection: 'column',
-                           alignItems: 'center',
-                           maxWidth: '200px',
-                           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                         }}>
-                           {nft.metadata.image && (
-                             <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
-                           )}
-                           <p>Name: {nft.metadata.name}</p>
-                           {/* Only display if NFT is in pound */}
-                           {nft.isInPound && differenceInDays > 0 && (
-                             <p>Days Until Unlock: {differenceInDays}</p>
-                           )}
-                           {/* Handle case where NFT is unlocked but still marked as in pound */}
-                           {nft.isInPound && differenceInDays <= 0 && (
-                             <p>Unlocking...</p>
-                           )}
-                         </div>
-                       );
-                     })
-                   ) : (
-                     <p style={{ width: '100%', textAlign: 'center' }}>No NFTs found that are in Pound</p>
-                   )}
-                 </div>
-                     </Box>
+
+        {/* Second row: Contestants and VS */}
+        <Flex direction="row" alignItems="center" justifyContent="space-between" mb="4">
+          {/* Left contestant */}
+          <Box minH="270px" width="40%">
+            <Image src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="100px" mx="auto" />
+            <Text style={{  fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.initiatorTokenId}</Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }} mb="4">{battle.initiatorComment}</Text>
+          </Box>
+
+          {/* VS */}
+          <Box width="10%" textAlign="center">
+            <Text style={{  fontSize: '48px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
+          </Box>
+
+          {/* Right contestant */}
+          <Box minH="270px" width="40%">
+            <Image src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" boxSize="100px" mx="auto" />
+            <Text style={{  fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.secondaryTokenId}</Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }} mb="4">{battle.secondaryEntrantComment}</Text>
+          </Box>
+        </Flex>
+
+        {/* Third to 6th row: Battle details */}
+        <Text style={{ fontSize: '18px', color: 'white', fontWeight: 'bold' }} mb="4">Start Time: {battle.startTime}</Text>
+        <Text style={{ fontSize: '18px', color: 'white', fontWeight: 'bold' }} mb="4">Player 1 Ready: {battle.initiatorReady ? 'Yes' : 'No'}</Text>
+        <Text style={{ fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Prizes: {battle.totalValueInBattle} BNB</Text>
+
+        {/* 7th row: Buttons */}
+        <Flex mt="4" justifyContent="space-between">
+          <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>
+          <Button colorScheme="green" onClick={() => handleStartBattleManually(battle.battleId)}>Start Battle Manually</Button>
+        </Flex>
+      </Box>
+    ))}
+  </Box>
+
                      </Box>
                      </Flex>
 
@@ -1280,8 +1243,32 @@ useEffect(() => {
                 >
 
 
-        <div className="row row-1" style={{ minHeight: '200px' }}>
-
+        <div className="row row-4" style={{ marginTop: '40px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+       <h2 style={{ width: '100%', textAlign: 'center' }}>Good Dawgs</h2>
+       {nfts.filter(nft => !nft.isInPound).length > 0 ? (
+       nfts.filter(nft => !nft.isInPound).map((nft, index) => (
+       <div key={index} style={{
+       padding: '20px',
+       margin: '10px',
+       border: '1px solid rgba(255, 255, 255, 0.2)',
+       borderRadius: '15px',
+       background: 'rgba(255, 255, 255, 0.1)',
+       backdropFilter: 'blur(5px)',
+       display: 'flex',
+       flexDirection: 'column',
+       alignItems: 'center',
+       maxWidth: '200px',
+       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+       }}>
+       {nft.metadata.image && (
+       <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+       )}
+       <p>Name: {nft.metadata.name}</p>
+       </div>
+       ))
+       ) : (
+       <p style={{ width: '100%', textAlign: 'center' }}>No NFTs found that are not in Pound</p>
+       )}
        </div>
         <Flex direction={{ base: "column", md: "row"  }} gap={0}>
 
@@ -1441,8 +1428,49 @@ useEffect(() => {
 
         {/* Fourth Row: Links */}
         <div className="row row-4" style={{ minHeight: '100px' }}>
-          {/* Your content here */}
-        </div>
+        <div className="row row-3"  style={{ marginTop: '0px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+      <h2 style={{ width: '100%', textAlign: 'center' }}>NFTs In Pound (Days Until Unlock)</h2>
+      {nfts.filter(nft => nft.isInPound).length > 0 ? (
+        nfts.filter(nft => nft.isInPound).map((nft, index) => {
+          // Calculate days remaining until unlock
+          const unlockTime = new Date(nft.unlockTime * 1000); // Convert Unix timestamp to milliseconds
+          const currentTime = new Date();
+          const differenceInTime = unlockTime - currentTime; // Difference in milliseconds
+          const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24)); // Convert to days
+
+          return (
+            <div key={index} style={{
+              padding: '20px',
+              margin: '10px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '15px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(5px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              maxWidth: '200px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+            }}>
+              {nft.metadata.image && (
+                <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+              )}
+              <p>Name: {nft.metadata.name}</p>
+              {/* Only display if NFT is in pound */}
+              {nft.isInPound && differenceInDays > 0 && (
+                <p>Days Until Unlock: {differenceInDays}</p>
+              )}
+              {/* Handle case where NFT is unlocked but still marked as in pound */}
+              {nft.isInPound && differenceInDays <= 0 && (
+                <p>Unlocking...</p>
+              )}
+            </div>
+          );
+        })
+      ) : (
+        <p style={{ width: '100%', textAlign: 'center' }}>No NFTs found that are in Pound</p>
+      )}
+     </div>        </div>
    </Box>
 
 
