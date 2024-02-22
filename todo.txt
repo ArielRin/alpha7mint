@@ -1,0 +1,56 @@
+Day 4-5 todo list
+
+completed battles list (see below) YES
+
+dog of the Days banner for random dawg stats
+
+ive lost my dawwwwg! nft hunt for the dawg winner find qr of wallet with dawg in it
+
+pound unlock time in days hours seconds
+or actually in blocktime since easy to understand
+
+value of prize in usd
+shown on active battles
+
+nft stats page
+values and battles won lost total prize money and current ranking
+
+battle completed page
+list completed battles and hide outcome until the battle has been viewed
+allow toggle to show outcome for grinding
+
+Your nft collection with dawg status if pound if battle but make links to stats and battle pages
+
+find a way to use element on dapp to list an owned dawg for sale
+
+enhance nft metadata to have images and animations for game
+winning animation
+losers animation
+Dawg Intro animation
+
+finalise game mechanics and battle animations and declare winner proudly  
+
+
+implement badges for on chain dapp status and rewards badges
+
+implement the jail free system with price set by users greed on market place mint a minimal amount to enforce scarcity and comodotise
+the cards as worth holding until u need to get out of jail to claim rewards
+
+incorporate pound into game mechanics
+
+
+battle fee payment splitter system to same tokenomics as token enhancing, reflections, lp buildup, nft treasury, and dev/marketing fee increase reflections and rewards with gameplay
+
+and finally
+
+gameplay battle fees will topup staking pools and yes i been thinking of this over the staking but will have that implemented really soon
+
+so finally
+
+rewards automation and distribution of nft treasury system having sales send to and add liquidity while also sending bnb to b swapped to alpha7 tokens for nft treasury
+
+i think we will have an awesome system with benefits to gamers shareholders and nft holders alike.
+volume on token
+volume on marketplace
+and
+volume on battle System will boost the overall exposure and growth of alpha7

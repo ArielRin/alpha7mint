@@ -8,11 +8,11 @@
   "attributes": [
     {
       "trait_type": "Background",
-      "value": "redbackground"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Logo",
-      "value": "Logo8"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Dawg",
@@ -20,39 +20,39 @@
     },
     {
       "trait_type": "Edition",
-      "value": "Steel"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Image",
-      "value": "2"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type1",
-      "value": "lvl3"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type2",
-      "value": "lvl3"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type3",
-      "value": "lv21"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type4",
-      "value": "lvl7"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type5",
-      "value": "lv21"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type6",
-      "value": "lvl8"
+      "value": "Legendary Gold"
     },
     {
       "trait_type": "Type7",
-      "value": "lvl4"
+      "value": "Legendary Gold"
     }
   ],
   "compiler": "Alpha7 Art Engine"

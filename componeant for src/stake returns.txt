@@ -1,0 +1,301 @@
+
+
+  return (
+    <>
+    <ToastContainer />
+      <header className="header">
+          <div style={headerTextStyle}>AlphaDawgz Battle System</div>
+          <div className="connect-button">
+            <ConnectButton />
+        </div>
+      </header>
+
+                             <Box
+                               flex={1}
+                               p={0}
+                               m={0}
+                               display="flex"
+                               flexDirection="column"
+                               borderRadius="lg"
+                               bg="rgba(213, 143, 45, 0.7)"
+                               bgImage={`url(${mainbackgroundImage})`}
+                               bgPosition="center"
+                               bgRepeat="no-repeat"
+                               bgSize="cover"
+                             >
+                    <div className="row row-1" style={{ minHeight: '100px' }}>
+
+
+                    </div>
+
+
+                                                              <div className="row row-1" style={{ minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+                                                                {/* Your content here */}
+                                                                <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+                                                              </div>
+
+
+                     <Flex direction={{ base: "column", md: "row"  }} gap={0}>
+
+
+
+
+                     </Flex>
+
+                </Box>
+                <Box
+                  flex={1}
+                  p={0}
+                  m={0}
+                  display="flex"
+                  flexDirection="column"
+                  borderRadius="lg"
+                  bg="rgba(213, 143, 45, 0.7)"
+                  bgImage={`url(${mainbackgroundImage})`}
+                  bgPosition="center"
+                  bgRepeat="no-repeat"
+                  bgSize="cover"
+                >
+        <Flex direction={{ base: "column", md: "row"  }} gap={0}>
+
+
+        <Box
+          flex={1}
+          p={0}
+
+          minH="650px"
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.0)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+
+
+
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+          minH="800px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+        <div className="good-dawgs-section" style={{ minHeight: '500px', marginTop: '0px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+
+        <h2 style={{ width: '100%', textAlign: 'center', color: 'white' }}>Good Dawgs</h2>
+        {nfts.filter(nft => !nft.isInPound).map((nft, index) => (
+          <div key={index} className="good-dawg-item" style={{
+            padding: '20px',
+            margin: '10px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '15px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(5px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            maxWidth: '200px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+          }}>
+            <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} className="good-dawg-image" style={{ width: '100px', height: '100px', borderRadius: '10px', marginBottom: '10px' }} />
+            <p className="good-dawg-name" style={{ color: 'white' }}>Name: {nft.metadata.name}</p>
+            <Input
+              className="good-dawg-comment-input"
+              placeholder="Enter your taunt"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              size="sm"
+              style={{ marginBottom: '10px', borderColor: 'rgba(255, 255, 255, 0.2)' }}
+            />
+            <Button
+              colorScheme="blue"
+              size="sm"
+              onClick={() => enterBattle(nft.tokenId, comment, "10000000000000")}
+              style={{ background: 'blue', color: 'white', fontWeight: 'bold' }}
+            >
+              Enter Battle
+            </Button>
+          </div>
+        ))}
+      </div>
+
+        </Box>
+
+        </Box>
+
+        <Box
+          flex={1}
+          p={0}
+          minH="550px"
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.0)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="400px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+        <Box>
+            {battleDetails.map((battle, index) => (
+              <Box key={index} p="5" borderWidth="1px" borderRadius="lg" mb="5">
+                {/* First row: Battle ID */}
+                <Text style={{ fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Active Battle ID: {battle.battleId} </Text>
+
+
+                {/* Second row: Contestants and VS */}
+                <Flex direction="row" alignItems="center" justifyContent="space-between" mb="4">
+                  {/* Left contestant */}
+                  <Box minH="270px" width="40%">
+                    <Image src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="100px" mx="auto" />
+                    <Text style={{  fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.initiatorTokenId}</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }} mb="4">{battle.initiatorComment}</Text>
+                  </Box>
+
+                  {/* VS */}
+                  <Box width="10%" textAlign="center">
+                    <Text style={{  fontSize: '48px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
+                  </Box>
+
+                  {/* Right contestant */}
+                  <Box minH="270px" width="40%">
+                    <Image src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" boxSize="100px" mx="auto" />
+                    <Text style={{  fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.secondaryTokenId}</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }} mb="4">{battle.secondaryEntrantComment}</Text>
+                  </Box>
+                </Flex>
+
+                {/* Third to 6th row: Battle details */}
+                <Text style={{ fontSize: '18px', color: 'white', fontWeight: 'bold' }} mb="4">Start Time: {battle.startTime}</Text>
+                <Text style={{ fontSize: '18px', color: 'white', fontWeight: 'bold' }} mb="4">Player 1 Ready: {battle.initiatorReady ? 'Yes' : 'No'}</Text>
+                <Text style={{ fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Prizes: {battle.totalValueInBattle} BNB</Text>
+
+                {/* 7th row: Buttons */}
+                <Flex mt="4" justifyContent="space-between">
+                  <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>
+                  <Button colorScheme="green" onClick={() => handleStartBattleManually(battle.battleId)}>Start Battle Manually</Button>
+                </Flex>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="100px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+
+        <div className="row row-3" style={{ minHeight: '500px', marginTop: '0px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '20px' }}>
+          <h2 style={{ width: '100%', textAlign: 'center', color: 'white' }}>NFTs In Pound (Days Until Unlock)</h2>
+          {nfts.filter(nft => nft.isInPound).length > 0 ? (
+            nfts.filter(nft => nft.isInPound).map((nft, index) => {
+              const unlockTime = new Date(nft.unlockTime * 1000);
+              const currentTime = new Date();
+              const differenceInTime = unlockTime - currentTime;
+              const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+              return (
+                <div key={index} style={{
+                  padding: '20px',
+                  margin: '10px',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '15px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  maxWidth: '200px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                }}>
+                  {/* Container for NFT image and prison bars overlay */}
+                  <div className="nft-image-container">
+                    <img src={nft.metadata.image} alt={`NFT ${nft.tokenId}`} style={{ width: '100%', height: '100%', display: 'block' }} />
+                    <img src={prisonBars} alt="Prison Bars" style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                    }} />
+                  </div>
+                  <p style={{ color: 'white', marginTop: '10px' }}>Name: {nft.metadata.name}</p>
+                  <p style={{ color: 'white' }}>Days Until Unlock: {differenceInDays > 0 ? differenceInDays : "Unlocking..."}</p>
+                </div>
+              );
+            })
+          ) : (
+            <p style={{ width: '100%', textAlign: 'center', color: 'white' }}>No NFTs found that are in Pound</p>
+          )}
+        </div>
+                </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={2}
+
+          minH="100px"
+          display="flex"
+          flexDirection="row"
+          borderRadius="lg"
+          bg="rgba(31, 31, 31, 0.8)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+        </Box>
+        </Box>
+        </Flex>
+        {/* Third Row: Your Collected AlphaDawgz */}
+
+      <div className="row row-4" style={{ minHeight: '100px' }}>
+
+            </div>
+
+        {/* Fourth Row: Links */}
+        <div className="row row-4" style={{ minHeight: '100px' }}>
+eeeeeeeeeee
+        </div>
+   </Box>
+
+
+
+    </>
+  );
+}
+
+export default App;

@@ -1,7 +1,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  color: white; /* Set default text color to white */
+  color: black; /* Set default text color to white */
   /* Remove padding-top from here */
 }
 
@@ -43,7 +43,6 @@ header {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #222;
 }
 .logobody {
   display: block; /* Use block level for proper alignment */
@@ -174,4 +173,100 @@ header {
 .token-price-exponent {
   font-size: smaller;
   vertical-align: sub;
+}
+
+
+
+
+.good-dawgs-section {
+  text-align: center;
+  color: white; /* Make text white */
+}
+
+..good-dawg-item {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+
+.good-dawg-image-container {
+  position: relative;
+}
+
+.good-dawg-name {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.good-dawg-comment-input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.prison-bars-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px; /* Match the NFT image's border radius */
+}
+
+
+.good-dawg-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px; /* Adjust as needed */
+}
+.nft-image-container {
+  position: relative;
+  width: 100px; /* Adjust based on your NFT image size */
+  height: 100px; /* Adjust based on your NFT image size */
+  border-radius: 10px;
+  overflow: hidden; /* Ensures the overlay fits within the container */
+}
+
+
+
+
+
+.leaderboard {
+  background: #277bec;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.leaderboard h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: black;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.rank {
+  background: goldenrod;
+  padding: 10px 10px;
+  border-radius: 100%;
+}
+
+.token-id,
+.times-won,
+.value-earned {
+  background: navy;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
