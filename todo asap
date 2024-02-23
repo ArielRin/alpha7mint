@@ -1,13 +1,18 @@
-winner added to battledetails
-battleId end time (use start time plus duration )
+winner added to battledetails DONE
+battleId end time (use start time plus duration ) DONE
 
 
-array to list the top 20 winners tokenid of battles won list highest to lowest
+array to list the top 20 winners tokenid of battles won list highest to lowest DONE on frontend for now consider later
 
 select battle to enter from active battles list
 button to be tokenId of your nft and id of active battle.
 enterSelectedBattle will cost the entry fee and 1.50 of alpha7 tokens
-that will be sent to the dev wallet for distribution (cost to play plus fees)
+that will be sent to the dev wallet for distribution (cost to play plus fees) NEARLY almost got it alpha7 token fee 50c im thinking to choose batle
+
+
+
+
+
 
 Pound operator create operator function to send loser to pound
 
@@ -17,10 +22,12 @@ allow owner to modify and allow nft to be sent as function to release the dawg f
 make the pound cards for game and contract
 
 
+remember this for display calcs
 
+inline calculations
 
-
-
+e.g in return
+    <Text mb="2">Alpha7 Token Balance Value in USD: ${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
 
 
 

@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import dawgBattleAbi from './dawgBattleAbi.json'; // Adjust the import path as necessary
 import { Box, Text } from '@chakra-ui/react';
 
-const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182';
+const BATTLE_CONTRACT_ADDRESS = '0x565F7e642989F3C3dAC7b34FF442D14fa0B92cB9';
 
 interface LeaderboardEntry {
   tokenId: number;
