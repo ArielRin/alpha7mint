@@ -11,6 +11,7 @@ import {
 import HomePage from "./HomePage";
 import Collection from "./Collection";
 import NftMint0 from "./Components/NftMint0/NftMint0";
+import AllActiveBattles from './Components/AllActiveBattles/AllActiveBattles'; // Adjust the import path as necessary
 
 import Leaderboard from './Components/Leaderboard/Leaderboard'; // Adjust the import path as necessary
 
@@ -104,7 +105,7 @@ function App() {
 
 
 
-              <Box width="100%" height="100vh" bg="black">                                <Leaderboard />
+              <Box width="100%" height="100vh" bg="black">                                <Leaderboard />  <AllActiveBattles />
                 </Box>
 
         </div>

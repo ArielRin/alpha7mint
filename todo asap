@@ -1,0 +1,54 @@
+winner added to battledetails
+battleId end time (use start time plus duration )
+
+
+array to list the top 20 winners tokenid of battles won list highest to lowest
+
+select battle to enter from active battles list
+button to be tokenId of your nft and id of active battle.
+enterSelectedBattle will cost the entry fee and 1.50 of alpha7 tokens
+that will be sent to the dev wallet for distribution (cost to play plus fees)
+
+Pound operator create operator function to send loser to pound
+
+make the pound contract time delay not lock for pound stay using an end Date
+allow owner to modify and allow nft to be sent as function to release the dawg from the pound instantly
+
+make the pound cards for game and contract
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+victory and battle animations
