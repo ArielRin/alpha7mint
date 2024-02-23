@@ -18,6 +18,7 @@ import {
   useDisclosure,
   Box,
   Link,
+  VStack,
   Flex,
   Container,
   Tabs,
@@ -313,59 +314,112 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
             return (
 
-                  <Box>
+              <Flex
+                    direction="column"
+                    align="center"
+                    justify="center"
+                    minH="100vh"
+                    w="100%"
+                    bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/master/Images/Bkg/goldenbackground4%231.png')"
+                    bgPos="center"
+                    bgSize="cover"
+                    padding="20px"
+                  >
+                    {/* Apply dark grey transparent background to each Box */}
+                    {/* Each Box now has a bgColor with an rgba value for dark grey with transparency */}
+                    {/* Text color set to white */}
 
-                  <div className="connect-button">
-                    <ConnectButton />
-                </div>
+                    {/* First Row */}
+                    <Box w="100%" minH="80px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                      <VStack spacing={4}>
+                        <ConnectButton />
+                        <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
 
-
-
-                      <Text mb="2">------------------------------------------------------</Text>
-                <Text mb="2">Current Alpha7 Price: {tokenPriceUSD} USD</Text>
-
-                 <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-                 <Text mb="2">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)}  USD</Text>
-
-                 <Text mb="2">------------------------------------------------------</Text>
-                 <Text mb="2">Weekly NFT Token Drop Value</Text>
-                 <Text mb="2">Rewards to Dispurse to NFT Holder: {treasuryTokenBalance} ALPHA7 Tokens (${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-                 <Text mb="2">------------------------------------------------------</Text>
-                <Text mb="2">Developer Wallet</Text>
-                <Text mb="2">Token Balance: {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-                <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance} Tokens (${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-                <Text mb="2">BNB Balance: {developerBNBBalance} BNB (${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-                      <Text mb="2">------------------------------------------------------</Text>
-
-                <Text mb="2">NFT Treasury Wallet</Text>
-                <Text mb="2">Alpha7 Rewards to Dispurse: {treasuryTokenBalance} ALPHA7 Tokens (${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-                <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance} Tokens (${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-                <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB (${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-
-                <Text mb="2">------------------------------------------------------</Text>
-                <Text mb="2">Extra Liquidity Details</Text>
-                <Text mb="2">Projects Total Liquidity Valuation: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-
-                <Text mb="2">Project Locked LP: 4.99999 Alpha7-BNB (CakeLP) Tokens (${((parseFloat(lpTokenValue) * 4.99999)*2).toFixed(2)} USD)</Text>
-                <Text mb="2">CAKE-LP Tokens Total Supply: {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens (${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-                <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply {totalReserveInUSD} </Text>
+                        <Text fontSize="lg" fontWeight="bold">Administration Balances of Accounts</Text>
 
 
-                                <Text mb="2">------------------------------------------------------</Text>
-                                <Text mb="2">Projects Main Goal:</Text>
-                                <Text mb="2">Unreleased Token Supply (Locked): 2,000,000,000</Text>
+                      </VStack>
+                    </Box>
 
+                    {/* first#2 Row */}
+                    <Box w="100%" minH="125px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+                      <VStack spacing={4}>
+                      <Text fontSize="lg" >Current Alpha7 Price: {tokenPriceUSD} USD</Text>
+                      <Text fontSize="md">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text fontSize="md">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)} USD</Text>
+                      </VStack>
+                    </Box>
 
-                                <Text mb="2">Pair all Unreleased Tokens with BNB</Text>
+                    {/* first#3 Row */}
+                    <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white"marginTop="10px">
+                      <VStack spacing={4}>
+                        <Text fontSize="lg" fontWeight="bold">Projects Current Goal</Text>
+                        <Text mb="2">Pair all Unreleased Tokens with BNB</Text>
+                        <Text mb="2">Current Cost to Pair All Unreleased Tokens</Text>
+                        <Text mb="2"fontWeight="bold">  ${(parseFloat(tokenPriceUSD) * 2000000000).toFixed(2)} USD</Text>
+                        <Text mb="2">Unreleased Token Supply (Locked): 2,000,000,000</Text>
 
-                <Text mb="2">Current Cost to Pair All Unreleased Tokens:  (${(parseFloat(tokenPriceUSD) * 2000000000).toFixed(2)} USD)</Text>
+                      </VStack>
+                    </Box>
 
+                    {/* Second Row */}
+                    <Flex direction={{ base: "column", md: "row" }} w="100%" minH="150px" justify="space-between" paddingY="20px" bgColor="rgba(0, 0, 0, 0.0)" color="white" >
+                        <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+                        <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.855)" color="white">
 
+                      <VStack spacing={4}>
+                        <Text fontSize="xl" fontWeight="bold">Developer Wallet</Text>
 
+                        <Text mb="2">Token Balance: {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
+                        <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance}</Text>
+                        <Text mb="2" fontWeight="bold"> ${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                        <Text mb="2">BNB Balance: {developerBNBBalance} BNB ${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD</Text>
+                        </VStack>
+                      </Box>
+                      </Flex>
 
+                      <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white"  >
+                      <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
 
-              </Box>
-            );
-          };
+                      <VStack spacing={4}>
+                      <Text fontSize="xl" fontWeight="bold">NFT Treasury Wallet</Text>
+                      <Text mb="2">Alpha7 Rewards to Dispurse</Text>
+                      <Text mb="2"fontWeight="bold"> {treasuryTokenBalance} ALPHA7 Tokens ${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
+                      <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance}</Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB ${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD</Text>
+                      </VStack>
+                    </Box>
+                      </Flex>
+
+                    </Flex>
+
+                    {/* Third Row */}
+                    <Box w="100%" minH="200px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+                      <VStack spacing={4}>
+                      <Text fontSize="xl" fontWeight="bold">Additional Liquidity Details</Text>
+                      <Text mb="2">Projects Total Liquidity Valuation</Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
+                      <Text mb="2">Project Locked LP: 4.99999 Alpha7-BNB (CakeLP)</Text>
+                      <Text mb="2" fontWeight="bold"> ${((parseFloat(lpTokenValue) * 4.99999)*2).toFixed(2)} USD</Text>
+
+                      <Text mb="2">CAKE-LP Tokens Total Supply</Text>
+                      <Text mb="2"> {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens </Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply</Text>
+                      <Text mb="2" fontWeight="bold"> {totalReserveInUSD} </Text>
+
+                      </VStack>
+                    </Box>
+
+                    {/* Fourth Row */}
+                    <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                      <VStack spacing={4}>
+                      </VStack>
+                    </Box>
+                  </Flex>
+  );
+};
+
 
           export default App;// future ideas https://plays.org/game/nature-cat-hals-big-dig/
