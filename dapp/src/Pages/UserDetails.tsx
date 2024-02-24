@@ -1,16 +1,110 @@
-import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { Box, Text } from '@chakra-ui/react';
-import tokenAbi from './tokenAbi.json';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import NFTPage from './Pages/NfPage';
+import HomePage from './Pages/HomePage';
+// import NftMint0 from './Components/NftMint0/NftMint0';
+import UserPage from './Pages/UserDetails';
+import Collection from './Pages/Collection';
 
-const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
+import {
+
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Box,
+  Link,
+  VStack,
+  Flex,
+  Container,
+  Tabs,
+  TabList,
+  TabPanels,
+  Spacer,
+  Tab,
+  TabPanel,
+  Input,
+  Button,
+  Text,
+  Image,
+  useToast,
+  Collapse,
+} from '@chakra-ui/react';
+
+import Web3 from 'web3';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ethers } from 'ethers';
+import { useAccount, useContractWrite } from 'wagmi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import abiFile from './abiFile.json';
+import './styles.css';
+import mainbackgroundImage from './bkg.png';
+import tokenGif from './token.gif';
+import a7Logo from './headerlogo.png';
+import dawgImage from './token.gif';
+
+import battleAnimationGif from './battleAnimation.gif'; // Path to your animation GIF
+
+import prisonBars from './prisonBars.png';
+import redBkg from './redBkg.png';
+
+
+
+
+import MainTextLogo from './headerlogo.png';
+
+const CONTRACT_ADDRESS = '0xca695feb6b1b603ca9fec66aaa98be164db4e660';
+const TOKEN_ADDRESS = '0x88CE0d545cF2eE28d622535724B4A06E59a766F0';
+
+const getExplorerLink = () => `https://bscscan.com/address/${CONTRACT_ADDRESS}`;
+const getOpenSeaURL = () => `https://opensea.io/collection/aplha-dawgz-nft-collection`;
+const getTofuNftURL = () => `https://tofunft.com/discover/items?contracts=98523`;
+
+
+// #################################################################################################
+
+  // Assuming the token's contract address and ABI are known
+  const TOKEN_CONTRACT_ADDRESS = '0x88CE0d545cF2eE28d622535724B4A06E59a766F0'; // The address of the BEP20 token
+  import tokenAbi from './tokenAbi.json'; // Import the token's ABI
+// #################################################################################################
+// #################################################################################################
+// #################################################################################################
+// deposit 14
+
+import stake14Abi from './stake14Abi.json';
+const STAKING_CONTRACT_ADDRESS = '0x5Bc7905f75244C67E2d8FfEcE4D33052682B4d68';
+
+
+// #################################################################################################
+// #################################################################################################
+// #################################################################################################
+// #################################################################################################
+
+// TheDawgPound
+
+import dawgPoundAbi from './dawgPoundAbi.json';
+const POUND_CONTRACT_ADDRESS = '0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E';
+
+
+import dawgBattleAbi from './dawgBattleAbi.json';
+const BATTLE_CONTRACT_ADDRESS = '0x565F7e642989F3C3dAC7b34FF442D14fa0B92cB9'; // v7_2_1_2
+
+// #################################################################################################
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
 // import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // Adjust the import path as necessary
 
-const UserStats: React.FC = () => {
+// #################################################################################################
+
+
+function UserDetails() {
+
   const [userAddress, setUserAddress] = useState('');
   const [alpha7TokenBalance, setAlpha7TokenBalance] = useState('0.0000');
   const [bnbBalance, setBnbBalance] = useState('0.0000');
@@ -202,59 +296,130 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   }, []);
 
 
-  return (
-    <Box>
-
-
-            <Text mb="2">------------------------------------------------------</Text>
-      <Text mb="2">Current Alpha7 Price: {tokenPriceUSD} USD</Text>
-
-       <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-       <Text mb="2">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)}  USD</Text>
 
 
 
+  // #################################################################################################
+
+    // #################################################################################################
+
+      // #################################################################################################
+
+        // #################################################################################################
+
+          // #################################################################################################
+
+            // #################################################################################################
 
 
-      <Text mb="2">------------------------------------------------------</Text>
-      <Text mb="2">Developer Wallet</Text>
-      <Text mb="2">Token Balance: {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-      <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance} Tokens (${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-      <Text mb="2">BNB Balance: {developerBNBBalance} BNB (${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-            <Text mb="2">------------------------------------------------------</Text>
+            return (
 
-      <Text mb="2">NFT Treasury Wallet</Text>
-      <Text mb="2">Alpha7 Rewards to Dispurse: {treasuryTokenBalance} ALPHA7 Tokens (${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-      <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance} Tokens (${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-      <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB (${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
+              <Flex
+                    direction="column"
+                    align="center"
+                    justify="center"
+                    minH="100vh"
+                    w="100%"
+                    bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/master/Images/Bkg/goldenbackground4%231.png')"
+                    bgPos="center"
+                    bgSize="cover"
+                    padding="20px"
+                  >
+                    {/* Apply dark grey transparent background to each Box */}
+                    {/* Each Box now has a bgColor with an rgba value for dark grey with transparency */}
+                    {/* Text color set to white */}
 
-      <Text mb="2">------------------------------------------------------</Text>
-      <Text mb="2">Extra Liquidity Details</Text>
-      <Text mb="2">CAKE-LP Tokens Total Supply: {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens (${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-      <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-      <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply {totalReserveInUSD} </Text>
+                    {/* First Row */}
+                    <Box w="100%" minH="80px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                      <VStack spacing={4}>
+                        <ConnectButton />
+                        <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+
+                        <Text fontSize="lg" fontWeight="bold">Administration Balance of Accounts</Text>
 
 
+                      </VStack>
+                    </Box>
 
-    </Box>
+                    {/* first#2 Row */}
+                    <Box w="100%" minH="125px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+                      <VStack spacing={4}>
+                      <Text fontSize="lg" >Current Alpha7 Price: {tokenPriceUSD} USD</Text>
+                      <Text fontSize="md">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text fontSize="md">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)} USD</Text>
+                      </VStack>
+                    </Box>
+
+                    {/* first#3 Row */}
+                    <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white"marginTop="10px">
+                      <VStack spacing={4}>
+                        <Text fontSize="lg" fontWeight="bold">Projects Current Goal</Text>
+                        <Text mb="2">Pair All Unreleased</Text>
+                        <Text mb="2">Cost to LP All Unreleased Tokens </Text>
+                        <Text mb="2"fontWeight="bold">  ${(parseFloat(tokenPriceUSD) * 2000000000).toFixed(2)} USD ({((parseFloat(tokenPriceUSD) * 2000000000) / parseFloat(bnbPriceInUSD)).toFixed(2)} BNB)</Text>
+                        <Text mb="2">Unreleased Token Supply (Locked): 2,000,000,000</Text>
+
+                      </VStack>
+                    </Box>
+
+                    {/* Second Row */}
+                    <Flex direction={{ base: "column", md: "row" }} w="100%" minH="150px" justify="space-between" paddingY="20px" bgColor="rgba(0, 0, 0, 0.0)" color="white" >
+                        <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+                        <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.855)" color="white">
+
+                      <VStack spacing={4}>
+                        <Text fontSize="xl" fontWeight="bold">Marketing and Development Wallet</Text>
+
+                        <Text mb="2"> {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
+                        <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance}</Text>
+                        <Text mb="2" fontWeight="bold"> ${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                        <Text mb="2">BNB Balance: {developerBNBBalance} BNB ${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD</Text>
+                        </VStack>
+                      </Box>
+                      </Flex>
+
+                      <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white"  >
+                      <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+
+                      <VStack spacing={4}>
+                      <Text fontSize="xl" fontWeight="bold">NFT Treasury Wallet</Text>
+                      <Text mb="2">Alpha7 Rewards to Dispurse</Text>
+                      <Text mb="2"fontWeight="bold"> {treasuryTokenBalance} ALPHA7 Tokens ${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
+                      <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance}</Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB ${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD</Text>
+                      </VStack>
+                    </Box>
+                      </Flex>
+
+                    </Flex>
+
+                    {/* Third Row */}
+                    <Box w="100%" minH="200px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+                      <VStack spacing={4}>
+                      <Text fontSize="xl" fontWeight="bold">Additional Liquidity Details</Text>
+                      <Text mb="2">Projects Total Liquidity Valuation</Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
+                      <Text mb="2">Project Locked LP: 4.99999 Alpha7-BNB (CakeLP)</Text>
+                      <Text mb="2" fontWeight="bold"> ${((parseFloat(lpTokenValue) * 4.99999)*2).toFixed(2)} USD</Text>
+
+                      <Text mb="2">CAKE-LP Tokens Total Supply</Text>
+                      <Text mb="2"> {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens </Text>
+                      <Text mb="2"fontWeight="bold"> ${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply</Text>
+                      <Text mb="2" fontWeight="bold"> {totalReserveInUSD} </Text>
+
+                      </VStack>
+                    </Box>
+
+                    {/* Fourth Row */}
+                    <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                      <VStack spacing={4}>
+                      </VStack>
+                    </Box>
+                  </Flex>
   );
 };
 
-export default UserStats;
 
-      //   <YourActiveBattles />
-
-
-
-
-
-
-
-      //        <Text mb="2">------------------------------------------------------</Text>
-      // <Text mb="2">Connected Accounts Address: {userAddress}</Text>
-      // <Text mb="2">Connected Accounts BNB Balance: {bnbBalance} BNB (${(parseFloat(bnbBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-      // <Text mb="2">Connected Accounts Alpha7 Token Balance: {alpha7TokenBalance} ALPHA7 Tokens (${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-      // <Text mb="2">Connected Wallet LP Token Balance: {connectedWalletLPTokenBalance} Tokens (${(parseFloat(connectedWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-      //       <Text mb="2">------------------------------------------------------</Text>
-      //             <Text mb="2">------------------------------------------------------</Text>
-      //
+          export default UserDetails;// future ideas https://plays.org/game/nature-cat-hals-big-dig/

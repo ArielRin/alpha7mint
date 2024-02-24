@@ -11,7 +11,7 @@ const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
 // import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // Adjust the import path as necessary
 
-const UserStats: React.FC = () => {
+const HomePage: React.FC = () => {
   const [userAddress, setUserAddress] = useState('');
   const [alpha7TokenBalance, setAlpha7TokenBalance] = useState('0.0000');
   const [bnbBalance, setBnbBalance] = useState('0.0000');
@@ -247,7 +247,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   );
 };
 
-export default UserStats;
+export default HomePage;
 
       //   <YourActiveBattles />
 
