@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import NFTPage from './Pages/NfPage';
+import axios from 'axios';
+import BnbPriceContext from './Pages/BnbPriceContext'; // Import the context
+
+
 import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
 import UserPage from './Pages/UserDetails';
@@ -102,6 +105,20 @@ const BATTLE_CONTRACT_ADDRESS = '0x565F7e642989F3C3dAC7b34FF442D14fa0B92cB9'; //
 
 function App() {
 
+  const [bnbPrice, setBnbPrice] = useState(0);
+
+   useEffect(() => {
+     const fetchBnbPrice = async () => {
+       try {
+         const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd');
+         setBnbPrice(response.data.binancecoin.usd);
+       } catch (error) {
+         console.error("Failed to fetch BNB price:", error);
+       }
+     };
+
+     fetchBnbPrice();
+   }, []);
 
 
   // #################################################################################################
@@ -118,15 +135,20 @@ function App() {
 
 
       return (
-        <Router>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/collection" element={<Collection />} />
 
-            <Route path="/nftdetails" element={<NftDetails />} />
-         </Routes>
-        </Router>
+    <BnbPriceContext.Provider value={bnbPrice}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/user" element={<UserPage />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
+        </Routes>
+      </Router>
+    </BnbPriceContext.Provider>
+
+
+
       );
     }
 

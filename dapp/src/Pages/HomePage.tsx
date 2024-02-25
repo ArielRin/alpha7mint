@@ -5,6 +5,8 @@ import { Box, Text } from '@chakra-ui/react';
 import tokenAbi from './tokenAbi.json';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
+import NftDetails from './Nft/NftDetails'; // Adjust the import path as needed
+
 const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
