@@ -52,7 +52,7 @@ import dawgBattleAbi from './dawgBattleOldAbi.json';
 
 import BnbPrice from '../Components/BnbPrice';
 
-
+const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Metadata/";
 
 const NftDetails: React.FC = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -145,6 +145,35 @@ const NftDetails: React.FC = () => {
         fetchTokenStats();
     }, [tokenId]);
 
+
+
+    const [nftMetadata, setNftMetadata] = useState(null);
+
+        useEffect(() => {
+            const fetchNftMetadata = async () => {
+                try {
+                    const response = await fetch(`${metadataBaseUrl}${tokenId}.json`);
+                    if (!response.ok) throw new Error('Network response was not ok.');
+                    const metadata = await response.json();
+                    setNftMetadata(metadata);
+                } catch (error) {
+                    console.error('Failed to fetch NFT metadata:', error);
+                    setError('Failed to fetch NFT metadata.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            fetchNftMetadata();
+        }, [tokenId]);
+
+        if (isLoading) return <Box>Loading...</Box>;
+        if (error) return <Box>Error: {error}</Box>;
+        if (!nftMetadata) return <Box>No data found.</Box>;
+
+
+
+
     const data = {
         labels: ['Wins', 'Losses'],
         datasets: [
@@ -181,10 +210,6 @@ const NftDetails: React.FC = () => {
 // ##############################################################
 
 
-
-
-
-
   // nft data fetch from url token // IDEA:
 
 
@@ -196,8 +221,8 @@ const NftDetails: React.FC = () => {
       <Flex
         direction="column"
         align="stretch"
-        minH="300vh"
-        bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/master/ArtEngine/layers/Background/greenbackground%236.png')"
+        minH="100vh"
+        bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/greenbkg.png')"
         bgPosition="center"
         bgSize="cover"
       >
@@ -368,6 +393,19 @@ bg="rgba(0, 0, 0, 0.0)"
    alignItems="center" // Center children horizontally
    >
   <Text color="white">Dawgz Name</Text>
+  <Box>
+      {nftMetadata.attributes.map((attr) => {
+        if (["Dawgz Name"].includes(attr.trait_type)) {
+
+              return (
+                  <Text color="white" fontSize="40px" fontWeight="bolder" textAlign="center"  key={attr.trait_type}>
+                      {`${attr.value}`}
+                  </Text>
+              );
+          }
+          return null;
+      })}
+  </Box>
 </Box>
 <Box
  flex="1"
@@ -566,7 +604,19 @@ alignItems="center" // Centers content horizontally<Box
       p="5px"
       minH="40px" // Adjust the height as needed
     >
-      <Text color="white">Dawg Breed</Text>
+      <Box>
+          {nftMetadata.attributes.map((attr) => {
+            if (["Dawg"].includes(attr.trait_type)) {
+
+                  return (
+                      <Text color="white" key={attr.trait_type}>
+                          {`Dawg Breed: ${attr.value}`}
+                      </Text>
+                  );
+              }
+              return null;
+          })}
+      </Box>
     </Box>
 
     {/* Row 2 in Column 1 */}
@@ -607,7 +657,7 @@ alignItems="center" // Centers content horizontally<Box
 
 
   {/* ----------------------------------------------------------------------------------------- */}
-  {/* Blank Row  */}
+  {/* Blank Row
   <Flex
     w="100%"
     p="3px"
@@ -617,7 +667,7 @@ alignItems="center" // Centers content horizontally<Box
     flexDirection={{ base: "column", md: "row" }} // Adjusts layout based on screen size
   >
   </Flex>
-    {/* ----------------------------------------------------------------------------------------- */}
+  ----------------------------------------------------------------------------------------- */}
 
 
         {/* Row 5 */}
@@ -664,6 +714,21 @@ alignItems="center" // Centers content horizontally<Box
               minH="400px" // Adjust the height as needed
             >
               <Text color="white">NFT MetaData and Traits</Text>
+              <Flex direction="column" align="stretch" minH="100vh">
+          {/* Ensure nftMetadata is not null before attempting to access its properties */}
+          {nftMetadata && (
+              <Box>
+                  <Text>{nftMetadata.name}</Text>
+                  {/* Display specific attributes */}
+
+
+                  {/* Display specific attributes */}
+                  <Box>
+                  </Box>
+              </Box>
+          )}
+      </Flex>
+
 
             </Box>
 
