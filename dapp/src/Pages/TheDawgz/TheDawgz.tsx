@@ -83,10 +83,41 @@ const TheDawgz: React.FC = () => {
     if (!nfts.length) return <Box>No NFTs found.</Box>;
 
 
+
 return (
-    <SimpleGrid columns={[1, 2, 6]} spacing="40px" p="10">
+
+  <Flex
+    direction="column"
+    align="cover"
+    minH="100vh"
+    bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/greenbkg.png')"
+    bgPosition="center"
+    bgSize="cover"
+  >  <header h='100px' className="header">
+
+
+<RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
+<div>
+  <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+</div>
+</RouterLink>
+<RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Token</RouterLink>
+<RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Mint</RouterLink>
+<RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
+<RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
+<RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
+<div className="connect-button">
+  <ConnectButton />
+</div>
+</header>
+{/* First Row */}
+<Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+  <VStack spacing={4}>
+  </VStack>
+</Box>
+    <SimpleGrid columns={[ 1, 3, 4, 5, 6, 7]} bgColor="rgba(0, 0, 0, 0.0)" color="white" spacing="20px" p="10">
       {nfts.map((nft) => (
-        <Box key={nft.tokenId} p="5" shadow="md" borderWidth="1px">
+        <Box key={nft.tokenId} p="5" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
           <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
           <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">
             Token ID: {nft.tokenId}
@@ -100,6 +131,7 @@ return (
         </Box>
       ))}
     </SimpleGrid>
+    </Flex>
   );
 };
 

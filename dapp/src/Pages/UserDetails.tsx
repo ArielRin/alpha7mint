@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import NFTPage from './Pages/NfPage';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link as RouterLink,
+  useParams,
+  useNavigate,
+} from "react-router-dom";// import NFTPage from './Pages/NfPage';
 import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
 import UserPage from './Pages/UserDetails';
@@ -325,14 +331,34 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                     bgSize="cover"
                     padding="20px"
                   >
+                  <header h='100px' className="header">
+
+
+                <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
+                <div>
+                  <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+                </div>
+                </RouterLink>
+                <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Token</RouterLink>
+                <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Mint</RouterLink>
+                <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
+                <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
+                <RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
+                <div className="connect-button">
+                  <ConnectButton />
+                </div>
+                </header>
                     {/* Apply dark grey transparent background to each Box */}
                     {/* Each Box now has a bgColor with an rgba value for dark grey with transparency */}
                     {/* Text color set to white */}
 
                     {/* First Row */}
-                    <Box w="100%" minH="80px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                    <Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
                       <VStack spacing={4}>
-                        <ConnectButton />
+                      </VStack>
+                    </Box>
+                    <Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                      <VStack spacing={4}>
                         <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
 
                         <Text fontSize="lg" fontWeight="bold">Administration Balance of Accounts</Text>

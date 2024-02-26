@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,10 +8,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import BnbPriceContext from '../Pages/BnbPriceContext'; // Adjust the path as necessary
-
-
 import Web3 from "web3";
+import { ethers } from 'ethers';
 import tokenAbi from './tokenAbi.json';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import {
@@ -41,16 +39,21 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 
+import abiFile from "./abiFile.json";
+import "./styles.css";
+
+
+mport { useAccount, useContractWrite } from "wagmi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import mainbackgroundImage from "./bkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";
+
 import MainTextLogo from "./headerlogo.png";
 
-
-
-import { ethers } from 'ethers';
 
 import NftDetails from './Nft/NftDetails'; // Adjust the import path as needed
 
@@ -60,9 +63,12 @@ const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
 // import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // Adjust the import path as necessary
 
-const HomePage: React.FC = () => {
 
-    const bnbPrice = useContext(BnbPriceContext);
+
+
+
+
+const HomePage: React.FC = () => {
   const [userAddress, setUserAddress] = useState('');
   const [alpha7TokenBalance, setAlpha7TokenBalance] = useState('0.0000');
   const [bnbBalance, setBnbBalance] = useState('0.0000');
@@ -255,178 +261,194 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
   return (
+    <>
+      <ToastContainer />
+      <header className="header">
+        <div>AlphaDawgz Battle System</div>
 
-        <Box>
-        <header h='100px' className="header">
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/user">User Page</RouterLink>
+        <RouterLink to="/collection">Collection</RouterLink>
+        {/* Add more navigation links as needed */}
 
-
-      <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
-      <div>
-        <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
-      </div>
-      </RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Token</RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Mint</RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
-      <RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
-      <div className="connect-button">
-        <ConnectButton />
-      </div>
+        <div className="connect-button">
+          <ConnectButton />
+        </div>
       </header>
 
-        <Box
-          flex={1}
-          p={0}
-          m={0}
-          display="flex"
-          flexDirection="column"
-          borderRadius="lg"
-          bg="rgba(213, 143, 45, 0.7)"
-          bgImage={`url(${mainbackgroundImage})`}
-          bgPosition="center"
-          bgRepeat="no-repeat"
-          bgSize="cover"
-        >
-          <div className="row row-1" style={{ minHeight: "100px" }}></div>
+      <Box
+        flex={1}
+        p={0}
+        m={0}
+        display="flex"
+        flexDirection="column"
+        borderRadius="lg"
+        bg="rgba(213, 143, 45, 0.7)"
+        bgImage={`url(${mainbackgroundImage})`}
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        bgSize="cover"
+      >
+        <div className="row row-1" style={{ minHeight: "100px" }}></div>
 
-          <div
-            className="row row-1"
-            style={{
-              minHeight: "100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+        <div
+          className="row row-1"
+          style={{
+            minHeight: "100px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {/* Your content here */}
+          <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
+        </div>
+
+        <div className="row row-4" style={{ minHeight: "600px" }}>
+          this is the oneeeeeee
+        </div>
+
+        <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
+      </Box>
+      <Box
+        flex={1}
+        p={0}
+        m={0}
+        display="flex"
+        flexDirection="column"
+        borderRadius="lg"
+        bg="rgba(213, 143, 45, 0.7)"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        bgSize="cover"
+      >
+        <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
+
+        <Flex direction={{ base: "column", md: "row" }} gap={0}>
+          <Box
+            flex={1}
+            p={0}
+            minH="650px"
+            display="flex"
+            flexDirection="column"
+            borderRadius="lg"
+            bg="rgba(31, 31, 31, 0.0)"
+            bgPosition="center"
+            bgRepeat="no-repeat"
+            bgSize="cover"
           >
-            {/* Your content here */}
-          </div>
-
-          <div className="row row-4" style={{ minHeight: "600px" }}>
-          <Box p="4" borderWidth="1px" borderRadius="lg" overflow="hidden">
-
-  <Text mb="2">Current BNB Price: ${bnbPrice}</Text>
-
-  <Text fontSize="lg" >Current Alpha7 Price: {tokenPriceUSD} USD</Text>
-<Text mb="2">------------------------------------------------------</Text>
-
-  <Text mb="2">Connected Accounts Address: {userAddress}</Text>
-  <Text mb="2">Connected Accounts BNB Balance: {bnbBalance} BNB (${(parseFloat(bnbBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-  <Text mb="2">Connected Accounts Alpha7 Token Balance: {alpha7TokenBalance} ALPHA7 Tokens (${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-  <Text mb="2">Connected Wallet LP Token Balance: {connectedWalletLPTokenBalance} Tokens (${(parseFloat(connectedWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-  <Text mb="2">------------------------------------------------------</Text>
-  <Text mb="2">------------------------------------------------------</Text>
-</Box>
-
-          </div>
-
-          <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
-        </Box>
-        <Box
-          flex={1}
-          p={0}
-          m={0}
-          display="flex"
-          flexDirection="column"
-          borderRadius="lg"
-          bg="rgba(213, 143, 45, 0.7)"
-          bgPosition="center"
-          bgRepeat="no-repeat"
-          bgSize="cover"
-        >
-          <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
-
-          <Flex direction={{ base: "column", md: "row" }} gap={0}>
+            <Box></Box>
             <Box
               flex={1}
               p={0}
-              minH="650px"
+              m={2}
+              minH="800px"
               display="flex"
-              flexDirection="column"
+              flexDirection="row"
               borderRadius="lg"
-              bg="rgba(31, 31, 31, 0.0)"
+              bg="rgba(31, 31, 31, 0.8)"
               bgPosition="center"
               bgRepeat="no-repeat"
               bgSize="cover"
             >
-              <Box></Box>
-              <Box
-                flex={1}
-                p={0}
-                m={2}
-                minH="800px"
-                display="flex"
-                flexDirection="row"
-                borderRadius="lg"
-                bg="rgba(31, 31, 31, 0.8)"
-                bgPosition="center"
-                bgRepeat="no-repeat"
-                bgSize="cover"
-              >
-                Left main column
-              </Box>
+              Left main column
             </Box>
+          </Box>
 
+          <Box
+            flex={1}
+            p={0}
+            minH="550px"
+            display="flex"
+            flexDirection="column"
+            borderRadius="lg"
+            bg="rgba(31, 31, 31, 0.0)"
+            bgPosition="center"
+            bgRepeat="no-repeat"
+            bgSize="cover"
+          >
             <Box
               flex={1}
               p={0}
-              minH="550px"
+              m={2}
+              minH="900px"
               display="flex"
-              flexDirection="column"
+              flexDirection="row"
               borderRadius="lg"
-              bg="rgba(31, 31, 31, 0.0)"
+              bg="rgba(31, 31, 31, 0.8)"
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
+            ></Box>
+            <Box
+              flex={1}
+              p={0}
+              m={2}
+              minH="100px"
+              display="flex"
+              flexDirection="row"
+              borderRadius="lg"
+              bg="rgba(31, 31, 31, 0.8)"
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
+            ></Box>
+            <Box
+              flex={1}
+              p={0}
+              m={2}
+              minH="100px"
+              display="flex"
+              flexDirection="row"
+              borderRadius="lg"
+              bg="rgba(31, 31, 31, 0.8)"
               bgPosition="center"
               bgRepeat="no-repeat"
               bgSize="cover"
             >
-              <Box
-                flex={1}
-                p={0}
-                m={2}
-                minH="900px"
-                display="flex"
-                flexDirection="row"
-                borderRadius="lg"
-                bg="rgba(31, 31, 31, 0.8)"
-                bgPosition="center"
-                bgRepeat="no-repeat"
-                bgSize="cover"
-              ></Box>
-              <Box
-                flex={1}
-                p={0}
-                m={2}
-                minH="100px"
-                display="flex"
-                flexDirection="row"
-                borderRadius="lg"
-                bg="rgba(31, 31, 31, 0.8)"
-                bgPosition="center"
-                bgRepeat="no-repeat"
-                bgSize="cover"
-              ></Box>
-              <Box
-                flex={1}
-                p={0}
-                m={2}
-                minH="100px"
-                display="flex"
-                flexDirection="row"
-                borderRadius="lg"
-                bg="rgba(31, 31, 31, 0.8)"
-                bgPosition="center"
-                bgRepeat="no-repeat"
-                bgSize="cover"
-              >
-                <Box width="100%"></Box>
+              <Box width="100%"></Box>
+
+                          <Text mb="2">------------------------------------------------------</Text>
+                    <Text mb="2">Current Alpha7 Price: {tokenPriceUSD} USD</Text>
+
+                     <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
+                     <Text mb="2">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)}  USD</Text>
 
 
 
-              </Box>
+
+
+                    <Text mb="2">------------------------------------------------------</Text>
+                    <Text mb="2">Developer Wallet</Text>
+                    <Text mb="2">Token Balance: {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
+                    <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance} Tokens (${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
+                    <Text mb="2">BNB Balance: {developerBNBBalance} BNB (${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
+                          <Text mb="2">------------------------------------------------------</Text>
+
+                    <Text mb="2">NFT Treasury Wallet</Text>
+                    <Text mb="2">Alpha7 Rewards to Dispurse: {treasuryTokenBalance} ALPHA7 Tokens (${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
+                    <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance} Tokens (${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
+                    <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB (${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
+
+                    <Text mb="2">------------------------------------------------------</Text>
+                    <Text mb="2">Extra Liquidity Details</Text>
+                    <Text mb="2">CAKE-LP Tokens Total Supply: {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens (${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
+                    <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
+                    <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply {totalReserveInUSD} </Text>
+
+
             </Box>
-          </Flex>
-          {/* Third Row: Your Collected AlphaDawgz */}
-        </Box>
+          </Box>
+        </Flex>
+        {/* Third Row: Your Collected AlphaDawgz */}
+      </Box>
+    </>
+  );
+}
+
+
+
+
     </Box>
   );
 };
@@ -434,31 +456,18 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 export default HomePage;
 
       //   <YourActiveBattles />
-//
-//       <Text mb="2">------------------------------------------------------</Text>
-// <Text mb="2">Current Alpha7 Price: {tokenPriceUSD} USD</Text>
-//
-//  <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-//  <Text mb="2">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)}  USD</Text>
-//
-//
-//
-//
-//
-// <Text mb="2">------------------------------------------------------</Text>
-// <Text mb="2">Developer Wallet</Text>
-// <Text mb="2">Token Balance: {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-// <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance} Tokens (${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-// <Text mb="2">BNB Balance: {developerBNBBalance} BNB (${(parseFloat(developerBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-//       <Text mb="2">------------------------------------------------------</Text>
-//
-// <Text mb="2">NFT Treasury Wallet</Text>
-// <Text mb="2">Alpha7 Rewards to Dispurse: {treasuryTokenBalance} ALPHA7 Tokens (${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-// <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance} Tokens (${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-// <Text mb="2">BNB Balance: {treasuryBNBBalance} BNB (${(parseFloat(treasuryBNBBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-//
-// <Text mb="2">------------------------------------------------------</Text>
-// <Text mb="2">Extra Liquidity Details</Text>
-// <Text mb="2">CAKE-LP Tokens Total Supply: {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens (${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-// <Text mb="2">Projects Total Liquidity: ${(parseFloat(alpha7LPTokenSupply) * parseFloat(lpTokenValue) * 2).toFixed(2)}  USD</Text>
-// <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply {totalReserveInUSD} </Text>
+
+
+
+
+
+
+
+      //        <Text mb="2">------------------------------------------------------</Text>
+      // <Text mb="2">Connected Accounts Address: {userAddress}</Text>
+      // <Text mb="2">Connected Accounts BNB Balance: {bnbBalance} BNB (${(parseFloat(bnbBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
+      // <Text mb="2">Connected Accounts Alpha7 Token Balance: {alpha7TokenBalance} ALPHA7 Tokens (${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
+      // <Text mb="2">Connected Wallet LP Token Balance: {connectedWalletLPTokenBalance} Tokens (${(parseFloat(connectedWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
+      //       <Text mb="2">------------------------------------------------------</Text>
+      //             <Text mb="2">------------------------------------------------------</Text>
+      //
