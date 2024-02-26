@@ -9,6 +9,8 @@ import HomePage from './Pages/HomePage';
 import UserPage from './Pages/UserDetails';
 import Collection from './Pages/Collection';
 import NftDetails from './Pages/Nft/NftDetails';
+import TheDawgz from './Pages/TheDawgz/TheDawgz';
+
 
 
 
@@ -140,8 +142,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/user" element={<UserPage />} />
-          <Route path="/collection" element={<Collection />} />
+          <Route path="/values" element={<UserPage />} />
+            <Route path="/thedawgz" element={<TheDawgz />} /> // New route for TheDawgz page
           <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
         </Routes>
       </Router>

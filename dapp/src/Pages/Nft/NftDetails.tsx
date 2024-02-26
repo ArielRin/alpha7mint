@@ -2,7 +2,7 @@ import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend);
 
 import BnbPriceContext from '../BnbPriceContext'; // Import the context
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState , useContext} from 'react';
 import { Pie } from 'react-chartjs-2';
 import { ethers } from 'ethers';
@@ -57,6 +57,13 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 const NftDetails: React.FC = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   console.log("Token ID:", tokenId);
+
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate(-1); // This will take the user back to the previous page
+  };
+
 
   const bnbPrice = useContext(BnbPriceContext); // Use the context
 
@@ -238,6 +245,7 @@ const NftDetails: React.FC = () => {
           justify="space-between"
         >
           <Flex align="center">
+
             <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
             <ChakraLink as={RouterLink} to="/" color="white" ml="3"></ChakraLink>
           </Flex>
@@ -270,13 +278,15 @@ const NftDetails: React.FC = () => {
           >
             {/* Nested Column 1 */}
             <Box
-              w={{ base: "100%", md: "33.3%" }} // Full width on small screens, 20% on medium and up
-              bg="rgba(0, 0, 0, 0.75)"
-              p="5px"
-              minH="100%"
-            >
-              <Text color="white" fontSize="14px" fontWeight="bolder" textAlign="center">Back</Text>
-            </Box>
+      w={{ base: "100%", md: "33.3%" }} // Full width on small screens, 33.3% on medium and up
+      bg="rgba(0, 0, 0, 0.75)"
+      p="5px"
+      minH="100%"
+      onClick={handleBackClick} // Adding the click event handler to the Box
+      cursor="pointer" // Change cursor to pointer on hover to indicate clickable
+    >
+      <Text color="white" fontSize="14px" fontWeight="bolder" textAlign="center">Back</Text>
+    </Box>
 
             {/* Nested Column 2 */}
             <Box
@@ -398,7 +408,7 @@ bg="rgba(0, 0, 0, 0.0)"
         if (["Dawgz Name"].includes(attr.trait_type)) {
 
               return (
-                  <Text color="white" fontSize="40px" fontWeight="bolder" textAlign="center"  key={attr.trait_type}>
+                  <Text color="white" fontSize="32px" fontWeight="bolder" textAlign="center"  key={attr.trait_type}>
                       {`${attr.value}`}
                   </Text>
               );
@@ -417,7 +427,21 @@ bg="rgba(0, 0, 0, 0.0)"
    flexDirection="column" // Align children vertically
    justifyContent="center" // Center children vertically
    alignItems="center" // Center children horizontally
-   >  <Text color="white">Dawgz Taunt Phrase</Text>
+   >
+   <Text color="white">Dawgz Taunt Phrase</Text>
+   <Box>
+       {nftMetadata.attributes.map((attr) => {
+         if (["Taunt"].includes(attr.trait_type)) {
+
+               return (
+                   <Text color="white" fontSize="20px" fontWeight="bold" textAlign="center"  key={attr.trait_type}>
+                       {`${attr.value}`}
+                   </Text>
+               );
+           }
+           return null;
+       })}
+   </Box>
 </Box>
 </Flex>
 </Flex>
@@ -482,7 +506,7 @@ flexDirection={{ base: "column", md: "row" }}
       flexDirection="column" // Align children vertically
       justifyContent="center" // Center children vertically
       alignItems="center" // Center children horizontally
-     >
+
   >
       <Pie data={data} options={{...options, maintainAspectRatio: true }} />
   </Box>
@@ -609,7 +633,7 @@ alignItems="center" // Centers content horizontally<Box
             if (["Dawg"].includes(attr.trait_type)) {
 
                   return (
-                      <Text color="white" key={attr.trait_type}>
+                    <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" key={attr.trait_type}>
                           {`Dawg Breed: ${attr.value}`}
                       </Text>
                   );
@@ -623,9 +647,11 @@ alignItems="center" // Centers content horizontally<Box
     <Box
       bg="rgba(0, 0, 0, 0.75)"
       p="5px"
-      minH="40px" // Adjust the height as needed
+      minH="120px" // Adjust the height as needed
     >
-      <Text color="white">Dawg Bio</Text>
+    <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" >
+      Dawg Bio
+      </Text>
     </Box>
   </Flex>
 
@@ -641,16 +667,20 @@ alignItems="center" // Centers content horizontally<Box
       p="5px"
       minH="40px" // Adjust the height as needed
     >
-      <Text color="white">View on Element Marketplace</Text>
+    <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" >
+    View on Element NFT Marketplace
+    </Text>
     </Box>
 
     {/* Row 2 in Column 2 */}
     <Box
       bg="rgba(0, 0, 0, 0.75)"
       p="5px"
-      minH="40px" // Adjust the height as needed
+      minH="120px" // Adjust the height as needed
     >
-      <Text color="white">View on BSCSCAN</Text>
+    <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" >
+      View on BSCSCAN
+      </Text>
     </Box>
   </Flex>
 </Flex>
