@@ -206,7 +206,7 @@ const NftDetails: React.FC = () => {
 
 
 // ##############################################################
-  const imageUrl = `https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${tokenId}.png`;
+  const imageUrl = `https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Image/${tokenId}.png`;
 // ##############################################################
 
 
@@ -214,7 +214,7 @@ const NftDetails: React.FC = () => {
 
 
 //         bg="rgba(0, 0, 0, 0.0)"
-//         bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/master/ArtEngine/layers/Background/greenbackground%236.png')"
+//         bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/ArtEngine/layers/Background/greenbackground%236.png')"
 
   return (
 
@@ -366,7 +366,7 @@ minH="100%"
   justifyContent="center" // Center content vertically
 >
 <Image
-src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${tokenId}.png`}
+src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Image/${tokenId}.png`}
 w="80%" // Set the image width to 80% of its parent
 objectFit="contain" // Ensure the aspect ratio is maintained
 m="auto" // Margin auto for additional centering if needed
