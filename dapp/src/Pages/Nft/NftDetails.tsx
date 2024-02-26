@@ -51,6 +51,7 @@ const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182';
 import dawgBattleAbi from './dawgBattleOldAbi.json';
 
 import BnbPrice from '../Components/BnbPrice';
+import TokenPriceContext from '../TokenPriceContext';
 
 const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Metadata/";
 
@@ -66,6 +67,7 @@ const NftDetails: React.FC = () => {
 
 
   const bnbPrice = useContext(BnbPriceContext); // Use the context
+  const tokenPriceUSD = useContext(TokenPriceContext);
 
   // State for NFT and battle details
   const [nftDetails, setNftDetails] = useState({

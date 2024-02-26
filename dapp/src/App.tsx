@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import BnbPriceContext from './Pages/BnbPriceContext'; // Import the context
-
+import TokenPriceContext from './Pages/TokenPriceContext'; // Import the new context
 
 import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
@@ -124,7 +124,27 @@ function App() {
 
 
   // #################################################################################################
+  const [tokenPriceUSD, setTokenPriceUSD] = useState(null);
 
+   useEffect(() => {
+     const fetchTokenPrice = async () => {
+       try {
+         const url = `https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${TOKEN_CONTRACT_ADDRESS}`;
+         const response = await axios.get(url);
+         const attributes = response.data?.data?.attributes;
+         if (attributes) {
+           setTokenPriceUSD(attributes.price_usd);
+         } else {
+           setTokenPriceUSD('Price not available');
+         }
+       } catch (error) {
+         console.error('Error fetching token price:', error);
+         setTokenPriceUSD('Error fetching price');
+       }
+     };
+
+     fetchTokenPrice();
+   }, []);
     // #################################################################################################
 
       // #################################################################################################
@@ -139,6 +159,7 @@ function App() {
       return (
 
     <BnbPriceContext.Provider value={bnbPrice}>
+      <TokenPriceContext.Provider value={tokenPriceUSD}>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -147,6 +168,7 @@ function App() {
           <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
         </Routes>
       </Router>
+      </TokenPriceContext.Provider>
     </BnbPriceContext.Provider>
 
 
