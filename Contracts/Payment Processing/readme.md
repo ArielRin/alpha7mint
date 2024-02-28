@@ -25,6 +25,13 @@ When the contract receives BNB, it automatically divides the funds according to 
     - Once swapped, the Alpha7 tokens are sent to the NFT Rewards Treasury.
     - The NFT Rewards Treasury distributes the Alpha7 tokens to NFT holders as rewards on a weekly schedule.
 
+## Visual Representation
+
+Below is a visual flow of how BNB is distributed upon receiving by the contract:
+
+  ![Contract Visual Representation](https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/Contracts/Payment%20Processing/Diagram.jpg "Contract Visual Representation")
+
+
 ## Example
 
 For illustrative purposes, let's consider a scenario where 1 BNB is sent to the contract (`0xAdb6755BfFE57a01Cd24738FAF5851c91dA77FE2`).
