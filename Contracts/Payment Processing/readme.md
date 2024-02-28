@@ -1,6 +1,6 @@
 
 
-# NFT Sales and Battle Fees Payment Splitter
+# NFT Sales and Battle Fees Payment Automated Distribution 
 
 This smart contract is designed to automate the distribution of BNB received from NFT sales and battle fees. Upon receiving BNB, the contract splits the funds into three predetermined portions: 59% for the liquidity wallet (Main Wallet), 20% for the Developer/Marketing Wallet, and 21% for the NFT Treasury Contract. This document explains the process, provides an example, and details the flow of funds.
 
