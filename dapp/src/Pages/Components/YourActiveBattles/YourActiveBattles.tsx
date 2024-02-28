@@ -25,7 +25,9 @@ const ActiveBattles: React.FC = () => {
   useEffect(() => {
     const fetchUserAddress = async () => {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // Cast window.ethereum to the expected type for Web3Provider
+        const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider);
+
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setUserAddress(address);

@@ -7,10 +7,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";// import NFTPage from './Pages/NfPage';
-import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
-import UserPage from './Pages/UserDetails';
-import Collection from './Pages/Collection';
 
 import {
 
@@ -43,7 +40,7 @@ import {
 
 import Web3 from 'web3';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { ethers } from 'ethers';
+import { ethers, providers} from 'ethers';
 import { useAccount, useContractWrite } from 'wagmi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -306,10 +303,105 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
   // #################################################################################################
+  const [formattedSwapTokensAtAmount, setFormattedSwapTokensAtAmount] = useState('');
+
+   useEffect(() => {
+     const fetchSwapTokensAtAmount = async () => {
+       if (typeof window.ethereum !== 'undefined') {
+         const provider = new ethers.providers.Web3Provider(
+  window.ethereum as providers.ExternalProvider
+);
+         const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, provider);
+
+         try {
+           // Fetch the swapTokensAtAmount in wei
+           const swapTokensAtAmount = await tokenContract.swapTokensAtAmount();
+           // Convert from wei to tokens considering the token's 9 decimal places
+           const tokens = ethers.utils.formatUnits(swapTokensAtAmount, 9);
+           // Fix to 1 decimal place for display
+           const formattedAmount = Number(tokens).toFixed(1);
+           setFormattedSwapTokensAtAmount(formattedAmount);
+         } catch (error) {
+           console.error('Error fetching swapTokensAtAmount:', error);
+         }
+       }
+     };
+
+     fetchSwapTokensAtAmount();
+   }, []);
+
+
 
     // #################################################################################################
+    const [contractTokenBalance, setContractTokenBalance] = useState('');
 
+      useEffect(() => {
+        const fetchContractTokenBalance = async () => {
+          if (typeof window.ethereum !== 'undefined') {
+            const provider = new ethers.providers.Web3Provider(
+  window.ethereum as providers.ExternalProvider
+);
+            const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, provider);
+
+            try {
+              // Fetch the token balance of the contract itself
+              const balance = await tokenContract.balanceOf(TOKEN_CONTRACT_ADDRESS);
+              // Convert the balance to a human-readable format, assuming the token uses 9 decimals
+              const formattedBalance = ethers.utils.formatUnits(balance, 9);
+              setContractTokenBalance(Number(formattedBalance).toFixed(0)); // Adjust decimal places as needed
+            } catch (error) {
+              console.error('Error fetching contract token balance:', error);
+            }
+          }
+        };
+
+        fetchContractTokenBalance();
+      }, []);
       // #################################################################################################
+       const [percentage, setPercentage] = useState(0); // Calculated from the above values
+
+
+     useEffect(() => {
+       const fetchLiveData = async () => {
+         if (typeof window.ethereum !== 'undefined') {
+           const provider = new ethers.providers.Web3Provider(
+  window.ethereum as providers.ExternalProvider
+);
+           const contract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, provider);
+
+           try {
+             // Assuming 'balanceOf' and 'swapTokensAtAmount' are the methods in your contract
+             // For contractTokenBalance, you might need to specify the contract's address or another address
+             const balance = await contract.balanceOf(TOKEN_CONTRACT_ADDRESS); // Adjust according to your contract's method
+             const swapAmount = await contract.swapTokensAtAmount(); // Adjust according to your contract's method
+
+             // Update state with fetched data
+             const balanceInTokens = ethers.utils.formatUnits(balance, 9); // Adjust the '18' based on your token's decimals
+             const swapAmountInTokens = ethers.utils.formatUnits(swapAmount, 9); // Adjust the '18' based on your token's decimals
+
+             setContractTokenBalance(balanceInTokens);
+             setFormattedSwapTokensAtAmount(swapAmountInTokens);
+
+             // Calculate and set percentage
+             const percentageCalculated = (parseFloat(balanceInTokens) / parseFloat(swapAmountInTokens)) * 100;
+             setPercentage(parseFloat(percentageCalculated.toFixed(2)));
+            } catch (error) {
+             console.error('Error fetching data from the blockchain:', error);
+           }
+         }
+       };
+
+       fetchLiveData();
+     }, []);
+
+     // SVG Cup Fill Calculation
+     const validPercentage = Math.max(0, Math.min(100, percentage)); // Ensure percentage is between 0 and 100
+
+
+       const tankHeight = 100; // Height of the water tank
+         const tankWidth = 200; // Width of the water tank for a broader appearance
+         const fillHeight = tankHeight * (percentage / 100); // Calculate fill height
+         const fillYPosition = tankHeight - fillHeight + 10; // Y position for the fill
 
         // #################################################################################################
 
@@ -331,7 +423,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                     bgSize="cover"
                     padding="20px"
                   >
-                  <header h='100px' className="header">
+                  <header style={{ height: '100px' }} className="header">
 
 
                 <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
@@ -362,6 +454,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                         <img src={MainTextLogo} alt="Main Text Logo" className="logobody" />
 
                         <Text fontSize="lg" fontWeight="bold">Administration Balance of Accounts</Text>
+                        <Text mb="2">0x88CE0d545cF2eE28d622535724B4A06E59a766F0</Text>
+
 
 
                       </VStack>
@@ -396,6 +490,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                       <VStack spacing={4}>
                         <Text fontSize="xl" fontWeight="bold">Marketing and Development Wallet</Text>
 
+                        <Text mb="2">0x57103b1909fB4D295241d1D5EFD553a7629736A9</Text>
+
                         <Text mb="2"> {developerTokenBalance} ALPHA7 Tokens (${(parseFloat(developerTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
                         <Text mb="2">LP Token Balance: {developerWalletLPTokenBalance}</Text>
                         <Text mb="2" fontWeight="bold"> ${(parseFloat(developerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
@@ -409,6 +505,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
                       <VStack spacing={4}>
                       <Text fontSize="xl" fontWeight="bold">NFT Treasury Wallet</Text>
+
+                                              <Text mb="2">0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7</Text>
                       <Text mb="2">Alpha7 Rewards to Dispurse</Text>
                       <Text mb="2"fontWeight="bold"> {treasuryTokenBalance} ALPHA7 Tokens ${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
                       <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance}</Text>
@@ -431,12 +529,45 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
                       <Text mb="2">CAKE-LP Tokens Total Supply</Text>
                       <Text mb="2"> {alpha7LPTokenSupply} Alpha7-BNB (CakeLP) Tokens </Text>
-                      <Text mb="2"fontWeight="bold"> ${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+                      <Text mb="2"fontWeight="bold">Each lp token worth ${(parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
                       <Text mb="2">Raw BNB Valuation of Entire CAKE-LP Token Supply</Text>
                       <Text mb="2" fontWeight="bold"> {totalReserveInUSD} </Text>
 
+
+                      <Text mb="2" fontWeight="bold">------------------------</Text>
+
+                      <Flex direction="column" align="center" minH="300px">
+                       <Box textAlign="center" mb="20px">
+                                 <Text mb="2" fontWeight="bold">Swap Tokens At Amount: {formattedSwapTokensAtAmount} Tokens</Text>
+    <Text mb="2" fontWeight="bold">Alpha7 Tokens awaiting swapNliquify: {contractTokenBalance} Tokens</Text>
+    <Box textAlign="center" mb="20px">
+       <Text mb="2" fontWeight="bold">Swap and Liquify Fill Level</Text>
+          <Text mb="2" fontWeight="normal">will pay Reflections, send Marketing/Dev Fees and add to Liquidity on 100% </Text>
+       <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+       {/* Tank outline */}
+       <rect x="10" y="10" rx="15" ry="15" width={tankWidth} height={tankHeight} stroke="black" strokeWidth="3" fill="grey" />
+       {/* Water fill */}
+       <rect x="13" y={fillYPosition} rx="12" ry="12" width={tankWidth - 6} height={fillHeight} fill="blue" />
+       {/* Additional details for the cartoon effect */}
+       <circle cx="105" cy="40" r="10" fill="yellow" stroke="black" strokeWidth="2" /> {/* Sun */}
+       <line x1="105" y1="10" x2="105" y2="30" stroke="black" strokeWidth="2" /> {/* Sun rays */}
+       <line x1="85" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+       <line x1="125" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+       {/* Text for percentage */}
+       <text x="50%" y="65" fontSize="20" fontWeight="bold" textAnchor="middle" fill="white">{`${percentage}% Full`}</text>
+       </svg>
+   </Box>
+
+</Box>
+  </Flex>
+
+
+
+
                       </VStack>
-                    </Box>
+                 </Box>
+                    {/* SVG Visualization of the Cup Fill Level */}
+
 
                     {/* Fourth Row */}
                     <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">

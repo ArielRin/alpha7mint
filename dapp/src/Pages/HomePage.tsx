@@ -257,7 +257,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   return (
 
         <Box>
-        <header h='100px' className="header">
+        <header style={{ height: '100px' }} className="header">
 
 
       <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>

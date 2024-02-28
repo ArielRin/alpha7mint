@@ -7,7 +7,6 @@ import TokenPriceContext from './Pages/TokenPriceContext'; // Import the new con
 import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
 import UserPage from './Pages/UserDetails';
-import Collection from './Pages/Collection';
 import NftDetails from './Pages/Nft/NftDetails';
 import TheDawgz from './Pages/TheDawgz/TheDawgz';
 
@@ -124,27 +123,27 @@ function App() {
 
 
   // #################################################################################################
-  const [tokenPriceUSD, setTokenPriceUSD] = useState(null);
+  const [tokenPriceUSD, setTokenPriceUSD] = useState<null | string>(null);
 
-   useEffect(() => {
-     const fetchTokenPrice = async () => {
-       try {
-         const url = `https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${TOKEN_CONTRACT_ADDRESS}`;
-         const response = await axios.get(url);
-         const attributes = response.data?.data?.attributes;
-         if (attributes) {
-           setTokenPriceUSD(attributes.price_usd);
-         } else {
-           setTokenPriceUSD('Price not available');
-         }
-       } catch (error) {
-         console.error('Error fetching token price:', error);
-         setTokenPriceUSD('Error fetching price');
-       }
-     };
+useEffect(() => {
+  const fetchTokenPrice = async () => {
+    try {
+      const url = `https://api.geckoterminal.com/api/v2/networks/bsc/tokens/${TOKEN_CONTRACT_ADDRESS}`;
+      const response = await axios.get(url);
+      const attributes = response.data?.data?.attributes;
+      if (attributes) {
+        setTokenPriceUSD(attributes.price_usd);
+      } else {
+        setTokenPriceUSD('Price not available'); // This is now valid
+      }
+    } catch (error) {
+      console.error('Error fetching token price:', error);
+      setTokenPriceUSD('Error fetching price'); // This is also valid
+    }
+  };
 
-     fetchTokenPrice();
-   }, []);
+  fetchTokenPrice();
+}, []);
     // #################################################################################################
 
       // #################################################################################################

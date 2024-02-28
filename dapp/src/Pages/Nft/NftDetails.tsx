@@ -55,6 +55,19 @@ import TokenPriceContext from '../TokenPriceContext';
 
 const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Metadata/";
 
+
+interface Attribute {
+  trait_type: string;
+  value: string | number; // Adjust based on the actual types of your values
+}
+
+// Define the NftMetadata interface
+interface NftMetadata {
+  attributes: Attribute[];
+  // Include other properties of nftMetadata here
+}
+
+
 const NftDetails: React.FC = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   console.log("Token ID:", tokenId);
@@ -86,6 +99,7 @@ const NftDetails: React.FC = () => {
   const [error, setError] = useState('');
   const [tokenStats, setTokenStats] = useState({ totalWon: 0, totalLose: 0, valueEarned: 0 });
 
+
   useEffect(() => {
     const fetchNftData = async () => {
       if (!window.ethereum) {
@@ -101,7 +115,7 @@ const NftDetails: React.FC = () => {
       }
 
       try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider);
         const signer = provider.getSigner();
         const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abiFile, signer);
 
@@ -133,30 +147,31 @@ const NftDetails: React.FC = () => {
     fetchNftData();
   }, [tokenId]);
 
+
   useEffect(() => {
-        const fetchTokenStats = async () => {
-            try {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-                const stats = await contract.tokenStats(tokenId);
+    const fetchTokenStats = async () => {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider);
+        await provider.send("eth_requestAccounts", []);
+        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+        const stats = await contract.tokenStats(tokenId);
 
-                setTokenStats({
-                    totalWon: stats.timesWon.toNumber(),
-                    totalLose: stats.timesLost.toNumber(),
-                    valueEarned: ethers.utils.formatEther(stats.valueEarned)
-                });
-            } catch (error) {
-                console.error("Failed to fetch token stats:", error);
-            }
-        };
+        setTokenStats({
+          totalWon: stats.timesWon.toNumber(),
+          totalLose: stats.timesLost.toNumber(),
+          valueEarned: +(stats.valueEarned ? ethers.utils.formatEther(stats.valueEarned) : 0), // Handle null valueEarned
+        });
+      } catch (error) {
+        console.error("Failed to fetch token stats:", error);
+        setError('Failed to fetch token stats.');
+      }
+    };
 
-        fetchTokenStats();
-    }, [tokenId]);
+    fetchTokenStats();
+  }, [tokenId]);
 
 
-
-    const [nftMetadata, setNftMetadata] = useState(null);
+      const [nftMetadata, setNftMetadata] = useState<NftMetadata | undefined>(undefined);
 
         useEffect(() => {
             const fetchNftMetadata = async () => {
@@ -213,6 +228,7 @@ const NftDetails: React.FC = () => {
   // Include other options here as needed
 };
 
+const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned ?? "0");
 
 // ##############################################################
   const imageUrl = `https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Image/${tokenId}.png`;
@@ -406,7 +422,8 @@ bg="rgba(0, 0, 0, 0.0)"
    >
   <Text color="white">Dawgz Name</Text>
   <Box>
-      {nftMetadata.attributes.map((attr) => {
+
+        {nftMetadata.attributes.map((attr: Attribute) => {
         if (["Dawgz Name"].includes(attr.trait_type)) {
 
               return (
@@ -432,7 +449,7 @@ bg="rgba(0, 0, 0, 0.0)"
    >
    <Text color="white">Dawgz Taunt Phrase</Text>
    <Box>
-       {nftMetadata.attributes.map((attr) => {
+     {nftMetadata.attributes.map((attr: Attribute) => {
          if (["Taunt"].includes(attr.trait_type)) {
 
                return (
@@ -482,7 +499,7 @@ Dawgz Total Battle Value</Text>
     {tokenStats.valueEarned} BNB
   </Text>
   <Text color="white" fontSize="14px" fontWeight="bolder" textAlign="center">
-  ${(parseFloat(tokenStats.valueEarned) * bnbPrice).toFixed(2)} USD
+  ${((parseFloat(tokenStats.valueEarned ?? "0") ?? 0) * bnbPrice).toFixed(2)} USD
   </Text>
 </Box>
 {/* Box split into 2 columns for win/lose ratio and battle count */}
@@ -502,9 +519,7 @@ flexDirection={{ base: "column", md: "row" }}
     bg="rgba(0, 0, 0, 0.75)"
     p='25px'
     display="flex"
-    flexDirection="column"
       w={{ base: "100%", md: "auto" }} // Full width on small screens, auto width on medium screens and up
-      display="flex" // Use Flexbox to arrange children
       flexDirection="column" // Align children vertically
       justifyContent="center" // Center children vertically
       alignItems="center" // Center children horizontally
@@ -521,13 +536,9 @@ flexDirection={{ base: "column", md: "row" }}
     display="flex"
     flexDirection="column"
     alignItems="center" // Centers content horizontally<Box
-     flex="1"
      p="5px"
        w={{ base: "100%", md: "auto" }} // Full width on small screens, auto width on medium screens and up
-       display="flex" // Use Flexbox to arrange children
-       flexDirection="column" // Align children vertically
        justifyContent="center" // Center children vertically
-       alignItems="center" // Center children horizontally
 
       >
 
@@ -562,17 +573,13 @@ gap="5px"
 bg="rgba(0, 0, 0, 0.0)"
 >
 <Box
-flex="1" // Allow to grow and shrink equally
 minWidth="60%" // Adjust based on your layout needs
 bg="rgba(0, 0, 0, 0.75)"
 display="flex"
-flexDirection="column"
-alignItems="center" // Centers content horizontally<Box
  flex="1"
  p="5px"
  minH="50%" // Ensures the Box takes up the minimum height of its container
    w={{ base: "100%", md: "auto" }} // Full width on small screens, auto width on medium screens and up
-   display="flex" // Use Flexbox to arrange children
    flexDirection="column" // Align children vertically
    justifyContent="center" // Center children vertically
    alignItems="center" // Center children horizontally
@@ -583,17 +590,13 @@ alignItems="center" // Centers content horizontally<Box
   {(parseFloat(tokenStats.totalWon) + parseFloat(tokenStats.totalLose)).toFixed(0)}</Text>
 </Box>
 <Box
-flex="1" // Allow to grow and shrink equally
 minWidth="60%" // Adjust based on your layout needs
 bg="rgba(0, 0, 0, 0.75)"
 display="flex"
-flexDirection="column"
-alignItems="center" // Centers content horizontally<Box
  flex="1"
  p="5px"
  minH="50%" // Ensures the Box takes up the minimum height of its container
    w={{ base: "100%", md: "auto" }} // Full width on small screens, auto width on medium screens and up
-   display="flex" // Use Flexbox to arrange children
    flexDirection="column" // Align children vertically
    justifyContent="center" // Center children vertically
    alignItems="center" // Center children horizontally
@@ -631,7 +634,7 @@ alignItems="center" // Centers content horizontally<Box
       minH="40px" // Adjust the height as needed
     >
       <Box>
-          {nftMetadata.attributes.map((attr) => {
+        {nftMetadata.attributes.map((attr: Attribute) => {
             if (["Dawg"].includes(attr.trait_type)) {
 
                   return (
@@ -750,7 +753,6 @@ alignItems="center" // Centers content horizontally<Box
           {/* Ensure nftMetadata is not null before attempting to access its properties */}
           {nftMetadata && (
               <Box>
-                  <Text>{nftMetadata.name}</Text>
                   {/* Display specific attributes */}
 
 

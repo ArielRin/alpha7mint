@@ -1,8 +1,13 @@
-// BnbPrice.js
-import React, { useEffect, useState } from 'react';
+// BnbPrice.tsx
+import React, { useEffect } from 'react';
 import axios from 'axios';
 
-const BnbPrice = ({ onPriceFetch }) => {
+// Define the props expected by the BnbPrice component
+interface BnbPriceProps {
+  onPriceFetch: (price: number) => void; // Specify that onPriceFetch is a function taking a number and returning void
+}
+
+const BnbPrice: React.FC<BnbPriceProps> = ({ onPriceFetch }) => {
     useEffect(() => {
         const fetchBnbPrice = async () => {
             try {
@@ -19,3 +24,5 @@ const BnbPrice = ({ onPriceFetch }) => {
 
     return null; // This component doesn't need to render anything itself
 };
+
+export default BnbPrice;
