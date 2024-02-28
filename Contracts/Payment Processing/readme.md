@@ -10,7 +10,7 @@ When the contract receives BNB, it automatically divides the funds according to 
 
 - **59% to the Liquidity Wallet (Main Wallet):** This portion is intended to support liquidity on platforms and exchanges.
 - **20% to the Developer/Marketing Wallet:** These funds are allocated for ongoing development, marketing, and operational expenses.
-- **21% to the NFT Treasury Contract:** This portion is further processed to swap BNB for Alpha7 tokens, which are then distributed to NFT holders on a weekly basis as rewards.
+- **21% to the NFT Treasury Contract:** This portion is further processed to swap BNB for Alpha7 tokens, which are then held in treasury to be distributed to NFT holders on a weekly basis as rewards.
 
 ### The Process
 
