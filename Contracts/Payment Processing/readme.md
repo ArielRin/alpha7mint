@@ -72,7 +72,12 @@ https://bscscan.com/address/0xadb6755bffe57a01cd24738faf5851c91da77fe2#code
 ConverterBNBToAlpha7SwapSendToTreasury - 0xa43323138cc32858b53f8bd9e7fcfde3a4d68037
 https://bscscan.com/address/0xa43323138cc32858b53f8bd9e7fcfde3a4d68037#code
 
+## To Do
 
+BNB to LP swapper (send it BNB receive LP make button for rick to use to do lp)
+Automated scheduled dropper (Awaits Owner Push Button on dapp and updates NFT Holder List to current holder then Drops Alpha7 Tokens to tokenIDs Equally)
+
+*Note Currently LP bnb sending to treasury awaiting Dapp and unlock.
 ---
 
 This README provides a high-level overview of the contract's functionality, ensuring that stakeholders understand how BNB is processed, split, and distributed according to the project's tokenomics.
