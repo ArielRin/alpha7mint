@@ -54,6 +54,25 @@ Assuming 1 BNB is sent to the contract, the distribution will be as follows:
 
 *Note: The transactions include gas fees, which are subtracted from the sent amounts.*
 
+## Wallets Used
+
+0x57103b1909fB4D295241d1D5EFD553a7629736A9 Develp / marketing wallet
+
+0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7 NFT Treasury Wallet
+
+0x1234567890 TBA Shortly Projects Main Owners Wallet
+
+
+
+## Contract Links
+
+NFTSalesAndBattleFeesPaymentSplitter - 0xadb6755bffe57a01cd24738faf5851c91da77fe2
+https://bscscan.com/address/0xadb6755bffe57a01cd24738faf5851c91da77fe2#code
+
+ConverterBNBToAlpha7SwapSendToTreasury - 0xa43323138cc32858b53f8bd9e7fcfde3a4d68037
+https://bscscan.com/address/0xa43323138cc32858b53f8bd9e7fcfde3a4d68037#code
+
+
 ---
 
 This README provides a high-level overview of the contract's functionality, ensuring that stakeholders understand how BNB is processed, split, and distributed according to the project's tokenomics.
