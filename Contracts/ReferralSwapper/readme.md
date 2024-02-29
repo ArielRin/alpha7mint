@@ -2,6 +2,8 @@
 
 Welcome to the Alpha7 Swapper Contract, a cutting-edge solution designed to enhance the ecosystem surrounding the Alpha7 Token and the AlphaDawgz NFTs. This document aims to provide you with a comprehensive understanding of the contract's functionality, its benefits for moderators (mods), and the overall positive impact on the community.
 
+![Alpha7 Token Logo](https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/Images/Social%20Images/yellowRoundAlpha7Logo.png)
+
 ## What Does This Contract Do? - Simplified Explanation
 
 At its core, the Alpha7 Swapper Contract is a smart contract on the blockchain that allows users to easily swap BNB (Binance Coin) for Alpha7 Tokens. What sets this contract apart is its built-in support for rewarding community moderators and contributing to the project's treasury without imposing any additional costs on the user.
