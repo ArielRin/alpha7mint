@@ -1,6 +1,6 @@
 
 
-# NFT Sales and Battle Fees Payment Automated Distribution 
+# NFT Sales and Battle Fees Payment Automated Distribution
 
 This smart contract is designed to automate the distribution of BNB received from NFT sales and battle fees. Upon receiving BNB, the contract splits the funds into three predetermined portions: 59% for the liquidity wallet (Main Wallet), 20% for the Developer/Marketing Wallet, and 21% for the NFT Treasury Contract. This document explains the process, provides an example, and details the flow of funds.
 
@@ -71,6 +71,9 @@ https://bscscan.com/address/0xadb6755bffe57a01cd24738faf5851c91da77fe2#code
 
 ConverterBNBToAlpha7SwapSendToTreasury - 0xa43323138cc32858b53f8bd9e7fcfde3a4d68037
 https://bscscan.com/address/0xa43323138cc32858b53f8bd9e7fcfde3a4d68037#code
+
+Swap BNB to Alpha7-BNB CakeLP token
+https://bscscan.com/address/0x3Eeb822A3E4A1CB88FFB6c106773Ba9580c0a5Cc#code
 
 ## To Do
 

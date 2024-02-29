@@ -1,4 +1,4 @@
-# Unveiling the Alpha 7 Ecosystem: AlphaDawgz NFTs and Rewarding Tokenomics
+# Unveiling the Alpha 7 Ecosystem: Alpha7 Token, AlphaDawgz NFTs and Rewarding Tokenomics
 
 Welcome to the Alpha 7 ecosystem, an innovative platform designed to offer a unique blend of tokenomics and rewards through its engaging AlphaDawgz NFTs. Our ecosystem stands out in the digital landscape by providing a structured rewards system for both token holders and NFT collectors, fostering a community of growth and mutual benefit.
 
@@ -31,3 +31,39 @@ The Alpha 7 ecosystem is more than just a platform; it's a community-driven ende
 Explore more about Alpha 7 and AlphaDawgz NFTs on our website: [https://alpha7.system7.io](https://alpha7.system7.io).
 
 Dive into the Alpha 7 ecosystem today and become part of a community where your engagement truly pays off. Welcome to the future of rewarding tokenomics and NFTs. Welcome to Alpha 7.
+
+## Links and Technical information
+
+
+
+### Locked tokens
+
+https://www.pinksale.finance/pinklock/detail/0x88CE0d545cF2eE28d622535724B4A06E59a766F0?chain=BSC
+
+### Locked Liquidity paired
+
+https://www.pinksale.finance/pinklock/detail/0xa2136fEA6086f2254c9361C2c3E28c00F9e73366?chain=BSC
+
+
+Alpha7 Token
+
+
+Network: BSC (56)
+Contract: 0x88CE0d545cF2eE28d622535724B4A06E59a766F0
+Pair: 0xa2136fEA6086f2254c9361C2c3E28c00F9e73366
+Dexscreener: https://dexscreener.com/bsc/0xa2136fEA6086f2254c9361C2c3E28c00F9e73366
+Website: https://system7.io
+Github: https://github.com/ArielRin/alpha7mint
+Telegram: https://t.me/system7_token
+Twitter: https://twitter.com/system7labs
+NFT Marketplace ELEMENT NFT: https://element.market/collections/aplhadawgz-NFT
+NFT Marketplace TofuNFT: https://tofunft.com/discover/items?contracts=98523
+Opensea BSC Viewer: https://opensea.io/collection/aplha-dawgz-nft-collection
+Medium token Introduction: https://medium.com/@system7setup/introducing-alpha7-a-revolutionary-token-in-the-cryptocurrency-world-74f756cf670b
+AlphaDawgz NFTs https://medium.com/@system7setup/introducing-alpha7-a-revolutionary-token-in-the-cryptocurrency-world-74f756cf670b
+
+
+Name: Alpha7
+Symbol: ALPHA7
+Supply: 7,000,000,000 (7Bil)
+Taxes 7/7

@@ -11,6 +11,9 @@ import {
 import BnbPriceContext from '../Pages/BnbPriceContext'; // Adjust the path as necessary
 
 
+
+import ZapToLP from './Components/ZapToLP/ZapToLP'; // Adjust the import path as necessary
+
 import Web3 from "web3";
 import tokenAbi from './tokenAbi.json';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -318,9 +321,15 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   <Text mb="2">------------------------------------------------------</Text>
 </Box>
 
+<Box  flex={1} bg="" p={0} minH="100px" display="flex" flexDirection="column" borderRadius="lg">
+<ZapToLP />
+</Box>
           </div>
 
-          <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
+          <Flex direction={{ base: "column", md: "row" }} gap={0}>
+
+
+          </Flex>
         </Box>
         <Box
           flex={1}
