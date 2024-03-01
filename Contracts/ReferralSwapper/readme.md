@@ -16,6 +16,9 @@ Here's a simple breakdown of its functions:
 
 3. **Treasury Support**: A small portion of each transaction is allocated to the treasury wallet, supporting the ongoing development and sustainability of the Alpha7 project.
 
+
+![Alpha7 Referral Swapper](https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/Contracts/ReferralSwapper/swapperimage.png)
+
 ## Benefits of Being a Moderator
 
 Moderators play a crucial role in fostering community engagement and growth. By promoting the use of the Alpha7 Swapper Contract, mods not only support the ecosystem but also receive tangible benefits:
@@ -47,6 +50,3 @@ https://bscscan.com/address/0x8f48161234e345336d014c6e050341acc93af433#code
 ### Contact us
 
 contact https://t.me/leaves19 for information and requirements to be accepted in the referral program
-
-
-![Alpha7 Referral Swapper](https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/Contracts/ReferralSwapper/swapperimage.png)
