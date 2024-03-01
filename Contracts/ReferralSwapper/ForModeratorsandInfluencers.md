@@ -18,6 +18,9 @@ We understand the importance of ease and confidence in promoting Alpha7 Tokens. 
 
 Your unique swapper address not only simplifies the transaction process but also tracks your contributions seamlessly. Every transaction made through your referral is a step towards enhancing the Alpha7 Token ecosystem and, more importantly, boosting your own incentives.
 
+
+![Alpha7 Referral Swapper](https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/Contracts/ReferralSwapper/swapperimage.png)
+
 ## 🌈 Why Join the Referral Program?
 
 - **Increased Earnings**: With up to 1% in rewards from each referred swap, your earning potential skyrockets.
