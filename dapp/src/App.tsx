@@ -7,7 +7,7 @@ import TokenPriceContext from './Pages/TokenPriceContext'; // Import the new con
 import HomePage from './Pages/HomePage';
 // import NftMint0 from './Components/NftMint0/NftMint0';
 import UserPage from './Pages/UserDetails';
-import NftDetails from './Pages/Nft/NftDetails';
+// import NftDetails from './Pages/Nft/NftDetails';
 import TheDawgz from './Pages/TheDawgz/TheDawgz';
 
 
@@ -164,7 +164,6 @@ useEffect(() => {
           <Route path="/" element={<HomePage />} />
           <Route path="/values" element={<UserPage />} />
             <Route path="/thedawgz" element={<TheDawgz />} /> // New route for TheDawgz page
-          <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
         </Routes>
       </Router>
       </TokenPriceContext.Provider>
@@ -176,5 +175,6 @@ useEffect(() => {
     }
 
     export default App;
+//           <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
 
 // future ideas https://plays.org/game/nature-cat-hals-big-dig/

@@ -321,33 +321,173 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
   return (
 
-    <Box>
-         <Box
-           flex={1}
-           p={0}
-           m={0}
-           display="flex"
-           flexDirection="column"
-           borderRadius="lg"
-           bg="rgba(213, 143, 45, 0.7)"
-           bgImage={`url(${mainbackgroundImage})`}
-           bgPosition="center"
-           bgRepeat="no-repeat"
-           bgSize="cover"
-         >
-           <Flex
-             direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
-             gap={4} // Adjust the gap as needed
-             p={4} // Adjust the padding as needed
-           >
-             {/* FastSwapComponent with 30% width on medium devices and above */}
-             <Box flex={{ base: 1, md: 3 }}>
-               <FastSwapComponent />
-             </Box>
-           </Flex>
-         </Box>
-       </Box>
-     );
+        <Box>
+        <header style={{ height: '100px' }} className="header">
+
+
+      <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
+      <div>
+        <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+      </div>
+      </RouterLink>
+      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Buy</RouterLink>
+      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
+      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
+      <RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
+      <div className="connect-button">
+        <ConnectButton />
+      </div>
+      </header>
+
+        <Box
+          flex={1}
+          p={0}
+          m={0}
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(213, 143, 45, 0.7)"
+          bgImage={`url(${mainbackgroundImage})`}
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+          <div className="row row-1" style={{ minHeight: "100px" }}></div>
+
+          <Box>
+      {/* ...header and other content above... */}
+
+      <Flex
+        direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
+        gap={4} // Adjust the gap as needed
+        p={4} // Adjust the padding as needed
+      >
+        {/* NftMint0 component with 70% width on medium devices and above */}
+        <Box flex={{ base: 1, md: 7 }}>
+          <NftMint0 />
+        </Box>
+
+        {/* FastSwapComponent with 30% width on medium devices and above */}
+        <Box flex={{ base: 1, md: 3 }}>
+          <FastSwapComponent />
+        </Box>
+      </Flex>
+
+      {/* ...rest of your content... */}
+    </Box>
+
+          <Flex direction={{ base: "column", md: "row" }} gap={0}>
+
+
+          </Flex>
+        </Box>
+        <Box
+          flex={1}
+          p={0}
+          m={0}
+          display="flex"
+          flexDirection="column"
+          borderRadius="lg"
+          bg="rgba(213, 143, 45, 0.7)"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+        >
+          <Flex direction={{ base: "column", md: "row" }} gap={0}></Flex>
+
+          <Flex direction={{ base: "column", md: "row" }} gap={0}>
+            <Box
+              flex={1}
+              p={0}
+              minH="650px"
+              display="flex"
+              flexDirection="column"
+              borderRadius="lg"
+              bg="rgba(31, 31, 31, 0.0)"
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
+            >
+              <Box></Box>
+              <Box
+                flex={1}
+                p={0}
+                m={2}
+                minH="800px"
+                display="flex"
+                flexDirection="row"
+                borderRadius="lg"
+                bg="rgba(31, 31, 31, 0.8)"
+                bgPosition="center"
+                bgRepeat="no-repeat"
+                bgSize="cover"
+              >
+                Left main column
+              </Box>
+            </Box>
+
+            <Box
+              flex={1}
+              p={0}
+              minH="550px"
+              display="flex"
+              flexDirection="column"
+              borderRadius="lg"
+              bg="rgba(31, 31, 31, 0.0)"
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
+            >
+              <Box
+                flex={1}
+                p={0}
+                m={2}
+                minH="900px"
+                display="flex"
+                flexDirection="row"
+                borderRadius="lg"
+                bg="rgba(31, 31, 31, 0.8)"
+                bgPosition="center"
+                bgRepeat="no-repeat"
+                bgSize="cover"
+              ></Box>
+              <Box
+                flex={1}
+                p={0}
+                m={2}
+                minH="100px"
+                display="flex"
+                flexDirection="row"
+                borderRadius="lg"
+                bg="rgba(31, 31, 31, 0.8)"
+                bgPosition="center"
+                bgRepeat="no-repeat"
+                bgSize="cover"
+              ></Box>
+              <Box
+                flex={1}
+                p={0}
+                m={2}
+                minH="100px"
+                display="flex"
+                flexDirection="row"
+                borderRadius="lg"
+                bg="rgba(31, 31, 31, 0.8)"
+                bgPosition="center"
+                bgRepeat="no-repeat"
+                bgSize="cover"
+              >
+                <Box width="100%"></Box>
+
+
+
+              </Box>
+            </Box>
+          </Flex>
+          {/* Third Row: Your Collected AlphaDawgz */}
+        </Box>
+    </Box>
+  );
 };
 
 export default HomePage;

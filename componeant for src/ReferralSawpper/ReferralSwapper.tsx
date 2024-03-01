@@ -79,10 +79,7 @@ const bnbLogoUrl = 'https://assets.coingecko.com/coins/images/825/standard/bnb-i
 
 
 const contractOptions = {
-
-
-
-"Choose a Referral to Support": "0x8F48161234E345336D014c6e050341Acc93Af433",
+  "Referral 1": "0x8F48161234E345336D014c6e050341Acc93Af433",
   "Referral 2": "0x2E6f4827dbBa6A00789b5A0244b7623f3557810c",
   "Referral 3": "0x5C2491F1d2dDC595359ab81BeC44EA3f603AbfCb",
   "Referral 4": "0x5858D802a2a3aDdcd0A8431ECc7526A9Dd298A18",
@@ -112,9 +109,9 @@ const FastSwapComponent = () => {
     const [treasuryBNBBalance, setTreasuryBNBBalance] = useState('0.0000');
     const [alpha7LPTokenSupply, setAlpha7LPTokenSupply] = useState('0.0000');
       const [tokenPriceUSD, setTokenPriceUSD] = useState('Loading...');
-      const [selectedContract, setSelectedContract] = useState(contractOptions["Choose a Referral to Support"]);
+      const [selectedContract, setSelectedContract] = useState<string | undefined>(undefined);
 
-const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Choose a Referral to Support"]);
+const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Referral 1"]);
 
       const [connectedWalletLPTokenBalance, setConnectedWalletLPTokenBalance] = useState('0.0000');
   const [developerWalletLPTokenBalance, setDeveloperWalletLPTokenBalance] = useState('0.0000');
@@ -362,7 +359,7 @@ const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Choose
       }
 
     const tokensBeforeFee = parseFloat(bnbValueUSD) / numericTokenPriceUSD;
-    const feeDeduction = tokensBeforeFee * 0.056; // Assume 7% fee as an example
+    const feeDeduction = tokensBeforeFee * 0.060465; // Assume 7% fee as an example
     const tokensAfterFee = tokensBeforeFee - feeDeduction;
 
   return isNaN(tokensAfterFee) ? 0 : tokensAfterFee;
@@ -401,10 +398,8 @@ setselectedReferrer(contractOptions[key]);
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
      <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
      <div style={{ marginBottom: '20px' }}>
-     <ConnectButton />
-
+       <ConnectButton />
      </div>
-
      <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
      <h2 style={{
     color: 'white',
@@ -434,7 +429,7 @@ setselectedReferrer(contractOptions[key]);
             marginBottom: '10px' // Space below the heading
           }}>Rick</h2> */}
 
-       <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px', color: 'white' }}>
+       <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
          <img src={bnbLogoUrl} alt="BNB Logo" style={{ width: logoSize, height: logoSize }} />
          <span style={{ marginLeft: '10px' }}>BNB</span>
          <div style={{ marginLeft: 'auto' }}>
@@ -454,7 +449,7 @@ setselectedReferrer(contractOptions[key]);
        </small>
        <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-       <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px', color: 'white' }}>
+       <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
          <img src={tokenLogoUrl} alt="ALPHA7 Logo" style={{ width: logoSize, height: logoSize }} />
          <span style={{ marginLeft: '10px' }}>ALPHA7</span>
          <div style={{ marginLeft: 'auto' }}>
@@ -489,7 +484,7 @@ setselectedReferrer(contractOptions[key]);
          Buy ALPHA7
        </button>
 
-       <div style={{ width: '100%', marginTop: '10px', display: 'flex', flexDirection: 'column', alignItems: 'start', fontSize: '12px', color: 'white' }}>
+       <div style={{ width: '100%', marginTop: '10px', display: 'flex', flexDirection: 'column', alignItems: 'start', fontSize: '12px' }}>
       <a href="https://bscscan.com/token/0x8F48161234E345336D014c6e050341Acc93Af433#code" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', marginBottom: '2px' }}>
         <img src={bscscanLogo} alt="BSCScan" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
         View Contract
@@ -514,7 +509,13 @@ setselectedReferrer(contractOptions[key]);
            }}
          >Alternativly PancakeSwap Here
          </a>
-
+         <h2 style={{
+        color: 'white',
+        textAlign: 'center',
+        fontSize: '10px', // Example font size, adjust as needed
+        fontWeight: 'bold',
+        marginTop: '5px' // Space below the heading
+      }}>Ensure your using the Alpha7 Domain before swapping tokens</h2>
 
      </div>
 
