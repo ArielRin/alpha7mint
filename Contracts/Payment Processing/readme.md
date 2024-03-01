@@ -34,7 +34,7 @@ Below is a visual flow of how BNB is distributed upon receiving by the contract:
 
 ## Example
 
-For illustrative purposes, let's consider a scenario where 1 BNB is sent to the contract (`0xAdb6755BfFE57a01Cd24738FAF5851c91dA77FE2`).
+For illustrative purposes, let's consider a scenario where 1 BNB is sent to the contract (`0x8F48161234E345336D014c6e050341Acc93Af433`).
 
 Here's how the funds are distributed:
 

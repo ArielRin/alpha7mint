@@ -9,10 +9,9 @@ import {
 } from "react-router-dom";
 
 import BnbPriceContext from '../Pages/BnbPriceContext'; // Adjust the path as necessary
-import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // Adjust the import path as necessary
 
 
-import ZapToLP from './Components/ZapToLP/ZapToLP'; // Adjust the import path as necessary
+
 
 import Web3 from "web3";
 import tokenAbi from './tokenAbi.json';
@@ -379,7 +378,80 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 <Box  flex={1} bg="" p={0} minH="100px" display="flex" flexDirection="column" borderRadius="lg">
  {/* <ZapToLP />
   */}
-      <FastSwapComponent />
+
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+   <div style={{ width: '350px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+   {/* Heading */}
+   <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+   <h2 style={{
+  color: 'white',
+  textAlign: 'center',
+  fontSize: '24px', // Example font size, adjust as needed
+  fontWeight: 'bold',
+  marginBottom: '10px' // Space below the heading
+}}>Fast Swap</h2>
+           {/* Descriptive text */}
+           <p style={{ color: 'white', textAlign: 'center', marginBottom: '20px' }}>
+             Exchange your BNB for ALPHA7 tokens quickly and securely.
+           </p>
+           <p style={{ color: 'white', textAlign: 'center', marginBottom: '20px' }}>
+
+           </p>
+
+     <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
+       <img src={bnbLogoUrl} alt="BNB Logo" style={{ width: logoSize, height: logoSize }} />
+       <span style={{ marginLeft: '10px' }}>BNB</span>
+       <div style={{ marginLeft: 'auto' }}>
+         <span>Balance: {bnbBalance}</span>
+       </div>
+     </div>
+     <input
+       type="text"
+       value={amountToSend}
+       onChange={(e) => setAmountToSend(e.target.value)}
+       placeholder="Enter amount to send (BNB)"
+       style={{ width: '100%', margin: '5px 0', padding: '10px', color: 'black', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}
+     />
+     <small style={{ alignSelf: 'flex-start', color: '#fff', marginBottom: '20px'}}>
+       Equivalent in USD: ${(parseFloat(amountToSend) * bnbPrice).toFixed(2)}
+     </small>
+     <div style={{ width: '350px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+     <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
+       <img src={tokenLogoUrl} alt="ALPHA7 Logo" style={{ width: logoSize, height: logoSize }} />
+       <span style={{ marginLeft: '10px' }}>ALPHA7</span>
+       <div style={{ marginLeft: 'auto' }}>
+          <span>Balance: {alpha7TokenBalance}</span>
+       </div>
+       </div>
+
+
+       <input
+         readOnly
+         value={calculateTokensReceived().toFixed(2) + ' '}
+         placeholder="Enter amount to send (BNB)"
+         style={{ width: '100%', margin: '5px 0', padding: '10px', color: 'black', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}
+
+       />
+     </div>
+     <button onClick={sendEther} style={{ width: '100%', padding: '10px 20px', marginTop: '20px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '4px' }}>
+       Send BNB
+     </button>
+     <a
+         href="https://pancakeswap.finance/swap?outputCurrency=0x88CE0d545cF2eE28d622535724B4A06E59a766F0"
+         target="_blank"
+         rel="noopener noreferrer"
+         style={{
+           marginTop: '20px',
+           color: 'white',
+         }}
+       >Alternativly PancakeSwap Here
+       </a>
+   </div>
+
+
+ </div>
+
 
 
 </Box>
