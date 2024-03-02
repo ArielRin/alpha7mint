@@ -1,14 +1,15 @@
+import HomePage from './Pages/HomePage';
+import Buy from './Pages/Buy';
+import Values from './Pages/Values';
+import TheDawgz from './Pages/TheDawgz/TheDawgz';
+
+
+
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import BnbPriceContext from './Pages/BnbPriceContext'; // Import the context
 import TokenPriceContext from './Pages/TokenPriceContext'; // Import the new context
-
-import HomePage from './Pages/HomePage';
-// import NftMint0 from './Components/NftMint0/NftMint0';
-import UserPage from './Pages/UserDetails';
-// import NftDetails from './Pages/Nft/NftDetails';
-import TheDawgz from './Pages/TheDawgz/TheDawgz';
 
 
 
@@ -162,7 +163,9 @@ useEffect(() => {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/values" element={<UserPage />} />
+            <Route path="/buy" element={<Buy />} />
+
+          <Route path="/values" element={<Values />} />
             <Route path="/thedawgz" element={<TheDawgz />} /> // New route for TheDawgz page
         </Routes>
       </Router>

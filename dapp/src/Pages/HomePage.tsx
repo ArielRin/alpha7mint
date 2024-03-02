@@ -1,3 +1,21 @@
+import BnbPriceContext from '../Pages/BnbPriceContext'; // //
+
+import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
+// <HeaderWithDropdown />
+
+import NftMint0 from './Components/NftMint0/NftMint0';
+// <NftMint0 />
+
+import ZapToLP from './Components/ZapToLP/ZapToLP';
+// <ZapToLP />
+
+import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
+// <MiniSwapper />
+
+import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // //
+// <FastSwapComponent />
+
+
 import React, { useEffect, useState, useContext } from 'react';
 import {
   BrowserRouter as Router,
@@ -8,12 +26,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import BnbPriceContext from '../Pages/BnbPriceContext'; // Adjust the path as necessary
-import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // Adjust the import path as necessary
 
-import NftMint0 from './Components/NftMint0/NftMint0'; // Adjust the import path as necessary
-
-import ZapToLP from './Components/ZapToLP/ZapToLP'; // Adjust the import path as necessary
 
 import Web3 from "web3";
 import tokenAbi from './tokenAbi.json';
@@ -62,7 +75,7 @@ const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
-// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // Adjust the import path as necessary
+// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // //
 
 // ________________________________________________________________________________ //
 
@@ -322,14 +335,14 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   return (
 
     <Box>
+      <HeaderWithDropdown />
          <Box
            flex={1}
            p={0}
            m={0}
            display="flex"
            flexDirection="column"
-           borderRadius="lg"
-           bg="rgba(213, 143, 45, 0.7)"
+           bg="rgba(0, 0, 0, 1)"
            bgImage={`url(${mainbackgroundImage})`}
            bgPosition="center"
            bgRepeat="no-repeat"
@@ -337,8 +350,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
          >
            <Flex
              direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
-             gap={4} // Adjust the gap as needed
-             p={4} // Adjust the padding as needed
+             gap={0} // Adjust the gap as needed
+             p={0} // Adjust the padding as needed
            >
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>

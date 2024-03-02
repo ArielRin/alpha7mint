@@ -40,9 +40,12 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import BnbPriceContext from '../BnbPriceContext'; // Import the context
 import TokenPriceContext from '../TokenPriceContext';
 
+import HeaderWithDropdown from '../Components/HeaderWithDropdown/HeaderWithDropdown';
+
 import A7Logo from './Alpha7token.png';
 const tokenLogoUrl = 'https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/dapp/src/Pages/Alpha7token.png';
 const bnbLogoUrl = 'https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970';
+
 
 
 
@@ -136,38 +139,7 @@ return (
     bgSize="cover"
   >
 
-  <header style={{ height: '80px', display: 'flex', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 1)', justifyContent: 'space-between' }} className="header">
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
-      <div>
-        <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
-      </div>
-    </RouterLink>
-    <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Token</RouterLink>
-    <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Mint</RouterLink>
-    <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
-    <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
-    <RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
-  </div>
-
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <Flex align="center">
-      <Image src={tokenLogoUrl} h="30px" mr="2" />
-      <Text color="white" fontSize="md" fontWeight="bold">
-        ${tokenPriceUSD}
-      </Text>
-    </Flex>
-    <Flex align="center">
-      <Image src={bnbLogoUrl} h="30px" mr="2" />
-      <Text color="white" fontSize="md" fontWeight="bold">
-        ${bnbPrice}
-      </Text>
-    </Flex>
-    <div className="connect-button" style={{ marginLeft: '15px' }}>
-      <ConnectButton />
-    </div>
-  </div>
-</header>
+  <HeaderWithDropdown />
 
 
 <Text color="white" fontSize="md" fontWeight="bold">
