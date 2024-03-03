@@ -1,7 +1,7 @@
-
+// live v2 at 0x6B49F7B1239F5487566815Ce58ec0396b2E363e7
 // File: https://github.com/abdk-consulting/abdk-libraries-solidity/ABDKMath64x64.sol
 
-// live at 0x168Bc5B7537929827EA339332de1DC11907ca760
+
 /*
  * ABDK Math 64.64 Smart Contract Library.  Copyright © 2019 by ABDK Consulting.
  * Author: Mikhail Vladimirov <mikhail.vladimirov@gmail.com>
@@ -758,7 +758,9 @@ library ABDKMath64x64 {
 
 
 /*
+Live v2 at 0x6B49F7B1239F5487566815Ce58ec0396b2E363e7
 
+live at (old CA) 0x168Bc5B7537929827EA339332de1DC11907ca760
 
     address public nftContractAddress = 0xCa695FEB6b1b603ca9fec66aaA98bE164db4E660
     address public battleContractAddress = 0x0e96F3C42d594EBbfD0835d92FDab28014233182
@@ -766,7 +768,7 @@ library ABDKMath64x64 {
     address public nftTreasuryAddress = 0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7
     uint256 public registrationFee = 10
     uint256 public modificationFee = 5
-  https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Metadata/
+https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Metadata/
 
 */
 
@@ -809,7 +811,7 @@ contract AlphaDawgRegistration {
     mapping(uint256 => string) public dawgzBios;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
+        require(msg.sender == owner, "Only owner can call this function.");
         _;
     }
 
@@ -837,38 +839,47 @@ contract AlphaDawgRegistration {
         baseURI = _baseURI;
     }
 
-    function registerNFT(uint256 tokenId, string memory dawgzName, string memory dawgzDefaultTaunt, string memory dawgzBio) external payable {
+    function registerNFT(uint256 tokenId, string memory dawgzName, string memory dawgzDefaultTaunt, string memory dawgzBio) external {
         require(!isRegistered[tokenId], "NFT is already registered.");
-        require(msg.value >= registrationFee, "Insufficient funds.");
 
-        (bool success, ) = nftTreasuryAddress.call{value: msg.value}("");
-        require(success, "Transfer to treasury failed.");
+        // Check if the caller is not the contract owner
+        if (msg.sender != owner) {
+            // Check allowance of ERC20 tokens
+            uint256 allowance = ERC20Token(ercTokenAddress).allowance(msg.sender, address(this));
+            require(allowance >= registrationFee, "Insufficient token allowance.");
 
+            // Transfer tokens from caller to treasury
+            bool success = ERC20Token(ercTokenAddress).transferFrom(msg.sender, nftTreasuryAddress, registrationFee);
+            require(success, "Token transfer failed.");
+        }
+
+        // Mark NFT as registered
         isRegistered[tokenId] = true;
         registrationDate[tokenId][msg.sender] = block.timestamp;
         registrationCount[tokenId]++;
 
+        // Store dawg details
         dawgzNames[tokenId] = dawgzName;
         dawgzDefaultTaunts[tokenId] = dawgzDefaultTaunt;
         dawgzBios[tokenId] = dawgzBio;
     }
 
-    function modifyNFTDetails(uint256 tokenId, string memory newName, string memory newTaunt, string memory newBio) external onlyNFTOwner(tokenId) payable {
-        require(msg.value >= modificationFee, "Insufficient funds.");
+    function modifyNFTDetails(uint256 tokenId, string memory newName, string memory newTaunt, string memory newBio) external {
+        if (msg.sender != owner && !isRegistered[tokenId]) {
+            require(NFTContract(nftContractAddress).getPreviousOwners(tokenId)[0] == msg.sender, "You are not the owner of this NFT.");
 
-        (bool success, ) = nftTreasuryAddress.call{value: msg.value}("");
-        require(success, "Transfer to treasury failed.");
+            uint256 allowance = ERC20Token(ercTokenAddress).allowance(msg.sender, address(this));
+            require(allowance >= modificationFee, "Insufficient token allowance.");
 
-        // Modify NFT details here
+            bool success = ERC20Token(ercTokenAddress).transferFrom(msg.sender, nftTreasuryAddress, modificationFee);
+            require(success, "Token transfer failed.");
+        }
 
-        registrationDate[tokenId][msg.sender] = block.timestamp;
+        // Update dawg details
+        dawgzNames[tokenId] = newName;
+        dawgzDefaultTaunts[tokenId] = newTaunt;
+        dawgzBios[tokenId] = newBio;
         modificationCount[tokenId]++;
-    }
-
-    function transferOwnership(uint256 tokenId, address newOwner) external onlyNFTOwner(tokenId) {
-        require(newOwner != address(0), "Invalid new owner address");
-
-        // Transfer ownership logic here
     }
 
     function recoverTokens(address tokenAddress, address to, uint256 amount) external onlyOwner {
@@ -930,7 +941,7 @@ contract AlphaDawgRegistration {
         return details;
     }
 
-function getBattleDetails(uint256 tokenId) external view returns (string memory) {
+    function getBattleDetails(uint256 tokenId) external view returns (string memory) {
         require(isRegistered[tokenId], "NFT is not registered");
 
         (uint256 battlesWon, uint256 battlesLost, uint256 totalBattles, uint256[] memory battleIds, uint256 totalPrizesWon) = BattleContract(battleContractAddress).getBattleStats(tokenId);
@@ -946,7 +957,6 @@ function getBattleDetails(uint256 tokenId) external view returns (string memory)
 
         return details;
     }
-
 
     function uint2str(uint256 _i) internal pure returns (string memory) {
         if (_i == 0) {
