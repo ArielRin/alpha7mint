@@ -9,9 +9,11 @@ import {
 } from "react-router-dom";
 
 import BnbPriceContext from '../Pages/BnbPriceContext'; // Adjust the path as necessary
+import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // Adjust the import path as necessary
 
+// import NftMint0 from './Components/NftMint0/NftMint0'; // Adjust the import path as necessary
 
-
+import ZapToLP from './Components/ZapToLP/ZapToLP'; // Adjust the import path as necessary
 
 import Web3 from "web3";
 import tokenAbi from './tokenAbi.json';
@@ -54,7 +56,7 @@ import MainTextLogo from "./headerlogo.png";
 
 import { ethers } from 'ethers';
 
-import NftDetails from './Nft/NftDetails'; // Adjust the import path as needed
+// import NftDetails from './Nft/NftDetails'; // Adjust the import path as needed
 
 const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
@@ -278,7 +280,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
     try {
       if (typeof window.ethereum !== 'undefined') {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const signer = provider.getSigner();
         const transactionResponse = await signer.sendTransaction({
           to: "0x88CE0d545cF2eE28d622535724B4A06E59a766F0", // Your contract address
@@ -295,20 +297,26 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
     }
   };
 
-
   const calculateTokensReceived = () => {
-  if (!amountToSend || isNaN(bnbPrice) || isNaN(tokenPriceUSD) || bnbPrice === 0 || tokenPriceUSD === 0) {
+  // Ensure tokenPriceUSD is treated as a number for comparison and calculation
+  const numericTokenPriceUSD = parseFloat(tokenPriceUSD);
+
+    if (!amountToSend || isNaN(bnbPrice ?? 0) || isNaN(numericTokenPriceUSD) || bnbPrice === 0 || numericTokenPriceUSD === 0) {
     return 0;
   }
-  const bnbValueUSD = parseFloat(amountToSend) * bnbPrice;
-  const tokensBeforeFee = bnbValueUSD / tokenPriceUSD;
-  const feeDeduction = tokensBeforeFee * 0.060465; // 7% fee
+
+  // Use the parsed numeric value for tokenPriceUSD in calculations
+  const bnbValueUSD = parseFloat(amountToSend) * (bnbPrice ?? 0);
+  const tokensBeforeFee = bnbValueUSD / numericTokenPriceUSD;
+  const feeDeduction = tokensBeforeFee * 0.060465; // Assume 7% fee as an example
   const tokensAfterFee = tokensBeforeFee - feeDeduction;
+
   return isNaN(tokensAfterFee) ? 0 : tokensAfterFee;
 };
 
 
-  const logoSize = '32.5px';
+
+  const logoSize = '28.5px';
 
 
   return (
@@ -322,8 +330,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
       </div>
       </RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Token</RouterLink>
-      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Mint</RouterLink>
+      <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Buy</RouterLink>
       <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Collection</RouterLink>
       <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Battle</RouterLink>
       <RouterLink to="/values" style={{ color: 'white', marginRight: '6px' }}>Financials</RouterLink>
@@ -347,115 +354,27 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         >
           <div className="row row-1" style={{ minHeight: "100px" }}></div>
 
-          <div
-            className="row row-1"
-            style={{
-              minHeight: "100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {/* Your content here */}
-          </div>
+          <Box>
+      {/* ...header and other content above... */}
 
-          <div className="row row-4" style={{ minHeight: "600px" }}>
-          <Box p="4" borderWidth="1px" borderRadius="lg" overflow="hidden">
+      <Flex
+        direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
+        gap={4} // Adjust the gap as needed
+        p={4} // Adjust the padding as needed
+      >
+        {/* NftMint0 component with 70% width on medium devices and above */}
+        <Box flex={{ base: 1, md: 7 }}>
+          <NftMint0 />
+        </Box>
 
-  <Text mb="2">Current BNB Price: ${bnbPrice}</Text>
+        {/* FastSwapComponent with 30% width on medium devices and above */}
+        <Box flex={{ base: 1, md: 3 }}>
+          <FastSwapComponent />
+        </Box>
+      </Flex>
 
-  <Text fontSize="lg" >Current Alpha7 Price: {tokenPriceUSD} USD</Text>
-<Text mb="2">------------------------------------------------------</Text>
-
-  <Text mb="2">Connected Accounts Address: {userAddress}</Text>
-  <Text mb="2">Connected Accounts BNB Balance: {bnbBalance} BNB (${(parseFloat(bnbBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-  <Text mb="2">Connected Accounts Alpha7 Token Balance: {alpha7TokenBalance} ALPHA7 Tokens (${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-  <Text mb="2">Connected Wallet LP Token Balance: {connectedWalletLPTokenBalance} Tokens (${(parseFloat(connectedWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-  <Text mb="2">------------------------------------------------------</Text>
-  <Text mb="2">------------------------------------------------------</Text>
-</Box>
-
-<Box  flex={1} bg="" p={0} minH="100px" display="flex" flexDirection="column" borderRadius="lg">
- {/* <ZapToLP />
-  */}
-
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-   <div style={{ width: '350px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-   {/* Heading */}
-   <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
-   <h2 style={{
-  color: 'white',
-  textAlign: 'center',
-  fontSize: '24px', // Example font size, adjust as needed
-  fontWeight: 'bold',
-  marginBottom: '10px' // Space below the heading
-}}>Fast Swap</h2>
-           {/* Descriptive text */}
-           <p style={{ color: 'white', textAlign: 'center', marginBottom: '20px' }}>
-             Exchange your BNB for ALPHA7 tokens quickly and securely.
-           </p>
-           <p style={{ color: 'white', textAlign: 'center', marginBottom: '20px' }}>
-
-           </p>
-
-     <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
-       <img src={bnbLogoUrl} alt="BNB Logo" style={{ width: logoSize, height: logoSize }} />
-       <span style={{ marginLeft: '10px' }}>BNB</span>
-       <div style={{ marginLeft: 'auto' }}>
-         <span>Balance: {bnbBalance}</span>
-       </div>
-     </div>
-     <input
-       type="text"
-       value={amountToSend}
-       onChange={(e) => setAmountToSend(e.target.value)}
-       placeholder="Enter amount to send (BNB)"
-       style={{ width: '100%', margin: '5px 0', padding: '10px', color: 'black', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}
-     />
-     <small style={{ alignSelf: 'flex-start', color: '#fff', marginBottom: '20px'}}>
-       Equivalent in USD: ${(parseFloat(amountToSend) * bnbPrice).toFixed(2)}
-     </small>
-     <div style={{ width: '350px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-     <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px' }}>
-       <img src={tokenLogoUrl} alt="ALPHA7 Logo" style={{ width: logoSize, height: logoSize }} />
-       <span style={{ marginLeft: '10px' }}>ALPHA7</span>
-       <div style={{ marginLeft: 'auto' }}>
-          <span>Balance: {alpha7TokenBalance}</span>
-       </div>
-       </div>
-
-
-       <input
-         readOnly
-         value={calculateTokensReceived().toFixed(2) + ' '}
-         placeholder="Enter amount to send (BNB)"
-         style={{ width: '100%', margin: '5px 0', padding: '10px', color: 'black', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '4px' }}
-
-       />
-     </div>
-     <button onClick={sendEther} style={{ width: '100%', padding: '10px 20px', marginTop: '20px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '4px' }}>
-       Send BNB
-     </button>
-     <a
-         href="https://pancakeswap.finance/swap?outputCurrency=0x88CE0d545cF2eE28d622535724B4A06E59a766F0"
-         target="_blank"
-         rel="noopener noreferrer"
-         style={{
-           marginTop: '20px',
-           color: 'white',
-         }}
-       >Alternativly PancakeSwap Here
-       </a>
-   </div>
-
-
- </div>
-
-
-
-</Box>
-          </div>
+      {/* ...rest of your content... */}
+    </Box>
 
           <Flex direction={{ base: "column", md: "row" }} gap={0}>
 

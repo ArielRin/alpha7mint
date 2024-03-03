@@ -530,20 +530,34 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
     <Box textAlign="center" mb="20px">
        <Text mb="2" fontWeight="bold">Swap and Liquify Fill Level</Text>
           <Text mb="2" fontWeight="normal">will pay Reflections, send Marketing/Dev Fees and add to Liquidity on 100% </Text>
-       <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
-       {/* Tank outline */}
-       <rect x="10" y="10" rx="15" ry="15" width={tankWidth} height={tankHeight} stroke="black" strokeWidth="3" fill="grey" />
-       {/* Water fill */}
-       <rect x="13" y={fillYPosition} rx="12" ry="12" width={tankWidth - 6} height={fillHeight} fill="blue" />
-       {/* Additional details for the cartoon effect */}
-       <circle cx="105" cy="40" r="10" fill="yellow" stroke="black" strokeWidth="2" /> {/* Sun */}
-       <line x1="105" y1="10" x2="105" y2="30" stroke="black" strokeWidth="2" /> {/* Sun rays */}
-       <line x1="85" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
-       <line x1="125" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
-       {/* Text for percentage */}
-       <text x="50%" y="65" fontSize="20" fontWeight="bold" textAnchor="middle" fill="white">{`${percentage}% Full`}</text>
-       </svg>
+
+<Box textAlign="center" mb="20px">
+
+
+<Flex direction="column" align="center" justify="center" w="100%">
+  <Box textAlign="center" mb="20px">
+  <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+  {/* Tank outline */}
+  <rect x="10" y="10" rx="15" ry="15" width={tankWidth} height={tankHeight} stroke="black" strokeWidth="3" fill="grey" />
+  {/* Water fill */}
+  <rect x="13" y={fillYPosition} rx="12" ry="12" width={tankWidth - 6} height={fillHeight} fill="blue" />
+  {/* Additional details for the cartoon effect */}
+  <circle cx="105" cy="40" r="10" fill="yellow" stroke="black" strokeWidth="2" /> {/* Sun */}
+  <line x1="105" y1="10" x2="105" y2="30" stroke="black" strokeWidth="2" /> {/* Sun rays */}
+  <line x1="85" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+  <line x1="125" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+  {/* Text for percentage */}
+  <text x="50%" y="65" fontSize="20" fontWeight="bold" textAnchor="middle" fill="white">{`${percentage}% Full`}</text>
+  </svg>
+    <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+      {/* SVG content */}
+    </svg>
+  </Box>
+</Flex>
+
+
    </Box>
+</Box>
 
 </Box>
   </Flex>

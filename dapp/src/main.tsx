@@ -35,7 +35,7 @@ const bsc: Chain = {
     symbol: 'BNB',
   },
   rpcUrls: {
-    default: 'https://bsc-dataseed.binance.org/',
+    default: 'https://bsc-dataseed1.ninicoin.io',
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://bscscan.com/' },
@@ -49,7 +49,7 @@ const { chains, provider } = configureChains(
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://bsc-dataseed.binance.org/",
+          http: "https://bsc-dataseed1.ninicoin.io",
         };
       },
     }),

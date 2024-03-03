@@ -3,11 +3,14 @@ import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
-import NftMint0 from './Components/NftMint0/NftMint0';
+import MiniMint from './Components/MiniMint/MiniMint';
 // <NftMint0 />
 
 import ZapToLP from './Components/ZapToLP/ZapToLP';
 // <ZapToLP />
+
+import Footer from './Components/Footer/Footer';
+// <Footer />
 
 import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
 // <MiniSwapper />
@@ -356,9 +359,11 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
                <FastSwapComponent />
+               <MiniMint />
              </Box>
            </Flex>
          </Box>
+         <Footer />
        </Box>
      );
 };

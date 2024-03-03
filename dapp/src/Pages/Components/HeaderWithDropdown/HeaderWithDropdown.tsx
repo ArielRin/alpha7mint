@@ -107,11 +107,10 @@ const HeaderWithDropdown = () => {
             flexGrow={1}
             ml={{ md: 5 }}
           >
-            <RouterLink to="/thedawgz">Buy</RouterLink>
+            <RouterLink to="/buy">Buy</RouterLink>
             <RouterLink to="/thedawgz">Collection</RouterLink>
-            <RouterLink to="/thedawgz">Battle</RouterLink>
             <RouterLink to="/values">Financials</RouterLink>
-            <RouterLink to="/values">More</RouterLink>
+            <RouterLink to="/">More</RouterLink>
           </Stack>
 
           {/* Mobile Links and Wallet Info */}
@@ -141,10 +140,14 @@ const HeaderWithDropdown = () => {
           </Flex>
         </Flex>
 
-        {/* Page Links Centered */}
-        <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Buy</RouterLink>
-        <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Collection</RouterLink>
+        {/* Page Links Centered
+
         <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Battle</RouterLink>
+
+        */}
+        <RouterLink to="/" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Home</RouterLink>
+        <RouterLink to="/buy" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Buy</RouterLink>
+        <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Collection</RouterLink>
         <RouterLink to="/values" style={{ textAlign: 'center', width: '100%' }}>Financials</RouterLink>
         <RouterLink to="/values" style={{ textAlign: 'center', width: '100%' }}>More</RouterLink>
       </VStack>

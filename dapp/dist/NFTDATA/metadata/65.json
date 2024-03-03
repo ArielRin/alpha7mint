@@ -1,0 +1,59 @@
+{
+  "name": "Alpha Dawgz NFT Collection #65",
+  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/65.png",
+  "dna": "dd0471834b3270a23b1edb7045d7a0896306db1d",
+  "edition": 65,
+  "date": 1705293532296,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "greenbackground"
+    },
+    {
+      "trait_type": "Logo",
+      "value": "Logo1"
+    },
+    {
+      "trait_type": "Dawg",
+      "value": "Huskey"
+    },
+    {
+      "trait_type": "Edition",
+      "value": "Bronze"
+    },
+    {
+      "trait_type": "Image",
+      "value": "2"
+    },
+    {
+      "trait_type": "Type1",
+      "value": "lv21"
+    },
+    {
+      "trait_type": "Type2",
+      "value": "lv21"
+    },
+    {
+      "trait_type": "Type3",
+      "value": "lv21"
+    },
+    {
+      "trait_type": "Type4",
+      "value": "lvl7"
+    },
+    {
+      "trait_type": "Type5",
+      "value": "lv21"
+    },
+    {
+      "trait_type": "Type6",
+      "value": "lvl7"
+    },
+    {
+      "trait_type": "Type7",
+      "value": "lvl3"
+    }
+  ],
+  "compiler": "Alpha7 Art Engine"
+}

@@ -1,7 +1,7 @@
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
-import NftMint0 from './Components/NftMint0/NftMint0';
+// import NftMint0 from './Components/NftMint0/NftMint0';
 // <NftMint0 />
 
 import ZapToLP from './Components/ZapToLP/ZapToLP';
@@ -341,6 +341,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            p={0}
            m={0}
            display="flex"
+
            flexDirection="column"
            bg="rgba(0, 0, 0, 1)"
            bgImage={`url(${mainbackgroundImage})`}

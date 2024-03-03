@@ -399,9 +399,8 @@ setselectedReferrer(contractOptions[key]);
   return (
 
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-     <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+     <div style={{ width: '370px', backgroundColor: 'rgba(61, 79, 108, 0.9)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
      <div style={{ marginBottom: '20px' }}>
-     <ConnectButton />
 
      </div>
 
@@ -412,7 +411,7 @@ setselectedReferrer(contractOptions[key]);
     fontSize: '18px', // Example font size, adjust as needed
     fontWeight: 'bold',
     marginBottom: '10px' // Space below the heading
-  }}>Fast Swap Referral</h2>
+  }}>Alpha7 Fast Swap</h2>
              {/* Descriptive text
              <p style={{ fontSize: '12px', color: 'white', textAlign: 'center', marginBottom: '20px' }}>
                Exchange your BNB for ALPHA7 securely and support your referrer.
@@ -452,7 +451,7 @@ setselectedReferrer(contractOptions[key]);
        BNB value USD: ${isNaN(parseFloat(amountToSend) * (bnbPrice ?? 0)) ? "0.00" : (parseFloat(amountToSend) * (bnbPrice ?? 0)).toFixed(2)}
 
        </small>
-       <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+       <div style={{ width: '370px', backgroundColor: 'rgba(61, 79, 108, 0.0)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
        <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px', color: 'white' }}>
          <img src={tokenLogoUrl} alt="ALPHA7 Logo" style={{ width: logoSize, height: logoSize }} />

@@ -1,0 +1,24 @@
+{
+  "name": "Alpha Dawgz NFT Collection Reveal",
+  "description": "Welcome to Alpha7 token the first step in the System7 eco system. We are pleased to inform everyone of our new Nft collection Alpha Dawgz! 777 total nfts with 50 different stunning layouts! Alpha Dawg NFTs are set to be released prior to the launch of the Alpha7 token. The funds raised from these sales will contribute to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs will receive benefits like Alpha7 Airdrops and reflections for each NFT they own. This setup is designed to quickly offset the initial cost of the NFTs. Moreover, 8holders of Alpha Dawg NFTs will enjoy an additional 3% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/reveal/reveal.png",
+  "dna": "aabbccddd6026c659e71676304f210279e34abcb",
+  "edition": 0,
+  "date": 1705195414585,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "reveal"
+    },
+    {
+      "trait_type": "Dawg",
+      "value": "Reveal"
+    },
+    {
+      "trait_type": "Edition",
+      "value": "Reveal"
+    }
+
+  ],
+  "compiler": "HashLips Art Engine"
+}
