@@ -208,12 +208,16 @@ return (
                 </Text>
                 <Image src={nft.imageUrl} marginTop="20px" alt={`NFT ${nft.name}`} borderRadius="md" />
                 <Flex justifyContent="space-between" alignItems="center" mt="2">
-                    <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
-                    {nft.isRegistered && (
-                        <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="55px" />
-                    )}
-                </Flex>
-                {nft.isRegistered && (
+      <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+      <Flex>
+        {nft.isRegistered && (
+          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="40px" mr="2" />
+        )}
+        {nft.tokenId < 101 && (
+          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/first100.png" alt="First 100" boxSize="40px" />
+        )}
+      </Flex>
+    </Flex>
                     <Text mt="2" fontSize="md" fontStyle="italic">"{nft.dawgTaunt}"</Text>
                 )}
                 <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
