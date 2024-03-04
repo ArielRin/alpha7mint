@@ -3,7 +3,7 @@ import DawgRegistration from '../Components/DawgRegistration/DawgRegistration'; 
 // <DawgRegistration />
 // import DawgRegistration from './DawgCard'; // //
 
-
+import QRCode from 'qrcode.react';
 
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import React, { useEffect, useState, useContext } from 'react';
@@ -38,7 +38,7 @@ import {
   Collapse,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
@@ -199,38 +199,67 @@ return (
 
               <TabPanels>
                   <TabPanel>
-                  <SimpleGrid columns={[1, 2, 4]} spacing="20px">
+                  <SimpleGrid columns={[1, 2, 2, 3]} spacing="20px">
     {nfts.owned.length > 0 ? (
-        nfts.owned.map((nft) => (
-            <Box key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" position="relative">
-                <Text position="absolute" top="2" left="2" fontSize="md" fontWeight="semibold">
-                    AlphaDawg# {nft.tokenId}
-                </Text>
-                <Image src={nft.imageUrl} marginTop="20px" alt={`NFT ${nft.name}`} borderRadius="md" />
-                <Flex justifyContent="space-between" alignItems="center" mt="2">
-      <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
-      <Flex>
-        {nft.isRegistered && (
-          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="40px" mr="2" />
-        )}
-        {nft.tokenId < 101 && (
-          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/1001.png" alt="First 100" boxSize="40px" />
-        )}
-      </Flex>
-    </Flex>
-                    <Text mt="2" fontSize="md" fontStyle="italic">"{nft.dawgTaunt}"</Text>
-
-                <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
-                {!nft.isRegistered && (
-                    <Button mt="4" ml="2" colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
-                        Register Dawg
-                    </Button>
+      nfts.owned.map((nft) => (
+        <VStack key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" alignItems="flex-start">
+          <Box position="relative">
+            <Text position="absolute" top="0" left="2" fontSize="md" fontWeight="semibold">
+              AlphaDawg# {nft.tokenId}
+            </Text>
+            <Image src={nft.imageUrl} marginTop="38px" alt={`NFT ${nft.name}`} borderRadius="md" />
+            <Flex justifyContent="space-between" alignItems="center" mt="2">
+              {nft.isRegistered ? (
+                <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+              ) : (
+                <Button colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
+                  Register Dawg
+                </Button>
+              )}
+              <Flex>
+                {nft.isRegistered && (
+                  <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="40px" mr="2" />
                 )}
-            </Box>
-        ))
-    ) : (
-        <Text>No owned Dawgz found.</Text>
-    )}
+                {nft.tokenId < 101 && (
+                  <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/1001.png" alt="First 100" boxSize="40px" />
+                )}
+              </Flex>
+            </Flex>
+            {nft.isRegistered && (
+              <Text mt="2" fontSize="md" fontStyle="italic">"{nft.dawgTaunt}"</Text>
+            )}
+          </Box>
+
+          <Flex w="100%" minH="68px">
+         <Flex direction="column" w="70%" justifyContent="flex-start" alignItems="flex-start">
+           <Button as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Details</Button>
+           {nft.isRegistered && (
+             <Button
+               as="a"
+               href={`https://bscscan.com/address/${nft.tokenId}`}
+               target="_blank"
+               bg="red"
+             >
+               Battle this Dawg!
+             </Button>
+           )}
+         </Flex>
+
+         <Flex w="30%" justifyContent="center" alignItems="center">
+           <ChakraLink
+             href={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`}
+             target="_blank"
+             isExternal
+           >
+             <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={110} />
+           </ChakraLink>
+         </Flex>
+       </Flex>
+     </VStack>
+   ))
+ ) : (
+   <Text>No owned Dawgz found.</Text>
+ )}
 </SimpleGrid>
 
                   </TabPanel>
