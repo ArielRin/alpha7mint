@@ -197,18 +197,18 @@ return (
 
               <TabPanels>
                   <TabPanel>
-                      <SimpleGrid columns={[1, 2, 3, 4]} spacing="20px">
+                      <SimpleGrid columns={[1, 2, 4]} spacing="20px">
                           {nfts.owned.length > 0 ? (
                               nfts.owned.map((nft) => (
-                                  <Box key={nft.tokenId} p="5" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
+                                  <Box key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
                                       <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
                                       <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">
-                                          Token ID: {nft.tokenId}
+                                          AlphaDawg# {nft.tokenId}
                                       </Text>
                                       {nft.isRegistered && nft.dawgName ? (
-                                          <Text mt="2" color="green.500">Dawg Registered: {nft.dawgName}</Text>
+                                          <Text mt="2" fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
                                       ) : (
-                                          <Button mt="4" ml="2" colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
+                                          <Button mt="4" ml="2"  colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
                                               Register Dawg
                                           </Button>
                                       )}

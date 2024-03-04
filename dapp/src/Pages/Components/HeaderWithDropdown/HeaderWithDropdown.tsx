@@ -1,3 +1,7 @@
+import UserHeaderComponent from '../UserHeaderComponent/UserHeaderComponent';
+// <UserHeaderComponent />
+
+
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import React, { useEffect, useState, useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
@@ -68,6 +72,7 @@ const HeaderWithDropdown = () => {
 
 
   return (
+    <>
         <Flex
           as="header"
           width="full"
@@ -130,6 +135,7 @@ const HeaderWithDropdown = () => {
         {/* Token and BNB Prices Beside Logos */}
         <ConnectButton />
         <Flex direction="column" align="center" w="full">
+          <UserHeaderComponent />
           <Flex marginTop="30px" justify="center" align="center">
             <Image src={tokenLogoUrl} h="20px" mr="2" />
             <Text fontSize="md" fontWeight="bold">${tokenPriceUSD}</Text>
@@ -164,10 +170,15 @@ const HeaderWithDropdown = () => {
                       <Text fontSize="md" fontWeight="bold" mr="4">
                         ${bnbPrice}
                       </Text>
+                      <UserHeaderComponent />
                     </Flex>
                     <ConnectButton />
                   </Flex>
+
+
         </Flex>
+      </>
+
     );
   };
 

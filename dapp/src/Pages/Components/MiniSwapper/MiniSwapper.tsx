@@ -398,8 +398,7 @@ setselectedReferrer(contractOptions[key]);
 
   return (
 
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-     <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+     <div style={{ width: '330px', backgroundColor: 'rgba(33, 33, 33, 0.7)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
 
 
@@ -421,7 +420,7 @@ setselectedReferrer(contractOptions[key]);
        BNB value USD: ${isNaN(parseFloat(amountToSend) * (bnbPrice ?? 0)) ? "0.00" : (parseFloat(amountToSend) * (bnbPrice ?? 0)).toFixed(2)}
 
        </small>
-       <div style={{ width: '330px', backgroundColor: '#1c3967', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+       <div style={{ width: '330px', backgroundColor: 'rgba(61, 79, 108, 0.0)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.0)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
        <div style={{ display: 'flex', alignItems: 'center', width: '100%', marginBottom: '1px', color: 'white' }}>
          <img src={tokenLogoUrl} alt="ALPHA7 Logo" style={{ width: logoSize, height: logoSize }} />
@@ -458,7 +457,6 @@ setselectedReferrer(contractOptions[key]);
 
 
 
-     </div>
 
 
     </div>

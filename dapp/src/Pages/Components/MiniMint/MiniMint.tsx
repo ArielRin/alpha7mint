@@ -145,9 +145,8 @@ function NftMint() {
     const remainingSupply = maxSupply - totalSupply;
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
 
-      <div style={{ width: '370px', backgroundColor: 'rgba(61, 79, 108, 0.9)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ width: '330px', height: '360px',  backgroundColor: 'rgba(33, 33, 33, 0.7)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
         <div>
           <Text className="totalSupply" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold', color: 'white' }}>
@@ -191,7 +190,6 @@ function NftMint() {
         )}
 
       </div>
-    </div>
   );
 }
 

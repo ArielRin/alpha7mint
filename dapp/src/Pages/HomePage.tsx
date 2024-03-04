@@ -3,6 +3,12 @@ import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
+import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
+// <UserHeaderComponent />
+//
+// import MiniSwapper from './Components/MiniSwapper/MiniSwapper';
+// // <MiniSwapper />
+
 import MiniMint from './Components/MiniMint/MiniMint';
 // <NftMint0 />
 
@@ -354,6 +360,93 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            bgRepeat="no-repeat"
            bgSize="cover"
          >
+
+         <Flex
+              direction={{ base: 'column', md: 'row' }}
+              gap="4" // Adjust gap as needed
+              p={4} // Adjust padding as needed
+              minH="60px" // Minimum height of 400px for the row
+            >
+          </Flex>
+          {/* New Flex Row with 3 Columns */}
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          gap="4" // Adjust gap as needed
+          p={4} // Adjust padding as needed
+          minH="400px" // Minimum height of 400px for the row
+        >
+          {/* First Column */}
+          <Box
+            flex={{ base: 1, md: 2 }}
+            minW="0" // Prevents shrinking below content width on smaller screens
+            display="flex" // Use flexbox for alignment
+            justifyContent="center" // Horizontally center the content
+            alignItems="center" // Vertically center the content
+          >
+            {/* Content for the first column */}
+            <Box
+              w="100%" // Box takes 100% width
+              minH="360px"
+              display="flex" // Use flexbox for alignment
+              justifyContent="center" // Horizontally center the content
+              alignItems="center" // Vertically center the content
+            >
+              <Image
+                src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
+                w="400px" // Set the width of the image
+                alt="Logo" // Provide an alt attribute for accessibility
+              />
+            </Box>
+          </Box>
+
+          {/* Second Column */}
+          <Box
+            flex={{ base: 1, md: 1 }}
+            minW={{ base: 'auto', md: '350px' }}
+            display="flex" // Use flexbox for alignment
+            justifyContent="center" // Horizontally center the content
+            alignItems="center" // Vertically center the content
+          >
+            {/* Content for the second column */}
+            <MiniMint />
+          </Box>
+
+          {/* Third Column */}
+          <Box
+            flex={{ base: 1, md: 1 }}
+            minW={{ base: 'auto', md: '350px' }}
+            display="flex" // Use flexbox for alignment
+            justifyContent="center" // Horizontally center the content
+            alignItems="center" // Vertically center the content
+          >
+            {/* Content for the third column */}
+            <MiniSwapper />
+          </Box>
+        </Flex>
+
+         <Flex
+      direction={{ base: 'column', md: 'row' }}
+      gap="4" // Adjust gap as needed
+      p={4} // Adjust padding as needed
+      minH="400px" // Minimum height of 400px for the row
+    >
+
+      {/* First Column */}
+      <Box
+        flex={{ base: 1, md: 6 }}
+        minW="0" // Prevents shrinking below content width
+      >
+        {/* Content for the first column */}
+      </Box>
+
+      {/* Second Column */}
+      <Box
+        flex={{ base: 1, md: 4 }}
+        minW={{ base: 'auto', md: '360px' }}
+      >
+
+      </Box>
+    </Flex>
            <Flex
              direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
              gap={0} // Adjust the gap as needed
@@ -362,7 +455,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
                <FastSwapComponent />
-               <MiniMint />
+               <UserHeaderComponent />
                <UserProfileRegister />
 
              </Box>
