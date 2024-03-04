@@ -82,7 +82,8 @@ const TheDawgz: React.FC = () => {
     imageUrl: string;
     name: string;
     isRegistered: boolean;
-    dawgName?: string; // Optional property to store the Dawg's name from the contract
+    dawgName?: string;
+    dawgTaunt?: string; 
 }
 
 
@@ -170,22 +171,23 @@ const TheDawgz: React.FC = () => {
 
 // ------------------------------------------------------------------------------ //
 
-
-const addNftToWallet = async (tokenId) => {
-  try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send('wallet_watchAsset', {
-      type: 'ERC721',
-      options: {
-        address: NFT_CONTRACT_ADDRESS,
-        tokenId: tokenId.toString(),  // Convert tokenId to string
-        // Add more token details if necessary (image, name, etc.)
-      },
-    });
-  } catch (error) {
-    console.error('Error adding NFT to wallet', error);
-  }
+const addNftToWallet = async (tokenId: number) => {
+    try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        await provider.send('wallet_watchAsset', {
+            type: 'ERC721',
+            options: {
+                address: NFT_CONTRACT_ADDRESS,
+                tokenId: tokenId.toString(), // Convert tokenId to string
+                // You can add more token details if necessary (image, name, etc.)
+            },
+        } as any); // Bypass TypeScript's type checking
+    } catch (error) {
+        console.error('Error adding NFT to wallet', error);
+    }
 };
+
+
 
 
 
@@ -257,20 +259,21 @@ return (
                 target="_blank"
                 bg="red"
               >
-                Battle this Dawg!
+                Battle your Dawg!
               </Button>
             )}
             <ChakraLink
-            onClick={() => addNftToWallet(nft.tokenId)}
-            color="blue.500"
-            cursor="pointer"
-            marginTop="12px"
-            display="flex"
-            alignItems="center"
-            >
-            <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog.png" boxSize="20px" mr="2" />
-            <Text ml="5px">View Contract</Text>
-            </ChakraLink>
+  href={`https://bscscan.com/nft/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`}
+  color="blue.500"
+  cursor="pointer"
+  marginTop="12px"
+  display="flex"
+  alignItems="center"
+  isExternal
+>
+  <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/bscscan.png" boxSize="20px" mr="2" />
+  <Text ml="5px">View Contract</Text>
+</ChakraLink>
 
             <ChakraLink
   onClick={() => addNftToWallet(nft.tokenId)}
@@ -287,13 +290,28 @@ return (
 
           </Flex>
 
+
+
+
+
+
+
           <Box width="35%" marginTop="20px" border="1px" borderColor="white" p="4">
            {/* QR code centered horizontally */}
            {/* Assuming QRCode is a component that takes a URL and generates a QR code */}
-           <Center>
-           <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={72} />
-           </Center>
-           <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/element.png" alt="Element" mt="3" alignSelf="center" />
+           <ChakraLink
+             href={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`}
+             isExternal
+             display="block"
+             position="relative"
+             width="100%"
+             height="100%"
+           >
+             <Center>
+               <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={72} />
+             </Center>
+             <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/element.png" alt="Element" mt="3" alignSelf="center" />
+           </ChakraLink>
          </Box>
        </Flex>
      </VStack>
