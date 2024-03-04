@@ -92,44 +92,46 @@ const TheDawgz: React.FC = () => {
     const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
 
     useEffect(() => {
-        const fetchNfts = async () => {
-            setIsLoading(true);
-            try {
-              const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-                    const signer = provider.getSigner();
-                const walletAddress = await signer.getAddress();
+  const fetchNfts = async () => {
+    setIsLoading(true);
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const signer = provider.getSigner();
+      const walletAddress = await signer.getAddress();
 
-                const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
-                const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+      const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
+      const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 
-                const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
-                const ownedTokenIdsArray = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
+      const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
+      const ownedTokenIdsArray = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
 
-                const ownedNftsData = await Promise.all(
-                    ownedTokenIdsArray.map(async (tokenId: number) => {
-                        const metadata = await fetchNftData(tokenId);
-                        const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+      const ownedNftsData = await Promise.all(
+        ownedTokenIdsArray.map(async (tokenId: number) => {
+          const metadata = await fetchNftData(tokenId);
+          const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
 
-                        let dawgName = null;
-                        if (isRegistered) {
-                            // Fetch name from the dawgRegistrationContract if registered
-                            dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-                        }
+          let dawgName = null;
+          let dawgTaunt = null; // Initialize variable for Dawg Taunt
 
-                        return { ...metadata, tokenId, isRegistered, dawgName };
-                    })
-                );
+          if (isRegistered) {
+            dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+            dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId); // Fetch Dawg Taunt
+          }
 
-                setNfts({ owned: ownedNftsData });
-            } catch (error) {
-                console.error("Failed to fetch owned NFTs:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+          return { ...metadata, tokenId, isRegistered, dawgName, dawgTaunt }; // Include dawgTaunt in the return object
+        })
+      );
 
-        fetchNfts();
-    }, [currentPage]);
+      setNfts({ owned: ownedNftsData });
+    } catch (error) {
+      console.error("Failed to fetch owned NFTs:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchNfts();
+}, [currentPage]);
 
     // Function to fetch individual NFT data
     const fetchNftData = async (tokenId: number) => {
@@ -197,28 +199,36 @@ return (
 
               <TabPanels>
                   <TabPanel>
-                      <SimpleGrid columns={[1, 2, 4]} spacing="20px">
-                          {nfts.owned.length > 0 ? (
-                              nfts.owned.map((nft) => (
-                                  <Box key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
-                                      <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
-                                      <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">
-                                          AlphaDawg# {nft.tokenId}
-                                      </Text>
-                                      {nft.isRegistered && nft.dawgName ? (
-                                          <Text mt="2" fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
-                                      ) : (
-                                          <Button mt="4" ml="2"  colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
-                                              Register Dawg
-                                          </Button>
-                                      )}
-                                      <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
-                                  </Box>
-                              ))
-                          ) : (
-                              <Text>No owned Dawgz found.</Text>
-                          )}
-                      </SimpleGrid>
+                  <SimpleGrid columns={[1, 2, 4]} spacing="20px">
+    {nfts.owned.length > 0 ? (
+        nfts.owned.map((nft) => (
+            <Box key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" position="relative">
+                <Text position="absolute" top="2" left="2" fontSize="md" fontWeight="semibold">
+                    AlphaDawg# {nft.tokenId}
+                </Text>
+                <Image src={nft.imageUrl} marginTop="20px" alt={`NFT ${nft.name}`} borderRadius="md" />
+                <Flex justifyContent="space-between" alignItems="center" mt="2">
+                    <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+                    {nft.isRegistered && (
+                        <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="55px" />
+                    )}
+                </Flex>
+                {nft.isRegistered && (
+                    <Text mt="2" fontSize="md" fontStyle="italic">"{nft.dawgTaunt}"</Text>
+                )}
+                <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
+                {!nft.isRegistered && (
+                    <Button mt="4" ml="2" colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
+                        Register Dawg
+                    </Button>
+                )}
+            </Box>
+        ))
+    ) : (
+        <Text>No owned Dawgz found.</Text>
+    )}
+</SimpleGrid>
+
                   </TabPanel>
               </TabPanels>
           </Tabs>
