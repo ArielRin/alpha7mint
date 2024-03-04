@@ -219,7 +219,7 @@ return (
       </Flex>
     </Flex>
                     <Text mt="2" fontSize="md" fontStyle="italic">"{nft.dawgTaunt}"</Text>
-                )}
+                
                 <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
                 {!nft.isRegistered && (
                     <Button mt="4" ml="2" colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
