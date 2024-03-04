@@ -214,7 +214,7 @@ return (
           <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="40px" mr="2" />
         )}
         {nft.tokenId < 101 && (
-          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/first100.png" alt="First 100" boxSize="40px" />
+          <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/100.png" alt="First 100" boxSize="40px" />
         )}
       </Flex>
     </Flex>
