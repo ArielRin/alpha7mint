@@ -22,6 +22,7 @@ import {
   Box,
   Link as ChakraLink,
   VStack,
+  Center,
   Flex,
   Container,
   Tabs,
@@ -170,6 +171,22 @@ const TheDawgz: React.FC = () => {
 // ------------------------------------------------------------------------------ //
 
 
+const addNftToWallet = async (tokenId) => {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send('wallet_watchAsset', {
+      type: 'ERC721',
+      options: {
+        address: NFT_CONTRACT_ADDRESS,
+        tokenId: tokenId.toString(),  // Convert tokenId to string
+        // Add more token details if necessary (image, name, etc.)
+      },
+    });
+  } catch (error) {
+    console.error('Error adding NFT to wallet', error);
+  }
+};
+
 
 
 
@@ -210,7 +227,7 @@ return (
             <Image src={nft.imageUrl} marginTop="38px" alt={`NFT ${nft.name}`} borderRadius="md" />
             <Flex justifyContent="space-between" alignItems="center" mt="2">
               {nft.isRegistered ? (
-                <Text fontSize="xl" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+                <Text fontSize="32px" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
               ) : (
                 <Button colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
                   Register Dawg
@@ -230,36 +247,60 @@ return (
             )}
           </Box>
 
-          <Flex w="100%" minH="68px">
-         <Flex direction="column" w="70%" justifyContent="flex-start" alignItems="flex-start">
-           <Button as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Details</Button>
-           {nft.isRegistered && (
-             <Button
-               as="a"
-               href={`https://bscscan.com/address/${nft.tokenId}`}
-               target="_blank"
-               bg="red"
-             >
-               Battle this Dawg!
-             </Button>
-           )}
-         </Flex>
+          <Flex w="100%" minH="68px" >
+          <Flex direction="column" w="65%" justifyContent="flex-start" alignItems="flex-start">
+            <Button as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Details</Button>
+            {nft.isRegistered && (
+              <Button
+                as="a"
+                href={`https://bscscan.com/address/${nft.tokenId}`}
+                target="_blank"
+                bg="red"
+              >
+                Battle this Dawg!
+              </Button>
+            )}
+            <ChakraLink
+            onClick={() => addNftToWallet(nft.tokenId)}
+            color="blue.500"
+            cursor="pointer"
+            marginTop="12px"
+            display="flex"
+            alignItems="center"
+            >
+            <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog.png" boxSize="20px" mr="2" />
+            <Text ml="5px">View Contract</Text>
+            </ChakraLink>
 
-         <Flex w="30%" justifyContent="center" alignItems="center">
-           <ChakraLink
-             href={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`}
-             target="_blank"
-             isExternal
-           >
-             <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={110} />
-           </ChakraLink>
-         </Flex>
+            <ChakraLink
+  onClick={() => addNftToWallet(nft.tokenId)}
+  color="blue.500"
+  cursor="pointer"
+  marginTop="12px"
+  display="flex"
+  alignItems="center"
+>
+  <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog.png" boxSize="20px" mr="2" />
+  <Text ml="5px">Add your NFT to Wallet</Text>
+</ChakraLink>
+
+
+          </Flex>
+
+          <Box width="35%" marginTop="20px" border="1px" borderColor="white" p="4">
+           {/* QR code centered horizontally */}
+           {/* Assuming QRCode is a component that takes a URL and generates a QR code */}
+           <Center>
+           <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={72} />
+           </Center>
+           <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/element.png" alt="Element" mt="3" alignSelf="center" />
+         </Box>
        </Flex>
      </VStack>
-   ))
- ) : (
-   <Text>No owned Dawgz found.</Text>
- )}
+    ))
+  ) : (
+    <Text>No owned Dawgz found.</Text>
+  )}
 </SimpleGrid>
 
                   </TabPanel>
