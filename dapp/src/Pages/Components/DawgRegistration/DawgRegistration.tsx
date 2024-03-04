@@ -5,106 +5,118 @@ import { ethers } from 'ethers';
 import dawgRegistrationAbi from './dawgRegistrationAbi.json';
 import erc20Abi from './tokenAbi.json';
 
-const DawgRegistrationComponent = ({ tokenId }) => {
-    const [dawgName, setDawgName] = useState('');
-    const [dawgTaunt, setDawgTaunt] = useState('');
-    const [dawgBio, setDawgBio] = useState('');
-    const [isRegistering, setIsRegistering] = useState(false);
-    const [registrationFee, setRegistrationFee] = useState('');
-    const [isApproved, setIsApproved] = useState(false);
-    const { data: signer } = useSigner();
-    const toast = useToast();
 
-    const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7";
-    const ERC20_TOKEN_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
+interface DawgRegistrationProps {
+  tokenId: number; // Adjust type if needed
+}
 
-    // Fetch registration fee in tokens (in wei, smallest unit of the token)
-    const { data: feeData } = useContractRead({
-        addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
-        contractInterface: dawgRegistrationAbi,
-        functionName: 'registrationFee',
+
+const DawgRegistrationComponent: React.FC<DawgRegistrationProps> = ({ tokenId }) => {
+  const [dawgName, setDawgName] = useState('');
+  const [dawgTaunt, setDawgTaunt] = useState('');
+  const [dawgBio, setDawgBio] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [registrationFee, setRegistrationFee] = useState('');
+  const [isApproved, setIsApproved] = useState(false);
+  const { data: signer, isError: signerError } = useSigner();
+  const toast = useToast();
+
+  const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7";
+  const ERC20_TOKEN_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
+
+  if (signerError) {
+    toast({
+      title: "Signer Error",
+      description: "There was a problem with the signer.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
     });
+    return <Text>Signer Error</Text>; // Adjust as needed
+  }
 
-    useEffect(() => {
-        if (feeData) {
-            // Convert the fee from wei to token units considering 9 decimals
-            const feeFormatted = ethers.utils.formatUnits(feeData, 9);
-            setRegistrationFee(feeFormatted);
-        }
-    }, [feeData]);
+  const { data: feeData } = useContractRead({
+    addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
+    contractInterface: dawgRegistrationAbi,
+    functionName: 'registrationFee',
+  });
 
-    // ERC20 contract instance
-    const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
+  useEffect(() => {
+    if (feeData) {
+      const feeFormatted = ethers.utils.formatUnits(feeData, 9); // Assuming 9 decimal places
+      setRegistrationFee(feeFormatted);
+    }
+  }, [feeData]);
 
-    const handleApproval = async () => {
-        try {
-            // Convert the registration fee back to wei for approval
-            const feeInWei = ethers.utils.parseUnits(registrationFee, 9);
-            const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
-            await tx.wait();
-            setIsApproved(true);
-            toast({
-                title: "Approval Successful",
-                description: "ERC20 token spend approved.",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-            });
-        } catch (error) {
-            toast({
-                title: "Approval Error",
-                description: error.message,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        }
-    };
+  const handleApproval = async () => {
+    if (!signer) return;
 
-    const handleRegistration = async () => {
-        if (!isApproved) {
-            toast({
-                title: "Approval Needed",
-                description: "Please approve ERC20 token spend first.",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-            });
-            return;
-        }
-        setIsRegistering(true);
-        try {
-            // Call registerNFT function on contract
-            await registerNFT();
+    try {
+      const feeInWei = ethers.utils.parseUnits(registrationFee, 9);
+      const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
+      const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
+      await tx.wait();
+      setIsApproved(true);
+      toast({
+        title: "Approval Successful",
+        description: "ERC20 token spend approved.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Approval Error",
+        description: error instanceof Error ? error.message : "Unknown error",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
-            toast({
-                title: "Dawg Registration",
-                description: "Dawg registered successfully!",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-            });
-        } catch (error) {
-            toast({
-                title: "Registration Error",
-                description: error.message,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        } finally {
-            setIsRegistering(false);
-        }
-    };
+  const handleRegistration = async () => {
+    if (!isApproved) {
+      toast({
+        title: "Approval Needed",
+        description: "Please approve ERC20 token spend first.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
-    // Write hook for contract interaction
-    const { write: registerNFT } = useContractWrite({
-        addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
-        contractInterface: dawgRegistrationAbi,
-        functionName: 'registerNFT',
-        args: [tokenId, dawgName, dawgTaunt, dawgBio],
-    });
+    setIsRegistering(true);
+    try {
+      await registerNFT();
 
+      toast({
+        title: "Dawg Registration",
+        description: "Dawg registered successfully!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Registration Error",
+        description: error instanceof Error ? error.message : "Unknown error",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+
+  const { write: registerNFT } = useContractWrite({
+    addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
+    contractInterface: dawgRegistrationAbi,
+    functionName: 'registerNFT',
+    args: [tokenId, dawgName, dawgTaunt, dawgBio],
+  });
     return (
         <Box>
             <Flex direction="column" padding="20px">

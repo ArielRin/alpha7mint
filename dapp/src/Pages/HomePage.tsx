@@ -11,6 +11,9 @@ import ZapToLP from './Components/ZapToLP/ZapToLP';
 
 import Footer from './Components/Footer/Footer';
 // <Footer />
+import UserProfileRegister from './Components/UserProfile/UserProfile';
+// <UserProfileRegister />
+
 
 import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
 // <MiniSwapper />
@@ -360,6 +363,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
              <Box flex={{ base: 1, md: 3 }}>
                <FastSwapComponent />
                <MiniMint />
+               <UserProfileRegister />
+
              </Box>
            </Flex>
          </Box>

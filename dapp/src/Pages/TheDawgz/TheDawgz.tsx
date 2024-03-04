@@ -58,9 +58,12 @@ import tokenAbi from './tokenAbi.json';
 
 import abiFile from './abiFile.json';
 import dawgBattleAbi from './dawgBattleOldAbi.json';
+// Contract ABIs and Addresses
+import dawgRegistrationAbi from './dawgRegistrationAbi.json'; // ABI for Dawg registration contract
 import userRegistryAbi from './userRegistryAbi.json';
-// import BnbPrice from '../Components/BnbPrice';
+
 const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62";
+const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7"; // Contract address
 
 const NFT_CONTRACT_ADDRESS = "0xca695feb6b1b603ca9fec66aaa98be164db4e660";
 const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
@@ -73,36 +76,48 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 const ITEMS_PER_PAGE = 50;
 
 const TheDawgz: React.FC = () => {
-    interface NFT {
-        tokenId: number;
-        imageUrl: string;
-        name: string;
-    }
+  interface NFT {
+    tokenId: number;
+    imageUrl: string;
+    name: string;
+    isRegistered: boolean;
+    dawgName?: string; // Optional property to store the Dawg's name from the contract
+}
+
+
 
     const [nfts, setNfts] = useState<{ owned: NFT[] }>({ owned: [] });
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
     const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
 
     useEffect(() => {
         const fetchNfts = async () => {
             setIsLoading(true);
             try {
-                const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-                const signer = provider.getSigner();
+              const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+                    const signer = provider.getSigner();
                 const walletAddress = await signer.getAddress();
+
                 const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
+                const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 
-                // Get the list of owned NFT token IDs from the UserRegistry contract
                 const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
-
-                // Convert BigNumber to Number or String for each token ID
                 const ownedTokenIdsArray = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
 
-                // Fetch metadata for each owned NFT
                 const ownedNftsData = await Promise.all(
-                    ownedTokenIdsArray.map((tokenId: number) => fetchNftData(tokenId, walletAddress))
+                    ownedTokenIdsArray.map(async (tokenId: number) => {
+                        const metadata = await fetchNftData(tokenId);
+                        const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+
+                        let dawgName = null;
+                        if (isRegistered) {
+                            // Fetch name from the dawgRegistrationContract if registered
+                            dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+                        }
+
+                        return { ...metadata, tokenId, isRegistered, dawgName };
+                    })
                 );
 
                 setNfts({ owned: ownedNftsData });
@@ -117,7 +132,9 @@ const TheDawgz: React.FC = () => {
     }, [currentPage]);
 
     // Function to fetch individual NFT data
-    const fetchNftData = async (tokenId: number, walletAddress: string) => {
+    const fetchNftData = async (tokenId: number) => {
+
+
         const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
         const imageUrl = `/NFTDATA/Image/${tokenId}.png`;
 
@@ -155,104 +172,71 @@ const TheDawgz: React.FC = () => {
 
 
 
-
 return (
-        <Flex
-            direction="column"
-            align="center"
-            minH="100vh"
-            bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/greenbkg.png')"
-            bgPosition="center"
-            bgSize="cover"
-        >
-            {/* Header */}
-            <HeaderWithDropdown />
+  <Flex
+      direction="column"
+      align="center"
+      minH="100vh"
+      bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/greenbkg.png')"
+      bgPosition="center"
+      bgSize="cover"
+  >
+      <HeaderWithDropdown />
 
-            {/* Text */}
-            <Text color="white" fontSize="md" fontWeight="bold"></Text>
+      <Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+          <VStack spacing={4}>
+              {/* Additional components */}
+          </VStack>
+      </Box>
 
-            {/* First Row */}
-            <Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
-                <VStack spacing={4}>
-                    {/* Dawg Registration Component */}
-                </VStack>
-            </Box>
+      <Box width="90%" minH="800px" mx="auto" shadow="md" borderRadius="md" overflow="hidden" borderWidth="0px" borderColor="red.650" bgColor="rgba(0, 0, 0, 0.8)" color="gray.600">
+          <Tabs variant="enclosed-colored" size="lg" colorScheme="gray">
+              <TabList mb="1em" bg={tabBackground}>
+                  <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>Your Dawgz</Tab>
+              </TabList>
 
-            {/* Dawgz Section */}
-            <Box width="90%" minH="800px" mx="auto" shadow="md" borderRadius="md" overflow="hidden" borderWidth="0px" borderColor="red.650" bgColor="rgba(0, 0, 0, 0.8)" color="gray.600">
-                <Tabs variant="enclosed-colored" size="lg" colorScheme="gray">
-                    <Box borderColor="red.650" borderWidth="0px">
-                        <TabList mb="1em" bg={tabBackground}>
-                            <Tab bg="" _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>Your Dawgz</Tab>
-                        </TabList>
-                    </Box>
+              <TabPanels>
+                  <TabPanel>
+                      <SimpleGrid columns={[1, 2, 3, 4]} spacing="20px">
+                          {nfts.owned.length > 0 ? (
+                              nfts.owned.map((nft) => (
+                                  <Box key={nft.tokenId} p="5" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
+                                      <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
+                                      <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">
+                                          Token ID: {nft.tokenId}
+                                      </Text>
+                                      {nft.isRegistered && nft.dawgName ? (
+                                          <Text mt="2" color="green.500">Dawg Registered: {nft.dawgName}</Text>
+                                      ) : (
+                                          <Button mt="4" ml="2" colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
+                                              Register Dawg
+                                          </Button>
+                                      )}
+                                      <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
+                                  </Box>
+                              ))
+                          ) : (
+                              <Text>No owned Dawgz found.</Text>
+                          )}
+                      </SimpleGrid>
+                  </TabPanel>
+              </TabPanels>
+          </Tabs>
+      </Box>
 
-                    <TabPanels>
-                        <TabPanel>
-                            <Flex justify="center">
-                                {nfts.owned.map((nft) => (
-                                    <DawgCard key={nft.tokenId} nft={nft} onRegisterDawg={handleRegisterDawg} />
-                                ))}
-                            </Flex>
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-            </Box>
+      <Modal isOpen={selectedNFT !== null} onClose={handleCloseModal}>
+          <ModalOverlay />
+          <ModalContent>
+              <ModalHeader>Register Dawg</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                  {selectedNFT && <DawgRegistration tokenId={selectedNFT.tokenId} />}
+              </ModalBody>
+          </ModalContent>
+      </Modal>
+  </Flex>
+);
 
-            {/* Modal for Dawg Registration */}
-            <Modal isOpen={selectedNFT !== null} onClose={handleCloseModal}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Register Dawg</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        {selectedNFT && <DawgRegistration tokenId={selectedNFT.tokenId} />}
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </Flex>
-    );
-};
-
-const DawgCard: React.FC<{ nft: NFT, onRegisterDawg: (nft: NFT) => void }> = ({ nft, onRegisterDawg }) => {
-    return (
-        <Box key={nft.tokenId} p="5" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" m="2">
-            <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
-            <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">Token ID: {nft.tokenId}</Text>
-            <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Detail</Button>
-            <Button mt="4" ml="2" colorScheme="pink" onClick={() => onRegisterDawg(nft)}>Register Dawg</Button>
-        </Box>
-    );
 };
 
 export default TheDawgz;
-
-{/*
-          <Tab bg=""
-      _selected={{ color: activeTabColor,  }}
-      _focus={{ boxShadow: 'none' }}
-    >
-          All Dawgz
-          </Tab>
-          */}
-
-{/*
-<TabPanel>
-<SimpleGrid columns={[ 1, 3,  4]} bgColor="rgba(0, 0, 0, 0.0)" color="white" spacing="20px" p="10">
-      {nfts.all && nfts.all.map((nft) => (
-        <Box  key={nft.tokenId} p="5" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white">
-      <Image src={nft.imageUrl} alt={`NFT ${nft.name}`} borderRadius="md" />
-      <Text mt="2" fontSize="xl" fontWeight="semibold" lineHeight="short">
-        Token ID: {nft.tokenId}
-      </Text>
-      <Button mt="4" as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">
-        Detail
-      </Button>
-      <Button mt="4" ml="2" colorScheme="pink">
-        Battle
-      </Button>
-    </Box>
-  ))}
-</SimpleGrid>
-</TabPanel>
-*/}

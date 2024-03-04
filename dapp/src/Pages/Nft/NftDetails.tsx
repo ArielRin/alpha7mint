@@ -50,6 +50,12 @@ const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; //
 const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182';
 import dawgBattleAbi from './dawgBattleOldAbi.json';
 
+
+import dawgRegistrationAbi from './dawgRegistrationAbi.json'; // ABI for Dawg registration contract
+const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7"; // Contract address
+
+
+
 import BnbPrice from '../Components/BnbPrice';
 import TokenPriceContext from '../TokenPriceContext';
 
@@ -68,11 +74,43 @@ interface NftMetadata {
 }
 
 
-const NftDetails: React.FC = () => {
-  const { tokenId } = useParams<{ tokenId: string }>();
-  console.log("Token ID:", tokenId);
-
+const NftDetails = () => {
+  const { tokenId } = useParams();
   const navigate = useNavigate();
+
+  const [dawgzData, setDawgzData] = useState({
+    name: '',
+    bio: '',
+    taunt: '',
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchDawgzData = async () => {
+      try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+
+        const name = await dawgRegistrationContract.dawgzNames(tokenId);
+        const bio = await dawgRegistrationContract.dawgzBios(tokenId);
+        const taunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
+
+        setDawgzData({ name, bio, taunt });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError('Error fetching data.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (tokenId) {
+      fetchDawgzData();
+    }
+  }, [tokenId]);
+
+
 
   const handleBackClick = () => {
     navigate(-1); // This will take the user back to the previous page
@@ -95,8 +133,6 @@ const NftDetails: React.FC = () => {
   const [timesWon, setTimesWon] = useState(0);
   const [timesLost, setTimesLost] = useState(0);
   const [totalBattles, setTotalBattles] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
   const [tokenStats, setTokenStats] = useState({ totalWon: 0, totalLose: 0, valueEarned: 0 });
 
 
@@ -146,6 +182,11 @@ const NftDetails: React.FC = () => {
 
     fetchNftData();
   }, [tokenId]);
+
+
+
+
+
 
 
   useEffect(() => {
@@ -241,6 +282,12 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned?.toString() 
 
 //         bg="rgba(0, 0, 0, 0.0)"
 //         bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/ArtEngine/layers/Background/greenbackground%236.png')"
+
+
+
+
+
+
 
   return (
 
@@ -424,17 +471,9 @@ bg="rgba(0, 0, 0, 0.0)"
   <Text color="white">Dawgz Name</Text>
   <Box>
 
-        {nftMetadata.attributes.map((attr: Attribute) => {
-        if (["Dawgz Name"].includes(attr.trait_type)) {
-
-              return (
-                  <Text color="white" fontSize="32px" fontWeight="bolder" textAlign="center"  key={attr.trait_type}>
-                      {`${attr.value}`}
-                  </Text>
-              );
-          }
-          return null;
-      })}
+                     <Text color="white" fontSize="24px" fontWeight="bold" textAlign="center"  >
+                       {dawgzData.name}
+                     </Text>
   </Box>
 </Box>
 <Box
@@ -450,17 +489,11 @@ bg="rgba(0, 0, 0, 0.0)"
    >
    <Text color="white">Dawgz Taunt Phrase</Text>
    <Box>
-     {nftMetadata.attributes.map((attr: Attribute) => {
-         if (["Taunt"].includes(attr.trait_type)) {
 
-               return (
-                   <Text color="white" fontSize="20px" fontWeight="bold" textAlign="center"  key={attr.trait_type}>
-                       {`${attr.value}`}
+                   <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center"  >
+                      {dawgzData.taunt}
                    </Text>
-               );
-           }
-           return null;
-       })}
+
    </Box>
 </Box>
 </Flex>
@@ -661,6 +694,10 @@ display="flex"
     <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" >
       Dawg Bio
       </Text>
+      <Text color="white" fontSize="18px" fontWeight="bold" textAlign="center" >
+        {dawgzData.bio}
+        </Text>
+
     </Box>
   </Flex>
 
@@ -734,6 +771,10 @@ display="flex"
           </Box>
           <Box flex="1" bg="rgba(0, 0, 0, 0.75)"  marginTop='5px' minH="200px">
             <Text color="white">Recent Battles List View</Text>
+            <Box bg="white" p={5} mt={5} borderRadius="md">
+        <Text fontSize="xl" fontWeight="bold">Dawgz Details for Token ID: {tokenId}</Text>
+        <Text mt={2}>Name: {dawgzData.name}</Text>
+      </Box>
           </Box>
           </Flex>
 
@@ -746,29 +787,37 @@ display="flex"
             gap="5px"
           >
             {/* Row 1 in Column 2 */}
-            <Box
-              bg="rgba(0, 0, 0, 0.75)"
-              p="5px"
-
-              minH="400px" // Adjust the height as needed
+            <Flex
+              flex="1"
+              flexDirection="column"
+              gap="5px"
             >
-              <Text color="white">NFT MetaData and Traits</Text>
-              <Flex direction="column" align="stretch" minH="100vh">
-          {/* Ensure nftMetadata is not null before attempting to access its properties */}
-          {nftMetadata && (
-              <Box>
-                  {/* Display specific attributes */}
+              {/* Row 1 in Column 2 */}
+              <Box
+                bg="rgba(0, 0, 0, 0.75)"
+                p="5px"
+
+                minH="400px" // Adjust the height as needed
+              >
+                <Text color="white">NFT MetaData and Traits</Text>
+                <Flex direction="column" align="stretch" minH="100vh">
+            {/* Ensure nftMetadata is not null before attempting to access its properties */}
+            {nftMetadata && (
+                <Box>
+                    {/* Display specific attributes */}
 
 
-                  {/* Display specific attributes */}
-                  <Box>
-                  </Box>
+                    {/* Display specific attributes */}
+                    <Box>
+                    </Box>
+                </Box>
+            )}
+        </Flex>
+
+
               </Box>
-          )}
-      </Flex>
 
-
-            </Box>
+            </Flex>
 
           </Flex>
         </Flex>
@@ -834,21 +883,3 @@ display="flex"
   };
 
 export default NftDetails;
-
-      //   <YourActiveBattles />
-
-
-
-
-
-
-      // <Text>Token URI: {nftDetails.tokenURI}</Text>
-
-      //        <Text mb="2">------------------------------------------------------</Text>
-      // <Text mb="2">Connected Accounts Address: {userAddress}</Text>
-      // <Text mb="2">Connected Accounts BNB Balance: {bnbBalance} BNB (${(parseFloat(bnbBalance) * parseFloat(bnbPriceInUSD)).toFixed(2)} USD)</Text>
-      // <Text mb="2">Connected Accounts Alpha7 Token Balance: {alpha7TokenBalance} ALPHA7 Tokens (${(parseFloat(alpha7TokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD)</Text>
-      // <Text mb="2">Connected Wallet LP Token Balance: {connectedWalletLPTokenBalance} Tokens (${(parseFloat(connectedWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD)</Text>
-      //       <Text mb="2">------------------------------------------------------</Text>
-      //             <Text mb="2">------------------------------------------------------</Text>
-      //
