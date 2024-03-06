@@ -78,14 +78,6 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 
 const ITEMS_PER_PAGE = 50;
 
-
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const signer = provider.getSigner();
-
-
-
-const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
-
 const TheDawgz: React.FC = () => {
   interface NFT {
     tokenId: number;
@@ -206,76 +198,11 @@ const addNftToWallet = async (tokenId: number) => {
     }
 };
 
-
-
-
-// ------------------------------------------------------------------------------ //
-// ------------------------------------------------------------------------------ //
-// ------------------------------------------------------------------------------ //
-// ------------------------------------------------------------------------------ //
-// ------------------------------------------------------------------------------ //
-
-
 const [selectedNFTDetails, setSelectedNFTDetails] = useState(null);
 
 const handleSelectNFT = (nft) => {
     setSelectedNFTDetails(nft);
 };
-
-
-const fetchEntryFee = async () => {
-    try {
-        const entryFee = await battleContract.entryFee();
-        return entryFee;
-    } catch (error) {
-        console.error('Error fetching entry fee:', error);
-    }
-};
-
-const [entryFee, setEntryFee] = useState(null);
-
-useEffect(() => {
-    const fetchEntryFeeAndSet = async () => {
-        try {
-            const fee = await fetchEntryFee();
-            setEntryFee(fee);
-        } catch (error) {
-            console.error('Error fetching entry fee:', error);
-        }
-    };
-
-    fetchEntryFeeAndSet();
-}, []);
-
-
-const enterBattle = async (tokenId, dawgTaunt) => {
-    try {
-        const entryFee = await fetchEntryFee();
-        // Call the contract method with tokenId and dawgTaunt only
-        const transaction = await battleContract.enterBattle(tokenId, dawgTaunt, { value: entryFee });
-        await transaction.wait();
-        console.log('Battle entered successfully');
-    } catch (error) {
-        console.error('Error entering battle:', error);
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -297,7 +224,50 @@ return (
           <VStack spacing={4}>
               {/* Additional components */}
           </VStack>
+      </Box>
+            <Box w="100%" minH="80px" paddingY="50px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+                <VStack spacing={4}>
+                <Box width="330px" height="400px" bg="white" p={4} borderRadius="md">
+    <Menu>
+        <MenuButton bg="blue.500" as={Button} rightIcon={<ChevronDownIcon />}>
+            Select NFT
+        </MenuButton>
+        <MenuList>
+            {nfts.owned.map((nft, index) => (
+              <MenuItem key={index} minH="48px" onClick={() => handleSelectNFT(nft)}>
+                    <Image
+                        src={nft.imageUrl}
+                        width="60px"
+                        borderRadius="100%"
+                        alt={`NFT ${nft.tokenId}`}
+                    />
+                    <Box ml="12px">
+                        <Text  fontSize="sm" color="gray.500">{`NFT #${nft.tokenId}`}</Text>
+                        <Text color="gray.500" fontSize="sm" >{nft.dawgName || 'No Name'}</Text>
+                    </Box>
+                </MenuItem>
+            ))}
+        </MenuList>
+    </Menu>
+    {selectedNFTDetails && (
+    <Box mt="20px">
+        <Image
+            src={selectedNFTDetails.imageUrl}
+            width="80px"
+            alt={`NFT ${selectedNFTDetails.tokenId}`}
+        />
+        <Text fontSize="lg" fontWeight="bold" color="black">
+            {selectedNFTDetails.dawgName || 'No Name'}
+        </Text>
+        <Text fontSize="md" fontStyle="italic" color="black">
+            {selectedNFTDetails.dawgTaunt || 'No Taunt'}
+        </Text>
+    </Box>
+)}
 
+</Box>
+
+                                            </VStack>
             </Box>
 
       <Box width="90%" minH="800px" mx="auto" shadow="md" borderRadius="md" overflow="hidden" borderWidth="0px" borderColor="red.650" bgColor="rgba(0, 0, 0, 0.8)" color="gray.600">

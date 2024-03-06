@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon.309d7f86.png" />
+    <link rel="icon" type="image/svg+xml" href="/src/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alpha 7 BETA 0.1 ALPHADAWGZ </title>
 
@@ -10,11 +10,9 @@
     <meta name="twitter:image" content="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dawgcardz.png" />
     <meta name="twitter:description" content="Newest Dapp Add NFT to Wallet. Username addition register a username. Update now has modified the cards layout for your owned dawgs. Other features prior to this include: your dawgz collection views and dawg registration section. register today to give your AlphaDawg a Name and some details. Stay tuned more to come!!!!" />
     <meta name="description" content="Newest Dapp Add NFT to Wallet. Username addition register a username. Update now has modified the cards layout for your owned dawgs. Other features prior to this include: your dawgz collection views and dawg registration section. register today to give your AlphaDawg a Name and some details. Stay tuned more to come!!!!" />
-    <script type="module" crossorigin src="/assets/index.3ebaa778.js"></script>
-    <link rel="stylesheet" href="/assets/index.84f47ddc.css">
   </head>
   <body>
     <div id="root"></div>
-    
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

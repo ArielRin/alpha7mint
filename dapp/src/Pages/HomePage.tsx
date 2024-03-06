@@ -6,8 +6,14 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
 //
-// import MiniSwapper from './Components/MiniSwapper/MiniSwapper';
-// // <MiniSwapper />
+import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+// // <YourActiveBattles />
+
+import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+// <BattleNowMainComponent />
+
+import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
+// <QuickBattleComponent />
 
 import MiniMint from './Components/MiniMint/MiniMint';
 // <NftMint0 />
@@ -19,6 +25,10 @@ import Footer from './Components/Footer/Footer';
 // <Footer />
 import UserProfileRegister from './Components/UserProfile/UserProfile';
 // <UserProfileRegister />
+
+
+// import DropdownComponent from './TheDawgz/dropdownComponent';
+// // <DropdownComponent />
 
 
 import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
@@ -391,11 +401,10 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               justifyContent="center" // Horizontally center the content
               alignItems="center" // Vertically center the content
             >
-              <Image
-                src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
-                w="400px" // Set the width of the image
-                alt="Logo" // Provide an alt attribute for accessibility
-              />
+
+ <BattleNowMainComponent />
+
+
             </Box>
           </Box>
 
@@ -408,8 +417,15 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             alignItems="center" // Vertically center the content
           >
             {/* Content for the second column */}
-            <MiniMint />
-          </Box>
+
+
+
+               <Image
+                 src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
+                 w="400px" // Set the width of the image
+                 alt="Logo" // Provide an alt attribute for accessibility
+               />
+                       </Box>
 
           {/* Third Column */}
           <Box
@@ -436,7 +452,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >
-        {/* Content for the first column */}
+<YourActiveBattles />
       </Box>
 
       {/* Second Column */}
@@ -457,7 +473,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                <FastSwapComponent />
                <UserHeaderComponent />
                <UserProfileRegister />
-
+          {/*      <DropdownComponent /> */}
              </Box>
            </Flex>
          </Box>
