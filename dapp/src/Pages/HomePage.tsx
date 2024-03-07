@@ -9,6 +9,10 @@ import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComp
 import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
 // // <YourActiveBattles />
 
+
+import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
+// // <YourComplatedBattles />
+
 import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // <BattleNowMainComponent />
 
@@ -81,7 +85,7 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./bkg.png";
+import mainbackgroundImage from "./redbkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";
@@ -460,6 +464,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         flex={{ base: 1, md: 4 }}
         minW={{ base: 'auto', md: '360px' }}
       >
+
+<YourComplatedBattles />
 
       </Box>
     </Flex>

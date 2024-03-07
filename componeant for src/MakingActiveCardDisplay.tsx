@@ -1,3 +1,8 @@
+
+
+import redBkg from './redBkg.png';
+import a7Logo from './headerlogo.png';
+
 // Your Active Battles Detailed
 
 
@@ -10,7 +15,6 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-
 
 
 import Web3 from "web3";

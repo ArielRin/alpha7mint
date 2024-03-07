@@ -68,6 +68,10 @@ const HeaderWithDropdown = () => {
     const tokenPriceUSD = useContext(TokenPriceContext);
 
 
+  const externalLink = "https://dexscreener.com/bsc/0xa2136fea6086f2254c9361c2c3e28c00f9e73366";
+
+    const externalLinkBnb = "https://coinmarketcap.com/currencies/bnb/";
+
 
 
 
@@ -136,10 +140,14 @@ const HeaderWithDropdown = () => {
         <ConnectButton />
         <Flex direction="column" align="center" w="full">
           <UserHeaderComponent />
-          <Flex marginTop="30px" justify="center" align="center">
-            <Image src={tokenLogoUrl} h="20px" mr="2" />
-            <Text fontSize="md" fontWeight="bold">${tokenPriceUSD}</Text>
-          </Flex>
+          <ChakraLink href={externalLink} isExternal>
+           <Flex align="center">
+             <Image src={tokenLogoUrl} h="20px" mr="2" />
+             <Text fontSize="md" fontWeight="bold" marginRight="12px">
+               ${tokenPriceUSD}
+             </Text>
+           </Flex>
+         </ChakraLink>
           <Flex marginTop="10px" justify="center" align="center">
             <Image src={bnbLogoUrl} h="20px" mr="2" />
             <Text fontSize="md" fontWeight="bold">${bnbPrice}</Text>
@@ -162,14 +170,19 @@ const HeaderWithDropdown = () => {
 
           <Flex justifyContent="flex-end" alignItems="center" display={{ base: 'none', md: 'flex' }} flexGrow={1}>
                     <Flex align="center">
-                      <Image src={tokenLogoUrl} h="20px" mr="2" />
-                      <Text fontSize="md" fontWeight="bold" marginRight="12px">
-                        ${tokenPriceUSD}
-                      </Text>
+                    <Image src={tokenLogoUrl} h="20px" mr="2" />
+                    <ChakraLink href={externalLink} isExternal>
+
+
+               <Text fontSize="md" mr="4" fontWeight="bold">${tokenPriceUSD}</Text>
+
+           </ChakraLink>
                       <Image src={bnbLogoUrl} h="20px" mr="2" />
+                      <ChakraLink href={externalLinkBnb} isExternal>
                       <Text fontSize="md" fontWeight="bold" mr="4">
                         ${bnbPrice}
                       </Text>
+                    </ChakraLink>
                       <UserHeaderComponent />
                     </Flex>
                     <ConnectButton />

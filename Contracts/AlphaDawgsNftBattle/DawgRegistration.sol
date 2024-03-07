@@ -763,7 +763,7 @@ Live v2 at 0x6B49F7B1239F5487566815Ce58ec0396b2E363e7
 live at (old CA) 0x168Bc5B7537929827EA339332de1DC11907ca760
 
     address public nftContractAddress = 0xCa695FEB6b1b603ca9fec66aaA98bE164db4E660
-    address public battleContractAddress = 0x0e96F3C42d594EBbfD0835d92FDab28014233182
+    address public battleContractAddress = 0xb816222825Fd38B715904B301044C7D767389Aa2
     address public ercTokenAddress = 0x88CE0d545cF2eE28d622535724B4A06E59a766F0
     address public nftTreasuryAddress = 0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7
     uint256 public registrationFee = 10

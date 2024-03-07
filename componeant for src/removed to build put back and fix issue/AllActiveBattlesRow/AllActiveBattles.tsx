@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import { Box, Text, Flex, Spacer } from '@chakra-ui/react';
 import dawgBattleAbi from './dawgBattleAbi.json'; // Ensure this path is correct
 
-const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182';
+const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
 
 interface BattleDetails {
   id: number;

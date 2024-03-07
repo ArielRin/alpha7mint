@@ -2,13 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { Box, Image, Text, Button, Flex, Spacer, Collapse, IconButton } from '@chakra-ui/react';
+import { Box, Image, Text, Flex, Spacer, Collapse, IconButton } from '@chakra-ui/react';
 import dawgBattleAbi from './dawgBattleAbi.json';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
-// const BATTLE_CONTRACT_ADDRESS = 'x0e96F3C42d594EBbfD0835d92FDab28014233182';
 const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
-
 
 
 interface BattleDetails {
@@ -54,56 +52,48 @@ const ActiveBattles: React.FC = () => {
 
 
   useEffect(() => {
-  const fetchActiveBattleIds = async () => {
-    if (userAddress && window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+    const fetchActiveBattleIds = async () => {
+      if (userAddress && window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
-      try {
-        const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
-        const battleIds = await contract.getActiveBattleIds();
+        try {
+          const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
+          const battleIds = await contract.getActiveBattleIds();
 
-        const battlesPromises = battleIds.map(async (id) => {
-          const details = await contract.getBattleDetails(id);
-          const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
+          const battlesPromises = battleIds.map(async (id) => {
+            const details = await contract.getBattleDetails(id);
+            const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
 
-          return {
-            id: id.toNumber(),
-            initiatorTokenId: details.initiatorTokenId.toNumber(),
-            secondaryTokenId: details.secondaryTokenId.toNumber(),
-            initiator: details.initiator,
-            secondaryEntrant: details.secondaryEntrant,
-            startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
-            battleValue: ethers.utils.formatEther(details.totalValueInBattle),
-            endTime,
-            countdown: calculateTimeLeft(endTime)
-          };
-        });
+            return {
+              id: id.toNumber(),
+              initiatorTokenId: details.initiatorTokenId.toNumber(),
+              secondaryTokenId: details.secondaryTokenId.toNumber(),
+              startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
+              initiatorReady: details.initiatorReady,
+              completed: details.completed,
+              totalValueInBattle: ethers.utils.formatEther(details.totalValueInBattle),
+              initiatorComment: details.initiatorComment,
+              secondaryEntrantComment: details.secondaryEntrantComment,
+              endTime,
+              countdown: calculateTimeLeft(endTime)
+            };
+          });
 
-        const allBattles = await Promise.all(battlesPromises);
-        // Filter the battles to show only those involving the user
-        const userBattles = allBattles.filter(battle => battle.initiator === userAddress || battle.secondaryEntrant === userAddress);
-        setActiveBattles(userBattles);
-      } catch (error) {
-        console.error("Failed to fetch active battles:", error);
-      } finally {
-        setIsLoading(false);
+          const battles = await Promise.all(battlesPromises);
+          setActiveBattles(battles);
+        } catch (error) {
+          console.error("Failed to fetch active battles:", error);
+        } finally {
+          setIsLoading(false);
+        }
       }
+    };
+
+    if (userAddress) {
+      fetchActiveBattleIds();
     }
-  };
-
-  if (userAddress) {
-    fetchActiveBattleIds();
-  }
-}, [userAddress, calculateTimeLeft]);
-
-
-   //-------------------//-----------------------//------------------------//
-      //-------------------//-----------------------//------------------------//
-         //-------------------//-----------------------//------------------------//
-            //-------------------//-----------------------//------------------------//
-               //-------------------//-----------------------//------------------------//
-                  //-------------------//-----------------------//------------------------//
+  }, [userAddress]); // Removed calculateTimeLeft from dependencies
 
 
   useEffect(() => {
@@ -133,23 +123,7 @@ const ActiveBattles: React.FC = () => {
 
    //-------------------//-----------------------//------------------------//
 
-   const startBattleManually = async (battleId) => {
-      if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
-        try {
-          const transaction = await contract.startBattleManually(battleId);
-          await transaction.wait();
-          console.log(`Battle ${battleId} finalized successfully`);
-          // Refresh battles list or show a success message
-        } catch (error) {
-          console.error(`Error finalizing battle ${battleId}:`, error);
-          // Show an error message
-        }
-      }
-    };
         //-------------------//-----------------------//------------------------//
 
 
@@ -188,14 +162,6 @@ const ActiveBattles: React.FC = () => {
                         <Text>Initiator: #{battle.initiatorTokenId}</Text>
                         <Text>Opponent: #{battle.secondaryTokenId}</Text>
                         <Text>Value: {battle.battleValue} ETH</Text>
-                        <Button
-               colorScheme={new Date() > new Date(battle.endTime) ? "green" : "gray"}
-               onClick={() => startBattleManually(battle.id)}
-               isDisabled={new Date() <= new Date(battle.endTime)}
-               color="white"
-             >
-               {new Date() > new Date(battle.endTime) ? "Finalize Battle" : "Battle Ongoing"}
-             </Button>
                         {/* Additional details can be added here */}
                       </Box>
                     </Collapse>

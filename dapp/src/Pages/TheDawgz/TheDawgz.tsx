@@ -73,7 +73,7 @@ const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366";
-const BATTLE_CONTRACT_ADDRESS = '0x0e96F3C42d594EBbfD0835d92FDab28014233182';
+const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
 const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/Metadata/";
 
 const ITEMS_PER_PAGE = 50;
@@ -87,6 +87,8 @@ const signer = provider.getSigner();
 const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
 const TheDawgz: React.FC = () => {
+
+
   interface NFT {
     tokenId: number;
     imageUrl: string;
@@ -94,7 +96,9 @@ const TheDawgz: React.FC = () => {
     isRegistered: boolean;
     dawgName?: string;
     dawgTaunt?: string;
+    isInBattle?: boolean;  // New field to indicate if the NFT is in battle
 }
+
 
 
 
@@ -118,6 +122,7 @@ const TheDawgz: React.FC = () => {
 
             const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
             const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+            const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
             const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
             const ownedTokenIdsArray = ownedTokenIds.map((tokenId) => tokenId.toNumber());
@@ -125,34 +130,43 @@ const TheDawgz: React.FC = () => {
             // Update the nftList state with the fetched token IDs
             setNftList(ownedTokenIdsArray);
 
-            const ownedNftsData = await Promise.all(
-                ownedTokenIdsArray.map(async (tokenId) => {
-          const metadata = await fetchNftData(tokenId);
-          const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
-          const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+            const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId) => {
+                const metadata = await fetchNftData(tokenId);
+                const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
+                const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
 
-          let dawgName = null;
-          let dawgTaunt = null; // Initialize variable for Dawg Taunt
+                let dawgName = null;
+                let dawgTaunt = null;
+                if (isRegistered) {
+                    dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+                    dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
+                }
 
-          if (isRegistered) {
-            dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-            dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId); // Fetch Dawg Taunt
-          }
+                // Checking if the NFT is currently in battle
+                const isInBattle = await battleContract.tokenInBattle(tokenId);
 
-          return { ...metadata, tokenId, isRegistered, dawgName, dawgTaunt, imageUrl }; // Include dawgTaunt in the return object
-        })
-      );
+                return {
+                    ...metadata,
+                    tokenId,
+                    imageUrl,
+                    isRegistered,
+                    dawgName,
+                    dawgTaunt,
+                    isInBattle  // Add the isInBattle property
+                };
+            }));
 
-      setNfts({ owned: ownedNftsData });
-    } catch (error) {
-      console.error("Failed to fetch owned NFTs:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            setNfts({ owned: ownedNftsData });
+        } catch (error) {
+            console.error("Failed to fetch owned NFTs:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  fetchNfts();
+    fetchNfts();
 }, [currentPage]);
+
 
     // Function to fetch individual NFT data
     const fetchNftData = async (tokenId: number) => {
@@ -262,6 +276,19 @@ const enterBattle = async (tokenId, dawgTaunt) => {
 
 
 
+const fetchTokenStats = async (tokenId) => {
+  try {
+    const stats = await battleContract.tokenStats(tokenId);
+    return {
+      valueEarned: stats.valueEarned,
+      timesWon: stats.timesWon,
+      timesLost: stats.timesLost,
+    };
+  } catch (error) {
+    console.error(`Error fetching stats for token ${tokenId}:`, error);
+    return { valueEarned: 0, timesWon: 0, timesLost: 0 };
+  }
+};
 
 
 
@@ -308,7 +335,7 @@ return (
 
               <TabPanels>
                   <TabPanel>
-                  <SimpleGrid columns={[1, 2, 2, 3]} spacing="20px">
+                  <SimpleGrid columns={[1, 1, 2, 3]} spacing="20px">
     {nfts.owned.length > 0 ? (
       nfts.owned.map((nft) => (
         <VStack key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" alignItems="flex-start">
@@ -319,13 +346,16 @@ return (
             <Image src={nft.imageUrl} marginTop="38px" alt={`NFT ${nft.name}`} borderRadius="md" />
             <Flex justifyContent="space-between" alignItems="center" mt="2">
               {nft.isRegistered ? (
-                <Text fontSize="32px" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+                <Text fontSize="24px" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
               ) : (
                 <Button colorScheme="pink" onClick={() => handleRegisterDawg(nft)}>
                   Register Dawg
                 </Button>
               )}
               <Flex>
+                {nft.isInBattle && (
+                  <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/boxing-gloves.png" alt="In Battle" boxSize="45px" />
+                )}
                 {nft.isRegistered && (
                   <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/dog-tag.png" alt="Registered" boxSize="40px" mr="2" />
                 )}
@@ -342,16 +372,13 @@ return (
           <Flex w="100%" minH="68px" >
           <Flex direction="column" w="65%" justifyContent="flex-start" alignItems="flex-start">
             <Button as={RouterLink} to={`/nftdetails/${nft.tokenId}`} colorScheme="green">Details</Button>
-            {nft.isRegistered && (
-              <Button
-                as="a"
-                href={`https://bscscan.com/address/${nft.tokenId}`}
-                target="_blank"
-                bg="red"
-              >
-                Battle your Dawg!
-              </Button>
-            )}
+            {nft.isRegistered && !nft.isInBattle ? (
+                           <Button as="a" href={`https://bscscan.com/address/${nft.tokenId}`} target="_blank" bg="red">
+                               Battle your Dawg!
+                           </Button>
+                       ) : nft.isInBattle ? (
+                           <Text fontSize="30px" color="red.500" fontWeight="bold">Dawg in Battle</Text>
+                       ) : null}
             <ChakraLink
   href={`https://bscscan.com/nft/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`}
   color="blue.500"
