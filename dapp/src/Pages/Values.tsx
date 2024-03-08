@@ -103,6 +103,10 @@ const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2'; //
 // #################################################################################################
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
+
+
+const OWNER_WALLET_ADDRESS = "0xEf8443b35ed7dfee399F2f279f0AAe7F942a7C13";
+
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
 // import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // Adjust the import path as necessary
 
@@ -110,6 +114,7 @@ const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; //
 
 
 function UserDetails() {
+
 
   const [userAddress, setUserAddress] = useState('');
   const [alpha7TokenBalance, setAlpha7TokenBalance] = useState('0.0000');
@@ -119,7 +124,11 @@ function UserDetails() {
   const [developerBNBBalance, setDeveloperBNBBalance] = useState('0.0000');
   const [treasuryBNBBalance, setTreasuryBNBBalance] = useState('0.0000');
   const [alpha7LPTokenSupply, setAlpha7LPTokenSupply] = useState('0.0000');
-    const [tokenPriceUSD, setTokenPriceUSD] = useState('Loading...');
+  const [tokenPriceUSD, setTokenPriceUSD] = useState('Loading...');
+  const [ownerTokenBalance, setOwnerTokenBalance] = useState('0.0000');
+  const [ownerBNBBalance, setOwnerBNBBalance] = useState('0.0000');
+  const [ownerWalletLPTokenBalance, setOwnerWalletLPTokenBalance] = useState('0.0000');
+
 
     const [connectedWalletLPTokenBalance, setConnectedWalletLPTokenBalance] = useState('0.0000');
 const [developerWalletLPTokenBalance, setDeveloperWalletLPTokenBalance] = useState('0.0000');
@@ -127,46 +136,51 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
 
-  useEffect(() => {
-    const fetchWalletDetails = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        setUserAddress(address);
+useEffect(() => {
+  const fetchWalletDetails = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      setUserAddress(address);
 
-          const fetchBNBBalance = async (walletAddress: string) => {
-          const balanceWei = await provider.getBalance(walletAddress);
-          return parseFloat(ethers.utils.formatEther(balanceWei)).toFixed(4);
-        };
+      const fetchBNBBalance = async (walletAddress: string) => {
+        const balanceWei = await provider.getBalance(walletAddress);
+        return parseFloat(ethers.utils.formatEther(balanceWei)).toFixed(4);
+      };
+
+      setBnbBalance(await fetchBNBBalance(address));
+      setDeveloperBNBBalance(await fetchBNBBalance(DEVELOPER_WALLET_ADDRESS));
+      setTreasuryBNBBalance(await fetchBNBBalance(TREASURY_WALLET_ADDRESS));
+      setOwnerBNBBalance(await fetchBNBBalance(OWNER_WALLET_ADDRESS)); // Fetch BNB balance for owner's wallet
+
+      // Fetch Alpha7 token balance
+      const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, signer);
+      const balance = await tokenContract.balanceOf(address);
+      setAlpha7TokenBalance(parseFloat(ethers.utils.formatUnits(balance, 9)).toFixed(0));
+
+      // Fetch developer and treasury token balances
+      const developerBalance = await tokenContract.balanceOf(DEVELOPER_WALLET_ADDRESS);
+      const treasuryBalance = await tokenContract.balanceOf(TREASURY_WALLET_ADDRESS);
+      const ownerBalance = await tokenContract.balanceOf(OWNER_WALLET_ADDRESS); // Fetch Alpha7 token balance for owner's wallet
+      setDeveloperTokenBalance(parseFloat(ethers.utils.formatUnits(developerBalance, 9)).toFixed(0));
+      setTreasuryTokenBalance(parseFloat(ethers.utils.formatUnits(treasuryBalance, 9)).toFixed(0));
+      setOwnerTokenBalance(parseFloat(ethers.utils.formatUnits(ownerBalance, 9)).toFixed(0)); // Setting Alpha7 token balance for owner's wallet
+
+      const alpha7LPContract = new ethers.Contract(ALPHA7_LP_TOKEN_ADDRESS, tokenAbi, provider);
+      const lpTokenSupply = await alpha7LPContract.totalSupply();
+      const ownerWalletLPBalance = await alpha7LPContract.balanceOf(OWNER_WALLET_ADDRESS); // Fetch LP token balance for owner's wallet
+      // Correctly format the supply for a token with 9 decimal places
+      const formattedLPSupply = parseFloat(ethers.utils.formatUnits(lpTokenSupply, 18)).toFixed(6);
+      setAlpha7LPTokenSupply(formattedLPSupply);
+      setOwnerWalletLPTokenBalance(ethers.utils.formatUnits(ownerWalletLPBalance, 18)); // Setting LP token balance for owner's wallet
+    }
+  };
+
+  fetchWalletDetails();
+}, []);
 
 
-        setBnbBalance(await fetchBNBBalance(address));
-        setDeveloperBNBBalance(await fetchBNBBalance(DEVELOPER_WALLET_ADDRESS));
-        setTreasuryBNBBalance(await fetchBNBBalance(TREASURY_WALLET_ADDRESS));
-
-        // Fetch Alpha7 token balance
-        const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, signer);
-        const balance = await tokenContract.balanceOf(address);
-        setAlpha7TokenBalance(parseFloat(ethers.utils.formatUnits(balance, 9)).toFixed(0));
-
-        // Fetch developer and treasury token balances
-        const developerBalance = await tokenContract.balanceOf(DEVELOPER_WALLET_ADDRESS);
-        const treasuryBalance = await tokenContract.balanceOf(TREASURY_WALLET_ADDRESS);
-        setDeveloperTokenBalance(parseFloat(ethers.utils.formatUnits(developerBalance, 9)).toFixed(0));
-        setTreasuryTokenBalance(parseFloat(ethers.utils.formatUnits(treasuryBalance, 9)).toFixed(0));
-
-        const alpha7LPContract = new ethers.Contract(ALPHA7_LP_TOKEN_ADDRESS, tokenAbi, provider);
-        const lpTokenSupply = await alpha7LPContract.totalSupply();
-        // Correctly format the supply for a token with 9 decimal places
-        const formattedLPSupply = parseFloat(ethers.utils.formatUnits(lpTokenSupply, 18)).toFixed(6);
-        setAlpha7LPTokenSupply(formattedLPSupply);
-
-      }
-    };
-
-    fetchWalletDetails();
-  }, []);
 
   const [bnbPriceInUSD, setBnbPriceInUSD] = useState('');
 
@@ -486,6 +500,23 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                         </VStack>
                       </Box>
                       </Flex>
+
+                      <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white">
+                      <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.855)" color="white">
+
+                    <VStack spacing={4}>
+                      <Text fontSize="xl" fontWeight="bold">Contract Owner Wallet</Text>
+
+                           <Text mb="2">{OWNER_WALLET_ADDRESS}</Text>
+                           <Text mb="2">Alpha7 Tokens: {ownerTokenBalance} (${parseFloat(ownerTokenBalance) * parseFloat(tokenPriceUSD)} USD)</Text>
+                           <Text mb="2">LP Token Balance: {ownerWalletLPTokenBalance}</Text>
+                           <Text mb="2"fontWeight="bold"> ${(parseFloat(ownerWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
+
+                           <Text mb="2">BNB Balance: {ownerBNBBalance} BNB (${parseFloat(ownerBNBBalance) * parseFloat(bnbPriceInUSD)} USD)</Text>
+                         </VStack>
+
+                    </Box>
+                    </Flex>
 
                       <Flex flex="1" paddingX="10px" minH="150px" justify="space-between" paddingY="10px" bgColor="rgba(0, 0, 0, 0.0)" color="white"  >
                       <Box flex="1" paddingX="10px" minH="150px"  paddingY="10px" bgColor="rgba(0, 0, 0, 0.85)" color="white">

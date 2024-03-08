@@ -5,12 +5,14 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 
 import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
+// //
+// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+// // // <YourActiveBattles />
 //
-import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
-// // <YourActiveBattles />
-
-
-import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
+// import AllActiveBattlesTest from './Components/AllActiveBattlesTest/AllActiveBattlesTest';
+// // // <AllActiveBattlesTest />
+//
+// import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // // <YourComplatedBattles />
 
 import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
@@ -405,8 +407,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               justifyContent="center" // Horizontally center the content
               alignItems="center" // Vertically center the content
             >
+{/*<BattleNowMainComponent />*/}
 
- <BattleNowMainComponent />
 
 
             </Box>
@@ -423,13 +425,14 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             {/* Content for the second column */}
 
 
-
+            {/*
                <Image
                  src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
                  w="400px" // Set the width of the image
                  alt="Logo" // Provide an alt attribute for accessibility
-               />
+               />*/}
                        </Box>
+
 
           {/* Third Column */}
           <Box
@@ -439,8 +442,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             justifyContent="center" // Horizontally center the content
             alignItems="center" // Vertically center the content
           >
-            {/* Content for the third column */}
-            <MiniSwapper />
+            {/* Content for the third column
+            <MiniSwapper /> */}
           </Box>
         </Flex>
 
@@ -456,7 +459,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >
-<YourActiveBattles />
       </Box>
 
       {/* Second Column */}
@@ -465,7 +467,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         minW={{ base: 'auto', md: '360px' }}
       >
 
-<YourComplatedBattles />
 
       </Box>
     </Flex>
@@ -476,9 +477,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            >
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
-               <FastSwapComponent />
-               <UserHeaderComponent />
-               <UserProfileRegister />
           {/*      <DropdownComponent /> */}
              </Box>
            </Flex>

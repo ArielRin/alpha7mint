@@ -14,7 +14,6 @@ const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d
 
 
 
-
 interface BattleDetails {
   id: number;
   initiatorTokenId: number;
@@ -27,94 +26,62 @@ interface BattleDetails {
   countdown: string;
 }
 
-const YourCompletedBattles: React.FC = () => {
+const YourComplatedBattles: React.FC = () => {
+  const [activeBattles, setActiveBattles] = useState<BattleDetails[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [userAddress, setUserAddress] = useState<string | null>(null);
-  const [completedBattles, setCompletedBattles] = useState<BattleDetails[]>([]);
-  const [ownedNFTs, setOwnedNFTs] = useState<number[]>([]);
-  const [revealState, setRevealState] = useState<Record<number, { isRevealed: boolean, countdown: number }>>({});
   const [expandedBattleIds, setExpandedBattleIds] = useState<Record<number, boolean>>({});
+  const [completedBattles, setCompletedBattles] = useState<BattleDetails[]>([]);
+    const [ownedNFTs, setOwnedNFTs] = useState<number[]>([]);
 
-  // Load reveal state from localStorage
-  useEffect(() => {
+    const [revealState, setRevealState] = useState<Record<number, { isRevealed: boolean, countdown: number }>>({});
+    useEffect(() => {
     const savedRevealState = localStorage.getItem('revealState');
     if (savedRevealState) {
       setRevealState(JSON.parse(savedRevealState));
     }
   }, []);
 
-  // Save reveal state to localStorage
+  // Save revealState to local storage whenever it updates
   useEffect(() => {
     localStorage.setItem('revealState', JSON.stringify(revealState));
   }, [revealState]);
 
-  // Fetch user Ethereum address
-  useEffect(() => {
-    const fetchUserAddress = async () => {
-      if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        try {
-          const address = await signer.getAddress();
-          setUserAddress(address);
-        } catch (error) {
-          console.error("Error fetching user address:", error);
-        }
-      }
-    };
 
-    fetchUserAddress();
-  }, []);
+  const fetchUserAddress = async () => {
+     if (window.ethereum) {
+       const provider = new ethers.providers.Web3Provider(window.ethereum);
+       const signer = provider.getSigner();
+       try {
+         const address = await signer.getAddress();
+         setUserAddress(address);
+       } catch (error) {
+         console.error("Error fetching user address:", error);
+       }
+     }
+   };
 
-  // Fetch user's owned NFTs
-  useEffect(() => {
+
     const fetchOwnedNFTs = async () => {
-      if (userAddress && window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
-        try {
-          const ownedTokenIds = await contract.listNFTs(userAddress);
-          setOwnedNFTs(ownedTokenIds.map(id => id.toNumber()));
-        } catch (error) {
-          console.error("Failed to fetch owned NFTs:", error);
-        }
-      }
-    };
+     if (userAddress && window.ethereum) {
+       const provider = new ethers.providers.Web3Provider(window.ethereum);
+       const contract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
 
-    if (userAddress) {
-      fetchOwnedNFTs();
-    }
-  }, [userAddress]);
+       try {
+         const ownedTokenIds = await contract.listNFTs(userAddress);
+         setOwnedNFTs(ownedTokenIds.map(id => id.toNumber()));
+       } catch (error) {
+         console.error("Failed to fetch owned NFTs:", error);
+       }
+     }
+   };
 
-  // Fetch completed battles
-  useEffect(() => {
-    const fetchCompletedBattles = async () => {
-      if (userAddress && window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-        try {
-          const completedBattleIds = await contract.getCompletedBattlesByParticipant(userAddress);
-          const battlesPromises = completedBattleIds.map(async (id) => {
-            const details = await contract.getBattleDetails(id);
-            const endTime = new Date(details.startTime.toNumber() * 1000);
-            return {
-              // ...battle details
-            };
-          });
+   useEffect(() => {
+     fetchOwnedNFTs();
+   }, [userAddress]);
 
-          const allCompletedBattles = await Promise.all(battlesPromises);
-          setCompletedBattles(allCompletedBattles);
-        } catch (error) {
-          console.error("Failed to fetch completed battles:", error);
-        }
-      }
-    };
+// ------------------------------------ //
 
-    if (userAddress) {
-      fetchCompletedBattles();
-    }
-  }, [userAddress]);
-
-  // Function to calculate remaining time for a battle
   const calculateTimeLeft = (endTime: Date) => {
     const now = new Date();
     const difference = endTime.getTime() - now.getTime();
@@ -126,18 +93,25 @@ const YourCompletedBattles: React.FC = () => {
     return 'Battle Ended';
   };
 
-  // Function to toggle expanded view of battles
-  const toggleExpandedBattle = (battleId: number) => {
-    setExpandedBattleIds(prevState => ({
-      ...prevState,
-      [battleId]: !prevState[battleId]
-    }));
+
+
+
+
+
+  // Function to fetch active battle IDs
+  const fetchActiveBattleIds = async () => {
+    if (userAddress && window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+      try {
+        const battleIds = await contract.getActiveBattleIds();
+        // Process and update the state with these battle IDs
+        // Example: setActiveBattles(battleIds.map(id => id.toNumber()));
+      } catch (error) {
+        console.error("Failed to fetch active battles:", error);
+      }
+    }
   };
-
-
-
-
-
 
 
 
@@ -155,10 +129,151 @@ const YourCompletedBattles: React.FC = () => {
                   //-------------------//-----------------------//------------------------//
 
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveBattles((currentBattles) => currentBattles.map((battle) => ({
+        ...battle,
+        countdown: calculateTimeLeft(battle.endTime)
+      })));
+    }, 1000);
 
-   //-------------------//-
+    return () => clearInterval(intervalId);
+  }, [calculateTimeLeft]);
+
+
+
+     //-------------------//-----------------------//------------------------//
+
+
+  const toggleExpandedBattle = (battleId: number) => {
+  setExpandedBattleIds(prevState => ({
+    ...prevState,
+    [battleId]: !prevState[battleId]
+  }));
+};
+
+
+
+   //-------------------//-----------------------//------------------------//
+
+   const startBattleManually = async (battleId) => {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
+
+        try {
+          const transaction = await contract.startBattleManually(battleId);
+          await transaction.wait();
+          console.log(`Battle ${battleId} finalized successfully`);
+          // Refresh battles list or show a success message
+        } catch (error) {
+          console.error(`Error finalizing battle ${battleId}:`, error);
+          // Show an error message
+        }
+      }
+    };
+        //-------------------//-----------------------//------------------------//
+        const fetchCompletedBattlesByParticipant = async () => {
+    if (userAddress && window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+
+      try {
+        const completedBattleIds = await contract.getCompletedBattlesByParticipant(userAddress);
+        const battleDetailsPromises = completedBattleIds.map(async (id) => {
+          const details = await contract.getBattleDetails(id);
+
+          return {
+            id: details.id.toNumber(),
+            initiatorTokenId: details.initiatorTokenId.toNumber(),
+            opponentTokenId: details.secondaryTokenId.toNumber(),
+            initiator: details.initiator,
+            secondaryEntrant: details.secondaryEntrant,
+            startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
+            battleValue: ethers.utils.formatEther(details.totalValueInBattle),
+            winnerTokenId: details.winnerTokenId.toNumber(), // Added winnerTokenId
+            // Additional details can be added here if necessary
+          };
+        });
+
+        const allCompletedBattles = await Promise.all(battleDetailsPromises);
+        allCompletedBattles.sort((a, b) => b.id - a.id);
+        setCompletedBattles(allCompletedBattles);
+      } catch (error) {
+        console.error("Failed to fetch completed battles:", error);
+      }
+    }
+  };
+
+
+
           //-------------------//-----------------------//------------------------//
 
+
+
+            //-------------------//-----------------------//------------------------//
+            const handleRevealWinner = async (battleId, battleValue) => {
+           setRevealState(prevState => ({
+             ...prevState,
+             [battleId]: { isRevealed: false, countdown: 3 } // Start countdown from 3 seconds
+           }));
+
+           // Countdown logic
+           const intervalId = setInterval(() => {
+             setRevealState(prevState => {
+               if (prevState[battleId].countdown > 1) {
+                 return { ...prevState, [battleId]: { ...prevState[battleId], countdown: prevState[battleId].countdown - 1 } };
+               } else {
+                 clearInterval(intervalId);
+                 return { ...prevState, [battleId]: { ...prevState[battleId], isRevealed: true, countdown: 0 } }; // Reveal the winner
+               }
+             });
+           }, 1000);
+         };
+                //-------------------//-----------------------//------------------------//
+                    //-------------------//-----------------------//------------------------//
+        useEffect(() => {
+          if (userAddress) {
+            fetchCompletedBattlesByParticipant();
+          }
+        }, [userAddress]);
+
+        const isBattleOver12HoursOld = (battleStartTime) => {
+  const startTime = new Date(battleStartTime).getTime();
+  const now = new Date().getTime();
+  return now - startTime > 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+};
+
+
+            //-------------------//-----------------------//------------------------//
+            useEffect(() => {
+              const savedRevealState = localStorage.getItem('revealState');
+              if (savedRevealState) {
+                setRevealState(JSON.parse(savedRevealState));
+              }
+            }, []);
+
+            // This useEffect hook saves the revealState to local storage whenever it updates.
+            useEffect(() => {
+              localStorage.setItem('revealState', JSON.stringify(revealState));
+            }, [revealState]);
+
+            // Function to fetch all necessary data
+      const fetchAllData = async () => {
+        await fetchUserAddress();
+        await fetchOwnedNFTs();
+        await fetchActiveBattleIds();
+        await fetchCompletedBattlesByParticipant();
+      };
+
+      useEffect(() => {
+        fetchAllData(); // Fetch initial data
+
+        const intervalId = setInterval(fetchAllData, 14000); // Refresh data every 14 seconds
+
+        return () => clearInterval(intervalId); // Cleanup interval
+      }, [userAddress, calculateTimeLeft]); // Dependencies for useEffect
 
 
 
@@ -235,4 +350,4 @@ const YourCompletedBattles: React.FC = () => {
 
 };
 
-export default YourCompletedBattles;
+export default YourComplatedBattles;
