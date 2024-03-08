@@ -15,7 +15,7 @@ import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComp
 // import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // // <YourComplatedBattles />
 
-// import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // <BattleNowMainComponent />
 
 // import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
@@ -76,6 +76,7 @@ import {
   TabList,
   TabPanels,
   Spacer,
+  Center,
   Tab,
   TabPanel,
   Input,
@@ -384,6 +385,28 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               minH="60px" // Minimum height of 400px for the row
             >
           </Flex>
+                   <Flex
+                        direction={{ base: 'column', md: 'row' }}
+                        gap="4" // Adjust gap as needed
+                        p={4} // Adjust padding as needed
+                        minH="60px" // Minimum height of 400px for the row
+                      >
+
+                      <Center my={4}>
+       <Image src="./token.gif" alt="Token" />
+     </Center>
+
+                    </Flex>
+
+
+
+
+
+
+
+
+
+
           {/* New Flex Row with 3 Columns */}
         <Flex
           direction={{ base: 'column', md: 'row' }}
@@ -477,7 +500,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            >
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
-          {/*      <DropdownComponent /> */}
              </Box>
            </Flex>
          </Box>

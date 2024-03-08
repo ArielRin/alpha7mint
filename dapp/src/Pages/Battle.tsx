@@ -15,7 +15,7 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 // import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // // <YourComplatedBattles />
 //
-// import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // // <BattleNowMainComponent />
 
 // import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
@@ -407,8 +407,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               justifyContent="center" // Horizontally center the content
               alignItems="center" // Vertically center the content
             >
-{/*<BattleNowMainComponent />*/}
-
+ <BattleNowMainComponent />
 
 
             </Box>
