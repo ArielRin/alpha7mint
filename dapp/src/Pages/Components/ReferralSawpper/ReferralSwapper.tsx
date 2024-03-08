@@ -398,8 +398,8 @@ setselectedReferrer(contractOptions[key]);
 
   return (
 
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-     <div style={{ width: '370px', backgroundColor: 'rgba(61, 79, 108, 0.9)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh', marginTop: '80px'}}>
+     <div style={{ width: '370px', backgroundColor: 'rgba(0, 0, 0, 0.72)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
      <div style={{ marginBottom: '20px' }}>
 
      </div>
@@ -484,7 +484,7 @@ setselectedReferrer(contractOptions[key]);
     <span style={{ wordBreak: 'break-all' }}>{selectedContract}</span>
   </div>
 </div>
-       <button onClick={sendEther} style={{ width: '100%', padding: '10px 20px', marginTop: '0px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '12px' }}>
+       <button onClick={sendEther} style={{ width: '100%', padding: '10px 20px', marginTop: '0px', backgroundColor: '#46a546', color: 'white', border: 'none', borderRadius: '12px' }}>
          Buy ALPHA7
        </button>
 

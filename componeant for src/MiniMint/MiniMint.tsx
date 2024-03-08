@@ -21,9 +21,14 @@ function NftMint() {
         addressOrName: NFTMINT_CONTRACT_ADDRESS,
         contractInterface: nftMintAbi,
     };
+
     const { writeAsync: mint, error: mintError } = useContractWrite({
         ...contractConfig,
         functionName: 'mint',
+        args: [mintAmount],
+        overrides: {
+            value: ethers.utils.parseEther((0.08 * mintAmount).toString()),
+        },
     });
 
     const refreshInterval = 30000;
@@ -33,13 +38,14 @@ function NftMint() {
             fetchContractData();
         }, refreshInterval);
         return () => clearInterval(interval);
-    }, []);
+    }, []); // Removed dependencies to prevent unwanted refreshes.
 
     useEffect(() => {
-        fetchContractData();
-    }, []);
+        if (!loading) fetchContractData();
+    }, [loading]); // Rerun when loading changes.
 
     async function fetchContractData() {
+        setLoading(true);
         try {
             const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed1.ninicoin.io/');
             const contract = new ethers.Contract(NFTMINT_CONTRACT_ADDRESS, nftMintAbi, provider);
@@ -47,98 +53,94 @@ function NftMint() {
             setTotalSupply(supply.toNumber());
         } catch (error) {
             console.error('Error fetching contract data:', error);
-            toast({
-                title: 'Data Fetch Error',
-                description: 'There was an error fetching contract data.',
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-                position: 'top-right'
-            });
+            toastError('There was an error fetching contract data.');
         } finally {
             setLoading(false);
         }
     }
 
     const onMintClick = async () => {
+        if (!isConnected) {
+            toastError('Wallet not connected.');
+            return;
+        }
+
+        setMintLoading(true);
         try {
-            setMintLoading(true);
-            const totalPrice = ethers.utils.parseEther((mintAmount * 0.08).toString());
-            const tx = await mint({ args: [mintAmount, { value: totalPrice }] });
-            const receipt = await tx.wait();
+            const tx = await mint();
+            await tx.wait();
 
-            // Process receipt here to extract the tokenId
-            // The logic will depend on your contract's event details
+            // Extract tokenId from receipt if needed
+            // Example: const event = receipt.events.find(e => e.event === 'YourEventName');
+            // setTokenId(event.args.tokenId);
 
-            toast({
-                title: 'Mint Successful',
-                description: `Successfully minted ${mintAmount} NFT${mintAmount > 1 ? 's' : ''}.`,
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-                position: 'top-right'
-            });
+            toastSuccess(`Successfully minted ${mintAmount} NFT${mintAmount > 1 ? 's' : ''}.`);
         } catch (error) {
-            let errorMessage = 'An unknown error occurred';
-            if (error instanceof Error) {
-                errorMessage = error.message;
-            }
-
-            toast({
-                title: 'Error',
-                description: errorMessage,
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-                position: 'top-right'
-            });
+            toastError('Minting failed. Please try again.');
+            console.error('Minting error:', error);
         } finally {
             setMintLoading(false);
         }
     };
 
-    const addNftToWallet = async () => {
-    if (!tokenId) return;
+    // Helper functions for toast messages
+    const toastSuccess = (description) => {
+        toast({
+            title: 'Success',
+            description,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+        });
+    };
 
-    try {
-        if (window.ethereum && window.ethereum.isMetaMask) {
-            // Use 'any' type to bypass TypeScript type checking for custom MetaMask method
-            const ethereum = window.ethereum as any;
-            const wasAdded = await ethereum.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC721',
-                    options: {
-                        address: NFTMINT_CONTRACT_ADDRESS,
-                        symbol: "ALPHADAWGZ", // Replace with your token symbol
-                        tokenId: tokenId, // Token ID to watch
-
-                    },
-                },
-            });
-
-            if (wasAdded) {
-                toast({
-                    title: 'NFT Added',
-                    description: 'NFT added to your wallet!',
-                    status: 'success',
-                    duration: 5000,
-                    isClosable: true,
-                    position: 'top-right'
-                });
-            }
-        }
-    } catch (error) {
+    const toastError = (description) => {
         toast({
             title: 'Error',
-            description: 'Failed to add NFT to wallet.',
+            description,
             status: 'error',
             duration: 5000,
             isClosable: true,
-            position: 'top-right'
+            position: 'top-right',
         });
-    }
-};
+    };
+
+
+    const addNftToWallet = async () => {
+        if (!tokenId) {
+            toastError('No token ID found.');
+            return;
+        }
+
+        try {
+            if (window.ethereum && window.ethereum.isMetaMask) {
+                const wasAdded = await window.ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC721',
+                        options: {
+                            address: NFTMINT_CONTRACT_ADDRESS,
+                            symbol: 'ALPHADAWGZ', // Replace with your token symbol
+                            tokenId: tokenId,
+                        },
+                    },
+                });
+
+                if (wasAdded) {
+                    toastSuccess('NFT added to your wallet!');
+                } else {
+                    toastError('Failed to add NFT to wallet.');
+                }
+            } else {
+                toastError('MetaMask is not installed.');
+            }
+        } catch (error) {
+            toastError('Failed to add NFT to wallet.');
+            console.error('Error adding NFT to wallet:', error);
+        }
+    };
+
 
 
     const maxSupply = 777;
@@ -146,7 +148,7 @@ function NftMint() {
 
   return (
 
-      <div style={{ width: '330px', height: '360px',  backgroundColor: 'rgba(33, 33, 33, 0.7)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ width: '330px', height: '360px',  backgroundColor: 'rgba(33, 33, 33, 0.85)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
         <div>
           <Text className="totalSupply" style={{ padding: '10px', textAlign: 'center', fontWeight: 'bold', color: 'white' }}>
@@ -166,8 +168,8 @@ function NftMint() {
                 onClick={onMintClick}
                 disabled={!isConnected || mintLoading || remainingSupply === 0}
                 textColor='white'
-                bg='#4656a3'
-                _hover={{ bg: '#260c3f' }}
+                bg='#015f88'
+                _hover={{ bg: '#015f88' }}
                 marginTop='0'>
                 Mint an AlphaDawg
               </Button>
@@ -184,7 +186,7 @@ function NftMint() {
         {tokenId && (
           <Button
             onClick={addNftToWallet}
-            style={{ marginTop: '10px', color: 'white', backgroundColor: '#4656a3' }}>
+            style={{ marginTop: '10px', color: 'white', backgroundColor: '#015f88' }}>
             Add NFT to Wallet
           </Button>
         )}

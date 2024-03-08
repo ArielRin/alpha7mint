@@ -1,5 +1,7 @@
 import HomePage from './Pages/HomePage';
 import Buy from './Pages/Buy';
+import MintPage from './Pages/MintPage';
+import Battle from './Pages/Battle';
 import Values from './Pages/Values';
 import TheDawgz from './Pages/TheDawgz/TheDawgz';
 import NftDetails from './Pages/Nft/NftDetails';
@@ -165,6 +167,8 @@ useEffect(() => {
         <Routes>
           <Route path="/" element={<HomePage />} />
             <Route path="/buy" element={<Buy />} />
+              <Route path="/mint" element={<MintPage />} />
+                <Route path="/battle" element={<Battle />} />
               <Route path="/thedawgz" element={<TheDawgz />} /> // New route for TheDawgz page
                 <Route path="/values" element={<Values />} />
                   <Route path="/nftdetails/:tokenId" element={<NftDetails />} />

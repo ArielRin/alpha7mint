@@ -421,6 +421,36 @@ useEffect(() => {
          const fillYPosition = tankHeight - fillHeight + 10; // Y position for the fill
 
         // #################################################################################################
+        const [totFeesPaid, setTotFeesPaid] = useState({
+          rfi: 0,
+          nftReward: 0,
+          liquidity: 0,
+          dev: 0
+        });
+
+
+
+        useEffect(() => {
+          const fetchTotFeesPaid = async () => {
+            if (typeof window.ethereum !== 'undefined') {
+              const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed1.ninicoin.io/');
+              const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, provider);
+              try {
+                const fees = await tokenContract.totFeesPaid();
+                setTotFeesPaid({
+                  rfi: fees.rfi.toString(),
+                  nftReward: fees.nftReward.toString(),
+                  liquidity: fees.liquidity.toString(),
+                  dev: fees.dev.toString()
+                });
+              } catch (error) {
+                console.error('Error fetching totFeesPaid:', error);
+              }
+            }
+          };
+
+          fetchTotFeesPaid();
+        }, []);
 
           // #################################################################################################
 
@@ -462,6 +492,8 @@ useEffect(() => {
                       </VStack>
                     </Box>
 
+
+
                     {/* first#2 Row */}
                     <Box w="100%" minH="125px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
                       <VStack spacing={4}>
@@ -470,6 +502,14 @@ useEffect(() => {
                       <Text fontSize="md">Market Cap: ${(parseFloat(tokenPriceUSD) * 7000000000).toFixed(2)} USD</Text>
                       </VStack>
                     </Box>
+
+                    <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
+                        <VStack spacing={4}>
+                          <Text fontSize="xl" fontWeight="bold">Alpha7 Rewards to Dispurse</Text>
+
+                          <Text mb="2"fontWeight="bold"> {treasuryTokenBalance} ALPHA7 Tokens ${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
+                        </VStack>
+                      </Box>
 
                     {/* first#3 Row */}
                     <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white"marginTop="10px">
@@ -525,7 +565,6 @@ useEffect(() => {
                       <Text fontSize="xl" fontWeight="bold">NFT Treasury Wallet</Text>
 
                                               <Text mb="2">0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7</Text>
-                      <Text mb="2">Alpha7 Rewards to Dispurse</Text>
                       <Text mb="2"fontWeight="bold"> {treasuryTokenBalance} ALPHA7 Tokens ${(parseFloat(treasuryTokenBalance) * parseFloat(tokenPriceUSD)).toFixed(2)} USD</Text>
                       <Text mb="2">LP Token Balance: {nftTreasuryWalletLPTokenBalance}</Text>
                       <Text mb="2"fontWeight="bold"> ${(parseFloat(nftTreasuryWalletLPTokenBalance) * parseFloat(lpTokenValue) * 2).toFixed(2)} USD</Text>
@@ -536,8 +575,12 @@ useEffect(() => {
 
                     </Flex>
 
+
+
+
+
                     {/* Third Row */}
-                    <Box w="100%" minH="200px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+                    <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
                       <VStack spacing={4}>
                       <Text fontSize="xl" fontWeight="bold">Additional Liquidity Details</Text>
                       <Text mb="2">Projects Total Liquidity Valuation</Text>
@@ -554,59 +597,116 @@ useEffect(() => {
 
                       <Text mb="2" fontWeight="bold">------------------------</Text>
 
-                      <Flex direction="column" align="center" minH="300px">
-                       <Box textAlign="center" mb="20px">
-                                 <Text mb="2" fontWeight="bold">Swap Tokens At Amount: {formattedSwapTokensAtAmount} Tokens</Text>
-    <Text mb="2" fontWeight="bold">Alpha7 Tokens awaiting swapNliquify: {contractTokenBalance} Tokens</Text>
-    <Box textAlign="center" mb="20px">
-       <Text mb="2" fontWeight="bold">Swap and Liquify Fill Level</Text>
-          <Text mb="2" fontWeight="normal">will pay Reflections, send Marketing/Dev Fees and add to Liquidity on 100% </Text>
-
-<Box textAlign="center" mb="20px">
-
-
-<Flex direction="column" align="center" justify="center" w="100%">
-  <Box textAlign="center" mb="20px">
-  <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
-  {/* Tank outline */}
-  <rect x="10" y="10" rx="15" ry="15" width={tankWidth} height={tankHeight} stroke="black" strokeWidth="3" fill="grey" />
-  {/* Water fill */}
-  <rect x="13" y={fillYPosition} rx="12" ry="12" width={tankWidth - 6} height={fillHeight} fill="blue" />
-  {/* Additional details for the cartoon effect */}
-  <circle cx="105" cy="40" r="10" fill="yellow" stroke="black" strokeWidth="2" /> {/* Sun */}
-  <line x1="105" y1="10" x2="105" y2="30" stroke="black" strokeWidth="2" /> {/* Sun rays */}
-  <line x1="85" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
-  <line x1="125" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
-  {/* Text for percentage */}
-  <text x="50%" y="65" fontSize="20" fontWeight="bold" textAnchor="middle" fill="white">{`${percentage}% Full`}</text>
-  </svg>
-    <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
-      {/* SVG content */}
-    </svg>
-  </Box>
-</Flex>
-
-
-   </Box>
-</Box>
-
-</Box>
-  </Flex>
-
 
 
 
                       </VStack>
                  </Box>
-                    {/* SVG Visualization of the Cup Fill Level */}
 
 
-                    {/* Fourth Row */}
-                    <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white">
-                      <VStack spacing={4}>
-                      </VStack>
-                    </Box>
-                  </Flex>
+            <Box w="100%"  paddingY="5px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+
+                         <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.0)" color="white" marginTop="10px">
+                           <Flex direction={["column", "row"]} justify="space-around" w="100%">
+                           <VStack padding="5px">
+                           <Text fontSize="xl" fontWeight="bold">Swap Liquify Event Details</Text>
+
+                           </VStack>
+                           </Flex>
+                           </Box>
+              <Flex direction={["column", "row"]} justify="space-around" w="100%">
+              <VStack padding="5px">
+              <Box textAlign="center" mb="20px">
+                        <Text mb="2" fontWeight="bold">Swap Tokens At Amount: {formattedSwapTokensAtAmount} Tokens</Text>
+             <Text mb="2" fontWeight="bold">Alpha7 Tokens awaiting swapNliquify: {contractTokenBalance} Tokens</Text>
+             <Box textAlign="center" mb="20px">
+             <Text mb="2" fontWeight="bold">Swap and Liquify Fill Level</Text>
+             <Text mb="2" fontWeight="normal">will pay Reflections, send Marketing/Dev Fees and add to Liquidity on 100% </Text>
+
+             <Box textAlign="center" mb="20px">
+
+
+             <Flex direction="column" align="center" justify="center" w="100%">
+
+             <Box textAlign="center" mb="20px">
+             <svg width="220" height="150" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+             {/* Tank outline */}
+             <rect x="10" y="10" rx="15" ry="15" width={tankWidth} height={tankHeight} stroke="black" strokeWidth="3" fill="grey" />
+             {/* Water fill */}
+             <rect x="13" y={fillYPosition} rx="12" ry="12" width={tankWidth - 6} height={fillHeight} fill="blue" />
+             {/* Additional details for the cartoon effect */}
+             <circle cx="105" cy="40" r="10" fill="yellow" stroke="black" strokeWidth="2" /> {/* Sun */}
+             <line x1="105" y1="10" x2="105" y2="30" stroke="black" strokeWidth="2" /> {/* Sun rays */}
+             <line x1="85" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+             <line x1="125" y1="40" x2="105" y2="40" stroke="black" strokeWidth="2" />
+             {/* Text for percentage */}
+             <text x="50%" y="65" fontSize="20" fontWeight="bold" textAnchor="middle" fill="white">{`${percentage}% Full`}</text>
+             </svg>
+
+             </Box>
+
+             </Flex>
+
+
+
+             </Box>
+
+             </Box>
+
+
+             </Box>
+              </VStack>
+
+              </Flex>
+              <Box w="100%" minH="100px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.0)" color="white" marginTop="10px">
+              <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.0)" color="white" marginTop="10px">
+                <Flex direction={["column", "row"]} justify="space-around" w="100%">
+                <VStack padding="5px">
+                <Text fontSize="xl" fontWeight="bold">Token splits the following on swap liquify event (Paylady)</Text>
+                <Text fontSize="lg" >Totals split in events to date</Text>
+
+                </VStack>
+                </Flex>
+                </Box>
+            <Flex direction={["column", "row"]} justify="space-around" w="100%">
+            <VStack padding="5px">
+            <Text fontSize="xl" fontWeight="bold" >1%</Text>
+            <Text fontSize="lg">Reflections to Holders</Text>
+
+            <Text fontSize="lg">{(totFeesPaid.rfi / 1e9).toFixed(0)} Tokens</Text>
+            <Text fontSize="sm">( ${((totFeesPaid.rfi / 1e9) * parseFloat(tokenPriceUSD)).toFixed(2)} USD )</Text>
+            </VStack>
+            <VStack padding="5px">
+
+            <Text fontSize="xl" fontWeight="bold" >2%</Text>
+            <Text fontSize="lg">NFT Rewards</Text>
+            <Text fontSize="lg">{((totFeesPaid.rfi  / 1e9) * 2 ).toFixed(0)} Tokens</Text>
+            <Text fontSize="sm">( ${(((totFeesPaid.rfi  / 1e9) * 2 ) * parseFloat(tokenPriceUSD)).toFixed(2)} USD )</Text>
+            </VStack>
+            <VStack padding="5px">
+            <Text fontSize="xl" fontWeight="bold" >1%</Text>
+            <Text fontSize="lg">Auto Liquidity to Pancake</Text>
+            <Text fontSize="lg">{(totFeesPaid.liquidity / 1e9).toFixed(0)} Tokens</Text>
+            <Text fontSize="sm">( ${((totFeesPaid.liquidity / 1e9) * parseFloat(tokenPriceUSD)).toFixed(2)} USD )</Text>
+            </VStack>
+            <VStack padding="5px">
+            <Text fontSize="xl" fontWeight="bold" >3%</Text>
+            <Text fontSize="lg">Development Wallet</Text>
+            <Text fontSize="lg"> {(totFeesPaid.dev / 1e9).toFixed(0)} Tokens</Text>
+            <Text fontSize="sm">( ${((totFeesPaid.dev / 1e9) * parseFloat(tokenPriceUSD)).toFixed(2)} USD )</Text>
+            </VStack>
+            </Flex>
+            </Box>
+              </Box>
+
+
+             <Box w="100%" minH="50px" paddingY="20px" bgColor="rgba(0, 0, 0, 0.85)" color="white" marginTop="10px">
+               <Flex direction={["column", "row"]} justify="space-around" w="100%">
+               <VStack padding="5px">
+               </VStack>
+               </Flex>
+               </Box>
+                    </Flex>
   );
 };
 

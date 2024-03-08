@@ -79,7 +79,7 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 const ITEMS_PER_PAGE = 50;
 
 
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+const provider = new ethers.providers.Web3Provider(window.ethereum as any);
 const signer = provider.getSigner();
 
 
@@ -106,67 +106,68 @@ const TheDawgz: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
-    const [nftList, setNftList] = useState([]);
+    const [nftList, setNftList] = useState<number[]>([]);
 
 
 
+    const [ownedTokenIds, setOwnedTokenIds] = useState<BigNumber[]>([]);
 
 
-    useEffect(() => {
-    const fetchNfts = async () => {
-        setIsLoading(true);
-        try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const walletAddress = await signer.getAddress();
 
-            const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
-            const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
-            const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+useEffect(() => {
+const fetchNfts = async () => {
+  setIsLoading(true);
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const signer = provider.getSigner();
+    const walletAddress = await signer.getAddress();
 
-            const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
-            const ownedTokenIdsArray = ownedTokenIds.map((tokenId) => tokenId.toNumber());
+    const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
+    const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+    const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
-            // Update the nftList state with the fetched token IDs
-            setNftList(ownedTokenIdsArray);
+    const ownedTokenIds: BigNumber[] = await userRegistryContract.listNFTs(walletAddress);
+    const ownedTokenIdsArray: number[] = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
 
-            const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId) => {
-                const metadata = await fetchNftData(tokenId);
-                const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
-                const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+    // Update the nftList state with the fetched token IDs
+    setNftList(ownedTokenIdsArray);
 
-                let dawgName = null;
-                let dawgTaunt = null;
-                if (isRegistered) {
-                    dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-                    dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
-                }
+    const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId: number) => {
+      const metadata = await fetchNftData(tokenId);
+      const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
+      const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
 
-                // Checking if the NFT is currently in battle
-                const isInBattle = await battleContract.tokenInBattle(tokenId);
+      let dawgName = null;
+      let dawgTaunt = null;
+      if (isRegistered) {
+        dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+        dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
+      }
 
-                return {
-                    ...metadata,
-                    tokenId,
-                    imageUrl,
-                    isRegistered,
-                    dawgName,
-                    dawgTaunt,
-                    isInBattle  // Add the isInBattle property
-                };
-            }));
+      // Checking if the NFT is currently in battle
+      const isInBattle = await battleContract.tokenInBattle(tokenId);
 
-            setNfts({ owned: ownedNftsData });
-        } catch (error) {
-            console.error("Failed to fetch owned NFTs:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      return {
+        ...metadata,
+        tokenId,
+        imageUrl,
+        isRegistered,
+        dawgName,
+        dawgTaunt,
+        isInBattle  // Add the isInBattle property
+      };
+    }));
 
-    fetchNfts();
+    setNfts({ owned: ownedNftsData });
+  } catch (error) {
+    console.error("Failed to fetch owned NFTs:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+fetchNfts();
 }, [currentPage]);
-
 
     // Function to fetch individual NFT data
     const fetchNftData = async (tokenId: number) => {
@@ -230,11 +231,12 @@ const addNftToWallet = async (tokenId: number) => {
 // ------------------------------------------------------------------------------ //
 
 
-const [selectedNFTDetails, setSelectedNFTDetails] = useState(null);
+const [selectedNFTDetails, setSelectedNFTDetails] = useState<NFT | null>(null);
 
-const handleSelectNFT = (nft) => {
+const handleSelectNFT = (nft: NFT) => {
     setSelectedNFTDetails(nft);
 };
+
 
 
 const fetchEntryFee = async () => {
@@ -262,21 +264,21 @@ useEffect(() => {
 }, []);
 
 
-const enterBattle = async (tokenId, dawgTaunt) => {
-    try {
-        const entryFee = await fetchEntryFee();
-        // Call the contract method with tokenId and dawgTaunt only
-        const transaction = await battleContract.enterBattle(tokenId, dawgTaunt, { value: entryFee });
-        await transaction.wait();
-        console.log('Battle entered successfully');
-    } catch (error) {
-        console.error('Error entering battle:', error);
-    }
+const enterBattle = async (tokenId: number, dawgTaunt: string) => {
+  try {
+    const entryFee = await fetchEntryFee();
+    // Call the contract method with tokenId and dawgTaunt only
+    const transaction = await battleContract.enterBattle(tokenId, dawgTaunt, { value: entryFee });
+    await transaction.wait();
+    console.log('Battle entered successfully');
+  } catch (error) {
+    console.error('Error entering battle:', error);
+  }
 };
 
 
 
-const fetchTokenStats = async (tokenId) => {
+const fetchTokenStats = async (tokenId: number) => {
   try {
     const stats = await battleContract.tokenStats(tokenId);
     return {
@@ -289,6 +291,7 @@ const fetchTokenStats = async (tokenId) => {
     return { valueEarned: 0, timesWon: 0, timesLost: 0 };
   }
 };
+
 
 
 

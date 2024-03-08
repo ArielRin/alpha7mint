@@ -117,9 +117,12 @@ const HeaderWithDropdown = () => {
             ml={{ md: 5 }}
           >
             <RouterLink to="/buy">Buy</RouterLink>
+              <RouterLink to="/mint">Mint</RouterLink>
+              <RouterLink to="/battle">Battle</RouterLink>
+
             <RouterLink to="/thedawgz">Collection</RouterLink>
             <RouterLink to="/values">Financials</RouterLink>
-            <RouterLink to="/">More</RouterLink>
+            <RouterLink to="/mint">More</RouterLink>
           </Stack>
 
           {/* Mobile Links and Wallet Info */}

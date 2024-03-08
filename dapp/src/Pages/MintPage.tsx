@@ -1,22 +1,31 @@
+import BnbPriceContext from '../Pages/BnbPriceContext'; // //
+
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
-// import NftMint0 from './Components/NftMint0/NftMint0';
-// <NftMint0 />
+// //
+// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+// // // <YourActiveBattles />
+//
+// import AllActiveBattlesTest from './Components/AllActiveBattlesTest/AllActiveBattlesTest';
+// // // <AllActiveBattlesTest />
+//
+// import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
+// // <YourComplatedBattles />
+
+
+import MiniMint from './Components/NftMint0/NftMint0';
+// <MiniMint />
+// <UserProfileRegister />
 
 import Footer from './Components/Footer/Footer';
 // <Footer />
 
-import ZapToLP from './Components/ZapToLP/ZapToLP';
-// <ZapToLP />
+// import DropdownComponent from './TheDawgz/dropdownComponent';
+// // <DropdownComponent />
 
-import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 
-import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
-// <MiniSwapper />
 
-import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // //
-// <FastSwapComponent />
 
 
 import React, { useEffect, useState, useContext } from 'react';
@@ -62,7 +71,7 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./greenbkg.png";
+import mainbackgroundImage from "./mintpagebkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";
@@ -344,26 +353,43 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            p={0}
            m={0}
            display="flex"
-
            flexDirection="column"
            bg="rgba(0, 0, 0, 1)"
            bgImage={`url(${mainbackgroundImage})`}
            bgPosition="center"
            bgRepeat="no-repeat"
+           h="88vh"
            bgSize="cover"
          >
-           <Flex
-             direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
-             gap={0} // Adjust the gap as needed
-             p={0} // Adjust the padding as needed
-           >
-             {/* FastSwapComponent with 30% width on medium devices and above */}
-             <Box flex={{ base: 1, md: 3 }}>
-               <FastSwapComponent />
-             </Box>
-           </Flex>
+
+
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          gap="4" // Adjust gap as needed
+          p={4} // Adjust padding as needed
+          marginTop="400px"
+          minH="400px" // Minimum height of 400px for the row
+        >
+
+          <Box
+            flex={{ base: 1, md: 1 }}
+            minW={{ base: 'auto', md: '350px' }}
+            display="flex" // Use flexbox for alignment
+            justifyContent="center" // Horizontally center the content
+            alignItems="center" // Vertically center the content
+          >
+
+            <MiniMint />
+
+
+                       </Box>
+
+
+
+        </Flex>
+
          </Box>
-          <Footer />
+         <Footer />
        </Box>
      );
 };

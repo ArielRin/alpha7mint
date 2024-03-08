@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 import {
   Box,
   Select,
+  Heading,
   Input,
   Button,
   VStack,
@@ -20,10 +21,8 @@ const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2
 const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
 
 const DawgDropdown = () => {
-  const [nfts, setNfts] = useState([]);
   const [selectedNft, setSelectedNft] = useState('');
   const [customTaunt, setCustomTaunt] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   interface NFT {
     tokenId: number;
     imageUrl: string;
@@ -108,18 +107,19 @@ const DawgDropdown = () => {
     };
 
 
-  const handleNftChange = (event) => {
-    setSelectedNft(event.target.value);
-  };
+    const handleNftChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedNft(event.target.value);
+    };
 
-  const handleTauntChange = (event) => {
-    setCustomTaunt(event.target.value);
-  };
+
+    const handleTauntChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setCustomTaunt(event.target.value);
+};
 
   const enterBattle = async () => {
     if (!selectedNft) return;
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
     const signer = provider.getSigner();
     const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
@@ -144,8 +144,8 @@ const DawgDropdown = () => {
         <Text mb={2}>Choose your Dawg and enter the battle!</Text>
 
         <Select placeholder="Select Dawg" onChange={handleNftChange} value={selectedNft} mb={3}>
-          {nfts.map((nft) => (
-            <option key={nft.tokenId} value={nft.tokenId}> #{nft.tokenId}</option>
+          {nfts.owned.map((nft: NFT) => ( // Use nfts.owned here and specify type of nft
+            <option key={nft.tokenId} value={nft.tokenId}>#{nft.tokenId}</option>
           ))}
         </Select>
 

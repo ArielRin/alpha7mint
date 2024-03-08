@@ -15,16 +15,16 @@ import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComp
 // import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // // <YourComplatedBattles />
 
-import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+// import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // <BattleNowMainComponent />
 
-import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
+// import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
 // <QuickBattleComponent />
 
-import MiniMint from './Components/MiniMint/MiniMint';
+// import MiniMint from './Components/MiniMint/MiniMint';
 // <NftMint0 />
 
-import ZapToLP from './Components/ZapToLP/ZapToLP';
+// import ZapToLP from './Components/ZapToLP/ZapToLP';
 // <ZapToLP />
 
 import Footer from './Components/Footer/Footer';
@@ -37,10 +37,10 @@ import UserProfileRegister from './Components/UserProfile/UserProfile';
 // // <DropdownComponent />
 
 
-import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
+// import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
 // <MiniSwapper />
 
-import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // //
+// import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // //
 // <FastSwapComponent />
 
 
@@ -87,7 +87,7 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./redbkg.png";
+import mainbackgroundImage from "./mintbkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";

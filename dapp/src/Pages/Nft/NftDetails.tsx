@@ -1,3 +1,8 @@
+
+import HeaderWithDropdown from '../Components/HeaderWithDropdown/HeaderWithDropdown';
+// <HeaderWithDropdown />
+
+
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -216,10 +221,23 @@ const NftDetails = () => {
       const [nftMetadata, setNftMetadata] = useState<NftMetadata | undefined>(undefined);
 
       const backgroundMapping = {
- "greenbackground": "https://example.com/path/to/greenbackground.png",
- "bluebackground": "https://example.com/path/to/bluebackground.png",
+ "bluebackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/bluebackground%2310.png",
+
+
+ "goldenbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground%231.png",
+ "goldenbackground2": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground2%231.png",
+ "goldenbackground3": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground3%231.png",
+ "goldenbackground4": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground4%231.png",
+
+
+ "redbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/redbackground%2310.png",
+ "greenbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/greenbackground%2310.png",
  // ... other mappings
 };
+
+
+type BackgroundKey = keyof typeof backgroundMapping;
+
 
 useEffect(() => {
  const fetchNftMetadata = async () => {
@@ -231,10 +249,12 @@ useEffect(() => {
      setNftMetadata(metadata);
 
      // Extract and set the background image
-     const backgroundTrait = metadata.attributes.find(attr => attr.trait_type === 'Background');
-     if (backgroundTrait && backgroundMapping[backgroundTrait.value]) {
-       setBackgroundImage(backgroundMapping[backgroundTrait.value]);
-     }
+     const backgroundTrait = metadata.attributes.find((attr: Attribute) => attr.trait_type === 'Background');
+     if (backgroundTrait && backgroundTrait.value in backgroundMapping) {
+     // Now TypeScript knows backgroundTrait.value is a key of backgroundMapping
+     const backgroundImageUrl = backgroundMapping[backgroundTrait.value as BackgroundKey];
+     setBackgroundImage(backgroundImageUrl);
+   }
    } catch (error) {
      console.error('Failed to fetch NFT metadata:', error);
      setError('Failed to fetch NFT metadata.');
@@ -318,24 +338,7 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned?.toString() 
      >
   {/* ----------------------------------------------------------------------------------------- */}
         {/* Header */}
-        <Flex
-          bg="rgba(0, 0, 0, 0.75)"
-          w="100%"
-          p="3px"
-          pl="7px"
-          minH="70px"
-          align="center"
-          justify="space-between"
-        >
-          <Flex align="center">
-
-            <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
-            <ChakraLink as={RouterLink} to="/" color="white" ml="3"></ChakraLink>
-          </Flex>
-          <Box p="5px">
-            <ConnectButton />
-          </Box>
-        </Flex>
+        <HeaderWithDropdown />
 
 
 {/* ----------------------------------------------------------------------------------------- */}
@@ -346,7 +349,7 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned?.toString() 
           w="100%"
           p="3px"
           minH="40px"
-          marginTop="10px"
+          marginTop="90px"
           gap="5px"
           align="stretch"
           flexDirection={{ base: "column", md: "row" }} // Stacks on smaller screens
@@ -357,6 +360,7 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned?.toString() 
             bg="rgba(0, 0, 0, 0.0)"
             gap="5px"
             minH="100%"
+
             flexDirection={{ base: "column", md: "row" }} // Stacks nested columns on smaller screens
           >
             {/* Nested Column 1 */}
