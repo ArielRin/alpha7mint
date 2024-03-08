@@ -134,6 +134,7 @@ const NftDetails = () => {
   const [timesLost, setTimesLost] = useState(0);
   const [totalBattles, setTotalBattles] = useState(0);
   const [tokenStats, setTokenStats] = useState({ totalWon: 0, totalLose: 0, valueEarned: 0 });
+  const [backgroundImage, setBackgroundImage] = useState(''); // State to hold the background image URL
 
 
   useEffect(() => {
@@ -214,27 +215,43 @@ const NftDetails = () => {
 
       const [nftMetadata, setNftMetadata] = useState<NftMetadata | undefined>(undefined);
 
-        useEffect(() => {
-            const fetchNftMetadata = async () => {
-                try {
-                    const response = await fetch(`${metadataBaseUrl}${tokenId}.json`);
-                    if (!response.ok) throw new Error('Network response was not ok.');
-                    const metadata = await response.json();
-                    setNftMetadata(metadata);
-                } catch (error) {
-                    console.error('Failed to fetch NFT metadata:', error);
-                    setError('Failed to fetch NFT metadata.');
-                } finally {
-                    setIsLoading(false);
-                }
-            };
+      const backgroundMapping = {
+ "greenbackground": "https://example.com/path/to/greenbackground.png",
+ "bluebackground": "https://example.com/path/to/bluebackground.png",
+ // ... other mappings
+};
 
-            fetchNftMetadata();
-        }, [tokenId]);
+useEffect(() => {
+ const fetchNftMetadata = async () => {
+   setIsLoading(true);
+   try {
+     const response = await fetch(`${metadataBaseUrl}${tokenId}.json`);
+     if (!response.ok) throw new Error('Network response was not ok.');
+     const metadata = await response.json();
+     setNftMetadata(metadata);
 
-        if (isLoading) return <Box>Loading...</Box>;
-        if (error) return <Box>Error: {error}</Box>;
-        if (!nftMetadata) return <Box>No data found.</Box>;
+     // Extract and set the background image
+     const backgroundTrait = metadata.attributes.find(attr => attr.trait_type === 'Background');
+     if (backgroundTrait && backgroundMapping[backgroundTrait.value]) {
+       setBackgroundImage(backgroundMapping[backgroundTrait.value]);
+     }
+   } catch (error) {
+     console.error('Failed to fetch NFT metadata:', error);
+     setError('Failed to fetch NFT metadata.');
+   } finally {
+     setIsLoading(false);
+   }
+ };
+
+ if (tokenId) {
+   fetchNftMetadata();
+ }
+}, [tokenId]);
+
+// Render logic
+if (isLoading) return <Box>Loading...</Box>;
+if (error) return <Box>Error: {error}</Box>;
+if (!nftMetadata) return <Box>No data found.</Box>;
 
 
 
@@ -291,14 +308,14 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned?.toString() 
 
   return (
 
-      <Flex
-        direction="column"
-        align="stretch"
-        minH="100vh"
-        bgImage="url('https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/NFTDATA/greenbkg.png')"
-        bgPosition="center"
-        bgSize="cover"
-      >
+    <Flex
+       direction="column"
+       align="stretch"
+       minH="100vh"
+       bgImage={`url('${backgroundImage}')`} // Use the backgroundImage state here
+       bgPosition="center"
+       bgSize="cover"
+     >
   {/* ----------------------------------------------------------------------------------------- */}
         {/* Header */}
         <Flex
