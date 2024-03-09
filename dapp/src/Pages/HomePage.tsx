@@ -62,6 +62,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   Modal,
   ModalOverlay,
+  Heading,
   ModalContent,
   ModalHeader,
   ModalFooter,
@@ -382,21 +383,43 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               direction={{ base: 'column', md: 'row' }}
               gap="4" // Adjust gap as needed
               p={4} // Adjust padding as needed
-              minH="60px" // Minimum height of 400px for the row
+              minH="200px" // Minimum height of 400px for the row
             >
           </Flex>
+          <Flex
+      direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+      align="center" // Align items vertically in the center
+      justify="center" // Justify content (horizontally) to the center
+      gap="4" // Adjust gap as needed
+      p={4} // Adjust padding as needed
+      minH="60px" // Minimum height of 60px for the row
+      w="full" // Take full width of the container
+    >
+
+      <Image
+        src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/token.gif"
+        alt="Token"
+        mx="auto" // Margin auto for horizontal centering
+        mt="190px" // Margin top of 100px
+        mb={4} // Margin bottom as needed
+      />
+
+    </Flex>
+
                    <Flex
                         direction={{ base: 'column', md: 'row' }}
                         gap="4" // Adjust gap as needed
                         p={4} // Adjust padding as needed
-                        minH="60px" // Minimum height of 400px for the row
+                        minH="200px" // Minimum height of 400px for the row
                       >
-
-                      <Center my={4}>
-       <Image src="./token.gif" alt="Token" />
-     </Center>
-
                     </Flex>
+                    <Flex
+                         direction={{ base: 'column', md: 'row' }}
+                         gap="4" // Adjust gap as needed
+                         p={4} // Adjust padding as needed
+                         minH="200px" // Minimum height of 400px for the row
+                       >
+                     </Flex>
 
 
 
@@ -407,92 +430,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
 
-          {/* New Flex Row with 3 Columns */}
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          gap="4" // Adjust gap as needed
-          p={4} // Adjust padding as needed
-          minH="400px" // Minimum height of 400px for the row
-        >
-          {/* First Column */}
-          <Box
-            flex={{ base: 1, md: 2 }}
-            minW="0" // Prevents shrinking below content width on smaller screens
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-            {/* Content for the first column */}
-            <Box
-              w="100%" // Box takes 100% width
-              minH="360px"
-              display="flex" // Use flexbox for alignment
-              justifyContent="center" // Horizontally center the content
-              alignItems="center" // Vertically center the content
-            >
-{/*<BattleNowMainComponent />*/}
-
-
-
-            </Box>
-          </Box>
-
-          {/* Second Column */}
-          <Box
-            flex={{ base: 1, md: 1 }}
-            minW={{ base: 'auto', md: '350px' }}
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-            {/* Content for the second column */}
-
-
-            {/*
-               <Image
-                 src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
-                 w="400px" // Set the width of the image
-                 alt="Logo" // Provide an alt attribute for accessibility
-               />*/}
-                       </Box>
-
-
-          {/* Third Column */}
-          <Box
-            flex={{ base: 1, md: 1 }}
-            minW={{ base: 'auto', md: '350px' }}
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-            {/* Content for the third column
-            <MiniSwapper /> */}
-          </Box>
-        </Flex>
-
-         <Flex
-      direction={{ base: 'column', md: 'row' }}
-      gap="4" // Adjust gap as needed
-      p={4} // Adjust padding as needed
-      minH="400px" // Minimum height of 400px for the row
-    >
-
-      {/* First Column */}
-      <Box
-        flex={{ base: 1, md: 6 }}
-        minW="0" // Prevents shrinking below content width
-      >
-      </Box>
-
-      {/* Second Column */}
-      <Box
-        flex={{ base: 1, md: 4 }}
-        minW={{ base: 'auto', md: '360px' }}
-      >
-
-
-      </Box>
-    </Flex>
            <Flex
              direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
              gap={0} // Adjust the gap as needed
@@ -503,6 +440,152 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
              </Box>
            </Flex>
          </Box>
+
+         {/* Welcome Text and logo*/}
+         <Flex
+     direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+     align="center" // Align items vertically in the center
+     justify="center" // Justify content (horizontally) to the center
+     gap="4" // Adjust gap as needed
+     p={4} // Adjust padding as needed
+     minH="300px" // Minimum height of 60px for the row
+     w="full" // Take full width of the container
+     bg="black"
+   >
+
+     {/* Left Column */}
+     <Box
+       w="80%" // Equal width for both columns
+       bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+       p={4} // Padding inside the box
+     >
+       <Heading color="white" mb="30px">Welcome to Alpha7 Token on BSC</Heading>
+       <Text color="white">
+         Welcome to the unveiling of ALPHA7, a groundbreaking BEP20 token on the Binance Smart Chain that is set to redefine the standards of cryptocurrency tokens. On this page, we will take a closer look at ALPHA7, a token not just designed to be part of the crypto market but to lead it with innovative features and a robust ecosystem.
+       </Text>
+     </Box>
+
+     {/* Right Column */}
+     <Box
+       w="50%" // Equal width for both columns
+       bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+       p={4} // Padding inside the box
+       // Additional content or styling for the right column
+     >
+       {/* Content for the right column goes here */}
+     </Box>
+   </Flex>
+   <Flex
+direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+align="center" // Align items vertically in the center
+justify="center" // Justify content (horizontally) to the center
+gap="4" // Adjust gap as needed
+p={4} // Adjust padding as needed
+minH="300px" // Minimum height of 60px for the row
+w="full" // Take full width of the container
+bg="black"
+>
+
+{/* Left Column */}
+<Box
+ w="80%" // Equal width for both columns
+ bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+ p={4} // Padding inside the box
+>
+ <Heading color="white" mb="30px">About</Heading>
+ <Text color="white">
+ If humanity does not make it when AI takes over, dogs will because of the bonding strength of the tightly-knit community of Alpha7.
+</Text>
+<Text mt="20px" color="white">
+Alpha7 is an unruly dog leveraging the up-to-date intelligent power of Grok AI to reveal, unlock and protect the most fun in the world as it builds the largest Binance Smart Chain (BSC) Meme Family. This is where AI fuses with dogs to unlock the unimaginable.
+</Text>
+<Text mt="20px" color="white">
+Catch all of the fun in the world with a hilarious community, open to learning and constantly challenging the norm. $ALPHA7 is the meme coin powering the Alpha7 community towards its recalcitrant goals, exhilarating fun and meme singularity.
+</Text>
+<Text mt="20px" color="white">
+Human x Artificial intelligence has achieved great feats. Let’s see what happens when you combine Humans x Memes x Artificial intelligence.
+</Text>
+<Text color="white">
+Let’s Foking Go! Alpha7 It! Woof! </Text>
+</Box>
+
+{/* Right Column */}
+<Box
+ w="50%" // Equal width for both columns
+ bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+ p={4} // Padding inside the box
+ // Additional content or styling for the right column
+>
+ {/* Content for the right column goes here */}
+</Box>
+</Flex>
+
+<Flex
+direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+align="center" // Align items vertically in the center
+justify="center" // Justify content (horizontally) to the center
+gap="4" // Adjust gap as needed
+p={4} // Adjust padding as needed
+minH="300px" // Minimum height of 60px for the row
+w="full" // Take full width of the container
+bg="black"
+>
+
+{/* Left Column */}
+<Box
+w="80%" // Equal width for both columns
+bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+p={4} // Padding inside the box
+>
+<Heading color="white" mb="30px">Tokenomics</Heading>
+<Text color="white">
+
+</Text>
+<Text color="white">
+Token Contract:
+</Text>
+<Text color="white">
+0x88CE0d545cF2eE28d622535724B4A06E59a766F0
+</Text>
+<Text color="white">
+Total Supply:
+
+7,000,000,000
+</Text>
+<Text color="white">
+Live Price (USD):
+
+Launch Price $0.0000002984
+</Text>
+<Text color="white">
+Liquidity:
+
+Minimum $4,000.00
+</Text>
+<Text color="white">
+Tax:
+
+7/7
+</Text>
+<Text color="white">
+Token Reflections:
+
+1%
+</Text>
+<Text color="white">
+NFT Reflections:
+
+2%
+</Text>
+<Text color="white">
+Treasury:
+
+4%
+</Text>
+</Box>
+
+</Flex>
+
          <Footer />
        </Box>
      );

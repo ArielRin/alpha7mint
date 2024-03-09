@@ -105,14 +105,15 @@ const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAb
 
 const QuickBattle = () => {
 
-interface NFT {
-  tokenId: number;
-  imageUrl: string;
-  name: string;
-  isRegistered: boolean;
-  dawgName?: string;
-  dawgTaunt?: string;
-}
+  interface NFT {
+    tokenId: number;
+    imageUrl: string;
+    name: string;
+    isRegistered: boolean;
+    dawgName?: string;
+    dawgTaunt?: string;
+    isInBattle: boolean; // Add this line
+  }
 
 
 

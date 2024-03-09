@@ -5,9 +5,9 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 
 // import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
-// //
-// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
-// // // <YourActiveBattles />
+//
+import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+// // <YourActiveBattles />
 //
 // import AllActiveBattlesTest from './Components/AllActiveBattlesTest/AllActiveBattlesTest';
 // // // <AllActiveBattlesTest />
@@ -458,6 +458,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >
+
+      <YourActiveBattles />
       </Box>
 
       {/* Second Column */}

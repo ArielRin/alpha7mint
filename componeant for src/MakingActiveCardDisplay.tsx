@@ -48,6 +48,7 @@ import {
 } from "@chakra-ui/react";
 
 
+import redbkg from "./redBkg.png";
 import mainbackgroundImage from "./bkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
