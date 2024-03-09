@@ -152,7 +152,7 @@ const ActiveBattles: React.FC = () => {
 
 
         return (
-          <Box>
+          <Box >
             <Text fontSize="2xl" fontWeight="bold" mb="4" color="white" textAlign="center">
               Your Active Battles
             </Text>
@@ -161,20 +161,21 @@ const ActiveBattles: React.FC = () => {
             ) : activeBattles.length > 0 ? (
               <Flex direction="column" gap="4">
                 {activeBattles.map((battle) => (
-                  <Box key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="gray.100" _hover={{ bg: "gray.200" }}>
-                    <Flex align="center">
-                      <Text flex="1" textAlign="left">Battle: {battle.id}</Text>
+                  <Box  key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="rgba(83, 33, 36, 0.9)" _hover={{ bg: "rgba(117, 47, 47, 0.9)" }}>
+                    <Flex color="white" align="center">
+                      <Text flex="1" textAlign="center">Battle {battle.id}</Text>
                       <Image src={`/NFTDATA/Image/${battle.initiatorTokenId}.png`} width="55px" />
-                      <Text flex="1" textAlign="left"># {battle.initiatorTokenId}</Text>
-                      <Text flex="1" textAlign="left">VS</Text>
+                      <Text flex="1" textAlign="center"># {battle.initiatorTokenId}</Text>
+                      <Text flex="1" textAlign="center">VS</Text>
 
                       <Image src={`/NFTDATA/Image/${battle.secondaryTokenId}.png`} width="55px" />
-                      <Text flex="1" textAlign="left"># {battle.secondaryTokenId}</Text>
+                      <Text flex="1" textAlign="center"># {battle.secondaryTokenId}</Text>
 
-                      <Text flex="1" textAlign="right">
+                      <Text flex="1" textAlign="center">
                         Remaining: {battle.countdown}
                       </Text>
                       <IconButton
+                      color="black"
                         aria-label="Expand battle details"
                         icon={expandedBattleIds[battle.id] ? <ChevronUpIcon /> : <ChevronDownIcon />}
                         onClick={() => toggleExpandedBattle(battle.id)}
@@ -190,7 +191,7 @@ const ActiveBattles: React.FC = () => {
                     <img src={a7Logo} alt="Token Logo" style={{ width: "100px", margin: "0 auto", display: "block" }} />
                     <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz</Text>
 
-                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Battle #{battle.id} </Text>
+                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Battle {battle.id} </Text>
 
 
                     {/* Second row: Contestants and VS */}

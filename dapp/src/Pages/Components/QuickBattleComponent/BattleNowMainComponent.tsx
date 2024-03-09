@@ -15,7 +15,7 @@ const BattleNowMain = () => {
 
   return (
     <Flex direction="column" align="center" minH="300px" bgPosition="center" bgColor="rgba(0, 0, 0, 0.0)">
-      <Box width="100%" bg="rgba(0, 0, 0, 0.4)" p={4} borderRadius="md">
+      <Box width="100%" bg="rgba(107, 105, 106, 0.4)" p={4} borderRadius="md">
         <Text fontSize="2xl" color="white" fontWeight="bold">Quick Battle</Text>
         <Text fontSize="md" color="white" mt={3}>Get your Dawgz into the arena fast!</Text>
         <Button colorScheme="red" mt={4} onClick={onOpen}>Battle Now!</Button>
