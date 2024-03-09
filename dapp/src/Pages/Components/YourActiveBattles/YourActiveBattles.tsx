@@ -7,10 +7,14 @@ import { Box, Image, Text, Button, Flex, Spacer, Collapse, IconButton } from '@c
 import dawgBattleAbi from './dawgBattleAbi.json';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
+import DawgRegistration from '../../Components/DawgRegistration/DawgRegistration'; // //
+
+
+import a7Logo from './headerlogo.png';
+
 // const BATTLE_CONTRACT_ADDRESS = 'x0e96F3C42d594EBbfD0835d92FDab28014233182';
 const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
 
-import { useStartBattleManually } from './useStartBattleManually'; // adjust the path as needed
 
 interface BattleDetails {
   id: number;
@@ -135,14 +139,15 @@ const ActiveBattles: React.FC = () => {
 
 
    //-------------------//-----------------------//------------------------//
-  const startBattleManually = useStartBattleManually();
 
 
-  const handleFinalizeBattle = async (battleId) => {
-    await startBattleManually(battleId);
-  };
         //-------------------//-----------------------//------------------------//
-
+        const backgroundStyle = {
+          backgroundImage: `url(https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/Pages/Components/YourActiveBattles/redBkg.png)`,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover'
+        };
 
 
 
@@ -178,11 +183,51 @@ const ActiveBattles: React.FC = () => {
                     <Collapse in={expandedBattleIds[battle.id]}>
 
                     <Box
-
+                    style={backgroundStyle}
                     bgPosition="center"
                     bgRepeat="no-repeat"
                     bgSize="cover"p="5" borderWidth="1px" borderRadius="lg" mb="5">
-                      {/* First row: Battle ID */}
+                    <img src={a7Logo} alt="Token Logo" style={{ width: "100px", margin: "0 auto", display: "block" }} />
+                    <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz</Text>
+
+                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Battle #{battle.id} </Text>
+
+
+                    {/* Second row: Contestants and VS */}
+                    <Flex direction="row" alignItems="center" justifyContent="space-between" mb="4">
+                      {/* Left contestant */}
+                      <Box minH="270px" width="40%">
+                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="160px" mx="auto" />
+                        <Text style={{  textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.initiatorTokenId}</Text>
+                      </Box>
+
+                      {/* VS */}
+                      <Box width="10%" textAlign="center">
+                        <Text style={{  fontSize: '48px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
+                      </Box>
+
+                      {/* Right contestant */}
+                      <Box minH="270px" width="40%">
+                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" boxSize="160px" mx="auto" />
+                        <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.secondaryTokenId}</Text>
+                      </Box>
+                    </Flex>
+
+                    <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Winner of the battle will receive 93% of the battle value with 7% battle fees.</Text>
+
+                    {/* 7th row: Buttons */}
+                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} flex="1" textAlign="center">
+                      Remaining: {battle.countdown}
+                    </Text>
+                      <Flex mt="4" justifyContent="center"> {/* Adjusted justifyContent to "center" */}
+
+                  {/*       <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>    */}
+                    <Button colorScheme="green" >Finalise Battle</Button>
+
+                  </Flex>
+                  <Text style={{ textAlign: 'center', fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Who will become the AlphaDawg!</Text>
+
+
 
 
                   {/*     <Box p="4">
