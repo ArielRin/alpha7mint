@@ -7,10 +7,10 @@ import dawgBattleAbi from './dawgBattleAbi.json';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
 // const BATTLE_CONTRACT_ADDRESS = 'x0e96F3C42d594EBbfD0835d92FDab28014233182';
-const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
+const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
 import userRegistryAbi from './userRegistryAbi.json';
 
-const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62";
+const USER_REGISTRY_CONTRACT_ADDRESS = "0x37922C5C3DEEF8A82492E6855EE08307a8D27278";
 
 
 import YourCompletedBattleHistory from './YourCompletedBattleHistory';
@@ -101,50 +101,6 @@ const YourComplatedBattles: React.FC = () => {
   }, []);
 
 
-  useEffect(() => {
-  const fetchActiveBattleIds = async () => {
-    if (userAddress && window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-
-      try {
-        const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
-        const battleIds = await contract.getActiveBattleIds();
-
-const battlesPromises = battleIds.map(async (id: number) => {
-            const details = await contract.getBattleDetails(id);
-          const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
-
-          return {
-            id: id,
-            initiatorTokenId: details.initiatorTokenId.toNumber(),
-            secondaryTokenId: details.secondaryTokenId.toNumber(),
-            initiator: details.initiator,
-            secondaryEntrant: details.secondaryEntrant,
-            startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
-            battleValue: ethers.utils.formatEther(details.totalValueInBattle),
-            endTime,
-            countdown: calculateTimeLeft(endTime)
-          };
-        });
-
-        const allBattles = await Promise.all(battlesPromises);
-        // Filter the battles to show only those involving the user
-        const userBattles = allBattles.filter(battle => battle.initiator === userAddress || battle.secondaryEntrant === userAddress);
-        setActiveBattles(userBattles);
-      } catch (error) {
-        console.error("Failed to fetch active battles:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  if (userAddress) {
-    fetchActiveBattleIds();
-  }
-}, [userAddress, calculateTimeLeft]);
-
 
    //-------------------//-----------------------//------------------------//
    const getOverlayColor = (battle: BattleDetails) => {
@@ -186,23 +142,7 @@ const battlesPromises = battleIds.map(async (id: number) => {
 
    //-------------------//-----------------------//------------------------//
 
-const startBattleManually = async (battleId: number) => {
-        if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
-        try {
-          const transaction = await contract.startBattleManually(battleId);
-          await transaction.wait();
-          console.log(`Battle ${battleId} finalized successfully`);
-          // Refresh battles list or show a success message
-        } catch (error) {
-          console.error(`Error finalizing battle ${battleId}:`, error);
-          // Show an error message
-        }
-      }
-    };
         //-------------------//-----------------------//------------------------//
         const fetchCompletedBattlesByParticipant = async () => {
     if (userAddress && window.ethereum) {
@@ -290,6 +230,34 @@ const startBattleManually = async (battleId: number) => {
             }, [revealState]);
 
                         //-------------------//-----------------------//------------------------//
+                        useEffect(() => {
+                          // Function to fetch data (active battles, owned NFTs, and completed battles)
+                          const fetchData = async () => {
+                            if (userAddress) {
+                              await fetchOwnedNFTs();
+                              await fetchCompletedBattlesByParticipant();
+                            }
+                          };
+
+                          // Initial fetch when the component mounts
+                          fetchData();
+
+                          // Set an interval to refresh data every 20 seconds
+                          const interval = setInterval(fetchData, 20000);
+
+                          // Cleanup function to clear the interval when the component unmounts
+                          return () => clearInterval(interval);
+                        }, [userAddress]); // Dependencies array
+
+                        // The rest of your component remains the same
+
+
+
+
+
+
+
+
 
         return (
           <Box
@@ -355,7 +323,7 @@ const startBattleManually = async (battleId: number) => {
                               <Box p="4">
                                 <Text>Initiator: #{battle.initiatorTokenId}</Text>
                                 <Text>Opponent: #{battle.opponentTokenId}</Text>
-                                <Text>Value: {battle.battleValue} ETH</Text>
+                                <Text>Value: {battle.battleValue} BNB</Text>
                                 {!revealState[battle.id]?.isRevealed ? (
                                   <Button onClick={() => handleRevealWinner(battle.id, parseFloat(battle.battleValue))}>
       {revealState[battle.id]?.countdown > 0 ? `Revealing in ${revealState[battle.id].countdown}` : "Reveal Winner"}
@@ -398,3 +366,45 @@ const startBattleManually = async (battleId: number) => {
 };
 
 export default YourComplatedBattles;
+// useEffect(() => {
+//    const fetchActiveBattleIds = async () => {
+//      if (userAddress && window.ethereum) {
+//        const provider = new ethers.providers.Web3Provider(window.ethereum);
+//        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+//
+//        try {
+//          const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
+//          const battleIds = await contract.getActiveBattleIds();
+//
+//          const battlesPromises = battleIds.map(async (id: number) => {
+//            const details = await contract.getBattleDetails(id);
+//            const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
+//
+//            return {
+//              id: id,
+//              initiatorTokenId: details.initiatorTokenId.toNumber(),
+//              secondaryTokenId: details.secondaryTokenId.toNumber(),
+//              initiator: details.initiator,
+//              secondaryEntrant: details.secondaryEntrant,
+//              startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
+//              battleValue: ethers.utils.formatEther(details.totalValueInBattle),
+//              endTime,
+//              countdown: calculateTimeLeft(endTime)
+//            };
+//          });
+//
+//          const allBattles = await Promise.all(battlesPromises);
+//          const userBattles = allBattles.filter(battle => battle.initiator === userAddress || battle.secondaryEntrant === userAddress);
+//          setActiveBattles(userBattles);
+//        } catch (error) {
+//          console.error("Failed to fetch active battles:", error);
+//        } finally {
+//          setIsLoading(false);
+//        }
+//      }
+//    };
+//
+//    if (userAddress) {
+//      fetchActiveBattleIds();
+//    }
+//  }, [userAddress, calculateTimeLeft]);

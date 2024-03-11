@@ -92,7 +92,7 @@ const ActiveBattles: React.FC = () => {
 
     useEffect(() => {
       const fetchActiveBattles = async () => {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
         try {
@@ -154,7 +154,7 @@ const ActiveBattles: React.FC = () => {
 
   useEffect(() => {
     const fetchActiveBattles = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
       try {
@@ -186,7 +186,7 @@ const ActiveBattles: React.FC = () => {
 
 
 useEffect(() => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+  const provider = new ethers.providers.Web3Provider(window.ethereum as any);
   const getUserAddress = async () => {
     const accounts = await provider.listAccounts();
     if (accounts) setCurrentUser(accounts[0]);
@@ -204,7 +204,7 @@ useEffect(() => {
     try {
       // Ensure that there's an Ethereum provider (e.g., MetaMask) available
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         await provider.send("eth_requestAccounts", []); // Request account access if needed
         const signer = provider.getSigner(); // Get the signer to sign transactions
 
@@ -229,7 +229,7 @@ useEffect(() => {
   const handleStartBattleManually = async (battleId) => {
   try {
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       await provider.send("eth_requestAccounts", []); // Request account access if needed
       const signer = provider.getSigner(); // Get the signer to sign transactions
 
@@ -258,7 +258,7 @@ useEffect(() => {
   const fetchBattlePrice = async () => {
   if (!window.ethereum) return alert('Please install MetaMask.');
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+  const provider = new ethers.providers.Web3Provider(window.ethereum as any);
   const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
   try {
@@ -278,7 +278,7 @@ useEffect(() => {
   const enterBattle = async (tokenId, comment, battlePrice) => {
     if (!window.ethereum) return alert('Please install MetaMask.');
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
     await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
 
@@ -310,7 +310,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchAllTokenStats = async () => {
       // Create a provider and contract instance
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
       // Fetch stats for each token
@@ -347,7 +347,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchRoundDuration = async () => {
     // Fetch the round duration from the contract
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
     const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
     const duration = await contract.roundDuration();
     setRoundDuration(duration.toNumber());
@@ -358,7 +358,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCompletedBattles = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
     const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
     // Fetch the array of completed battle IDs

@@ -6,7 +6,7 @@ import { Box, Image, Text, Flex, Spacer, Collapse, IconButton } from '@chakra-ui
 import dawgBattleAbi from './dawgBattleAbi.json';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
-const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
+const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
 
 
 interface BattleDetails {
@@ -41,7 +41,7 @@ const ActiveBattles: React.FC = () => {
   useEffect(() => {
     const fetchUserAddress = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const signer = provider.getSigner();
         setUserAddress(await signer.getAddress());
       }
@@ -54,7 +54,7 @@ const ActiveBattles: React.FC = () => {
   useEffect(() => {
     const fetchActiveBattleIds = async () => {
       if (userAddress && window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
         try {

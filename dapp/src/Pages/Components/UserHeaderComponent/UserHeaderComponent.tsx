@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Box, Button, Modal, Text, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 import UserHeaderAbi from './UserHeaderAbi.json';
-const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62";
+const USER_REGISTRY_CONTRACT_ADDRESS = "0x37922C5C3DEEF8A82492E6855EE08307a8D27278";
 
 
 import UserProfileRegister from './UserProfile';

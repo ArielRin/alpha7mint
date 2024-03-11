@@ -1,7 +1,5 @@
-// 0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62
-
 // SPDX-License-Identifier: MIT
-
+// LIVE AT 0x37922C5C3DEEF8A82492E6855EE08307a8D27278
 
 pragma solidity ^0.8.0;
 
@@ -22,6 +20,7 @@ contract UserRegistry is Ownable {
         string mainLanguage;
         string secondLanguage;
         string emailAddress;
+        string linkedWallets; // string to store linked wallets
     }
 
     mapping(address => User) private users;
@@ -52,10 +51,37 @@ contract UserRegistry is Ownable {
             _nationality,
             _mainLanguage,
             _secondLanguage,
-            _emailAddress
+            _emailAddress,
+            "" //
         );
     }
+    function ownerRegisterUser(
+        address _userAddress,
+        string memory _username,
+        string memory _bio,
+        string memory _telegramHandle,
+        string memory _twitterName,
+        string memory _countryOfOrigin,
+        string memory _nationality,
+        string memory _mainLanguage,
+        string memory _secondLanguage,
+        string memory _emailAddress,
+        string memory _linkedWallets
+    ) public onlyOwner {
+        users[_userAddress] = User(
+            _username,
+            _bio,
+            _telegramHandle,
+            _twitterName,
+            _countryOfOrigin,
+            _nationality,
+            _mainLanguage,
+            _secondLanguage,
+            _emailAddress,
+            _linkedWallets
 
+        );
+    }
 
 
     function getUserData(address _userAddress) public view returns (

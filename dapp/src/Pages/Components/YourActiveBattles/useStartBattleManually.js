@@ -1,7 +1,7 @@
 // useStartBattleManually.js
 import { useContract, useSigner } from 'wagmi';
 import dawgBattleAbi from './dawgBattleAbi.json';
-const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
+const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
 
 export function useStartBattleManually() {
   const { data: signer } = useSigner();

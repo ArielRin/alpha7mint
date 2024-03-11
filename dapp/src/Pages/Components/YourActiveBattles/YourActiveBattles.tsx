@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { ethers, BigNumber } from 'ethers';
 import { useContract, useSigner } from 'wagmi';
 import { Box, Image, Text, Button, Flex, Spacer, Collapse, IconButton } from '@chakra-ui/react';
-import dawgBattleAbi from './dawgBattleAbi.json';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
 import DawgRegistration from '../../Components/DawgRegistration/DawgRegistration'; // //
@@ -13,7 +12,8 @@ import DawgRegistration from '../../Components/DawgRegistration/DawgRegistration
 import a7Logo from './headerlogo.png';
 
 // const BATTLE_CONTRACT_ADDRESS = 'x0e96F3C42d594EBbfD0835d92FDab28014233182';
-const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
+const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
+import dawgBattleAbi from './dawgBattleAbi.json';
 
 
 interface BattleDetails {
@@ -50,7 +50,7 @@ const ActiveBattles: React.FC = () => {
   useEffect(() => {
     const fetchUserAddress = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider);
+const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const signer = provider.getSigner();
         setUserAddress(await signer.getAddress());
       }
@@ -188,10 +188,9 @@ const ActiveBattles: React.FC = () => {
                     bgPosition="center"
                     bgRepeat="no-repeat"
                     bgSize="cover"p="5" borderWidth="1px" borderRadius="lg" mb="5">
-                    <img src={a7Logo} alt="Token Logo" style={{ width: "100px", margin: "0 auto", display: "block" }} />
-                    <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz</Text>
+                    <img src={a7Logo} alt="Token Logo" style={{ width: "180px", margin: "0 auto", display: "block" }} />
+                    <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz #{battle.id}</Text>
 
-                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">Battle {battle.id} </Text>
 
 
                     {/* Second row: Contestants and VS */}

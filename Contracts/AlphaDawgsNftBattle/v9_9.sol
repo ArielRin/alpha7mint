@@ -8,7 +8,7 @@
 // 8.6 maxx   0x57C2B24D56B41d5ef6CCad4DFC7EBa4175B64BC2   fix join battle (published)
 // 8.7 maxx  0x6C1dA697DAD6E89E4B194A7ffA24498FAcFBD4B1 finalize battle by user after duration
 // 8.8 maxx   0x0641BbEC3ab7BcfD92DFDfBdFd90BBcFB7ef44fa
-// 8.9 BSC  0xb816222825Fd38B715904B301044C7D767389Aa2
+// 8.9 BSC  0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D
 
 
 //
@@ -606,7 +606,7 @@ interface IERC20 {
 // 8.6 maxx   0x57C2B24D56B41d5ef6CCad4DFC7EBa4175B64BC2   fix join battle (published)
 // 8.7 maxx  0x6C1dA697DAD6E89E4B194A7ffA24498FAcFBD4B1 finalize battle by user after duration
 // 8.8 maxx   0x0641BbEC3ab7BcfD92DFDfBdFd90BBcFB7ef44fa
-// 8.9 BSC  0xb816222825Fd38B715904B301044C7D767389Aa2
+// 8.9 BSC  0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D
 
 
 //

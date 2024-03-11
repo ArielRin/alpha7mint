@@ -122,7 +122,6 @@ const HeaderWithDropdown = () => {
 
             <RouterLink to="/thedawgz">Collection</RouterLink>
             <RouterLink to="/values">Financials</RouterLink>
-            <RouterLink to="/mint">More</RouterLink>
           </Stack>
 
           {/* Mobile Links and Wallet Info */}
@@ -164,9 +163,10 @@ const HeaderWithDropdown = () => {
         */}
         <RouterLink to="/" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Home</RouterLink>
         <RouterLink to="/buy" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Buy</RouterLink>
+        <RouterLink to="/mint" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Mint</RouterLink>
+        <RouterLink to="/battle" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Battle</RouterLink>
         <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Collection</RouterLink>
         <RouterLink to="/values" style={{ textAlign: 'center', width: '100%' }}>Financials</RouterLink>
-        <RouterLink to="/values" style={{ textAlign: 'center', width: '100%' }}>More</RouterLink>
       </VStack>
     </Flex>
   </Collapse>

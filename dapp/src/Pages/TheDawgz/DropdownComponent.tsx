@@ -16,9 +16,9 @@ import dawgBattleAbi from './dawgBattleOldAbi.json';
 import userRegistryAbi from './userRegistryAbi.json';
 import dawgRegistrationAbi from './dawgRegistrationAbi.json';
 
-const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62";
+const USER_REGISTRY_CONTRACT_ADDRESS = "0x37922C5C3DEEF8A82492E6855EE08307a8D27278";
 const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7";
-const BATTLE_CONTRACT_ADDRESS = '0xb816222825Fd38B715904B301044C7D767389Aa2';
+const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
 
 const DawgDropdown = () => {
   const [selectedNft, setSelectedNft] = useState('');

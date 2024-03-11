@@ -5,7 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import DawgRegistration from '../Components/DawgRegistration/DawgRegistration';
 import userRegistryAbi from './userRegistryAbi.json';
 
-const USER_REGISTRY_CONTRACT_ADDRESS = "0x889aD5c66Bd0402EF1b672ca7E80b1caA7Ed5d62";
+const USER_REGISTRY_CONTRACT_ADDRESS = "0x37922C5C3DEEF8A82492E6855EE08307a8D27278";
 
 const TheDawgz: React.FC = () => {
     interface NFT {

@@ -1,4 +1,10 @@
+
+
 import BnbPriceContext from '../Pages/BnbPriceContext'; // //
+
+
+// import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
+// <YourComplatedBattles />
 
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
@@ -6,16 +12,17 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 // import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
 //
-import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
 // // <YourActiveBattles />
 //
+
+// import UserBattleStats from './Components/UserProfile/UserBattleStats';
+// <UserBattleStats />
 // import AllActiveBattlesTest from './Components/AllActiveBattlesTest/AllActiveBattlesTest';
 // // // <AllActiveBattlesTest />
 //
-import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
-// <YourComplatedBattles />
 //
-import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+// import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // // <BattleNowMainComponent />
 
 // import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
@@ -389,7 +396,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
           direction={{ base: 'column', md: 'row' }}
           gap="4" // Adjust gap as needed
           p={4} // Adjust padding as needed
-          minH="400px" // Minimum height of 400px for the row
+          minH="10px" // Minimum height of 400px for the row
         >
           {/* First Column */}
           <Box
@@ -402,35 +409,32 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             {/* Content for the first column */}
             <Box
               w="100%" // Box takes 100% width
-              minH="360px"
+              minH="10px"
               display="flex" // Use flexbox for alignment
               justifyContent="center" // Horizontally center the content
               alignItems="center" // Vertically center the content
             >
- <BattleNowMainComponent />
 
 
             </Box>
           </Box>
 
-          {/* Second Column */}
-          <Box
-            flex={{ base: 1, md: 1 }}
-            minW={{ base: 'auto', md: '350px' }}
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-            {/* Content for the second column */}
+          {/* Second Column
+            <BattleNowMainComponent />
 
 
-            {/*
-               <Image
-                 src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png"
-                 w="400px" // Set the width of the image
-                 alt="Logo" // Provide an alt attribute for accessibility
-               />*/}
-                       </Box>
+            <Box
+              flex={{ base: 1, md: 1 }}
+              minW={{ base: 'auto', md: '350px' }}
+              display="flex" // Use flexbox for alignment
+              justifyContent="center" // Horizontally center the content
+              alignItems="center" // Vertically center the content
+            >
+
+                         </Box>
+
+             */}
+
 
 
           {/* Third Column */}
@@ -441,8 +445,9 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             justifyContent="center" // Horizontally center the content
             alignItems="center" // Vertically center the content
           >
-            {/* Content for the third column
-            <MiniSwapper /> */}
+
+            {/* Content for the third column     <UserBattleStats />
+             */}
           </Box>
         </Flex>
 
@@ -450,26 +455,27 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
       direction={{ base: 'column', md: 'row' }}
       gap="4" // Adjust gap as needed
       p={4} // Adjust padding as needed
-      minH="400px" // Minimum height of 400px for the row
+      minH="40px" // Minimum height of 400px for the row
     >
 
-      {/* First Column */}
+
       <Box
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >
+    {/* <YourActiveBattles /> */}
 
-      <YourActiveBattles />
       </Box>
 
-      {/* Second Column */}
+
       <Box
         flex={{ base: 1, md: 4 }}
         minW={{ base: 'auto', md: '360px' }}
       >
 
-<YourComplatedBattles />
-      </Box>
+      {/*
+      <YourComplatedBattles /> */}
+            </Box>
     </Flex>
            <Flex
              direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above

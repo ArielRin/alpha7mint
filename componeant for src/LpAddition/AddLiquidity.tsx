@@ -12,7 +12,7 @@ function AddLiquidity() {
   const tokenAddress = '0x88CE0d545cF2eE28d622535724B4A06E59a766F0';
   const toast = useToast();
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+const provider = new ethers.providers.Web3Provider(window.ethereum as any);
   const signer = provider.getSigner();
 
   async function approveTokens() {

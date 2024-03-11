@@ -8,11 +8,6 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_erc20Token",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
 				"name": "_treasuryAddress",
 				"type": "address"
 			}
@@ -30,15 +25,9 @@
 				"type": "uint256"
 			},
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "entrant",
-				"type": "address"
-			},
-			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "initiatedByTokenId",
 				"type": "uint256"
 			},
 			{
@@ -49,31 +38,6 @@
 			}
 		],
 		"name": "BattleInitiated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "battleId",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "entrant",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "BattleJoined",
 		"type": "event"
 	},
 	{
@@ -188,45 +152,6 @@
 				"type": "uint256"
 			}
 		],
-		"name": "battleOutcomes",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "winningAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "winningTokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "losingAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "losingTokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "prizeAmount",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
 		"name": "battles",
 		"outputs": [
 			{
@@ -243,6 +168,21 @@
 				"internalType": "bool",
 				"name": "completed",
 				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "winnerAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "winnerTokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "winner",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
@@ -264,19 +204,6 @@
 		"name": "boostPrizeValue",
 		"outputs": [],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "battleId",
-				"type": "uint256"
-			}
-		],
-		"name": "cancelBattle",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -316,11 +243,6 @@
 				"internalType": "string",
 				"name": "comment",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "optionalBattleId",
-				"type": "uint256"
 			}
 		],
 		"name": "enterBattle",
@@ -339,32 +261,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "erc20Token",
-		"outputs": [
-			{
-				"internalType": "contract IERC20",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "battleId",
-				"type": "uint256"
-			}
-		],
-		"name": "finalizeBattle",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -435,11 +331,6 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "initiatorReady",
-				"type": "bool"
-			},
-			{
-				"internalType": "bool",
 				"name": "completed",
 				"type": "bool"
 			},
@@ -459,8 +350,13 @@
 				"type": "string"
 			},
 			{
+				"internalType": "address",
+				"name": "winnerAddress",
+				"type": "address"
+			},
+			{
 				"internalType": "uint256",
-				"name": "battleFinaliseTime",
+				"name": "winnerTokenId",
 				"type": "uint256"
 			}
 		],
@@ -475,31 +371,75 @@
 				"type": "uint256"
 			}
 		],
-		"name": "getBattleOutcome",
+		"name": "getBattleWinnerAndLoser",
 		"outputs": [
 			{
 				"internalType": "address",
-				"name": "winningAddress",
+				"name": "winnerAddress",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "winningTokenId",
+				"name": "winnerTokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "winnerPrizeValue",
 				"type": "uint256"
 			},
 			{
 				"internalType": "address",
-				"name": "losingAddress",
+				"name": "loserAddress",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "losingTokenId",
+				"name": "loserTokenId",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getCombinedUserStats",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "totalBattles",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "prizeAmount",
+				"name": "totalValueSpent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalValueWon",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalValueLost",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalWins",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalLosses",
 				"type": "uint256"
 			}
 		],
@@ -509,6 +449,25 @@
 	{
 		"inputs": [],
 		"name": "getCompletedBattleIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "participant",
+				"type": "address"
+			}
+		],
+		"name": "getCompletedBattlesByParticipant",
 		"outputs": [
 			{
 				"internalType": "uint256[]",
@@ -556,6 +515,13 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "pause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -608,50 +574,18 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_specialEntryFee",
+				"name": "battleId",
 				"type": "uint256"
 			}
 		],
-		"name": "setSpecialEntryFee",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newTreasuryAddress",
-				"type": "address"
-			}
-		],
-		"name": "setTreasuryAddress",
+		"name": "startBattleManually",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "specialEntryFee",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "battleId",
-				"type": "uint256"
-			}
-		],
-		"name": "startBattleManually",
+		"name": "toggleCommentsFeature",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -702,7 +636,17 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "totalBattlesEntered",
+				"name": "totalValueSpent",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalValueWon",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalValueLost",
 				"type": "uint256"
 			}
 		],
@@ -733,6 +677,13 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "unpause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
