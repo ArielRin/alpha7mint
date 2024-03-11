@@ -135,6 +135,7 @@ const [developerWalletLPTokenBalance, setDeveloperWalletLPTokenBalance] = useSta
 const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = useState('0.0000');
 
 
+  const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
 
 useEffect(() => {
   const fetchWalletDetails = async () => {

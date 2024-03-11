@@ -441,6 +441,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
       {/* First Column */}
       <Box
+
+      marginTop="120px"
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >

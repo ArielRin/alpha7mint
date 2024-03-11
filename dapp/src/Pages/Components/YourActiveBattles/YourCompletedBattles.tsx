@@ -261,8 +261,11 @@ const YourComplatedBattles: React.FC = () => {
 
         return (
           <Box
-          bg="rgba(0,0,0,07)"
+          bg="rgba(0,0,0,03)"
           >
+          <Text fontSize="2xl" fontWeight="bold" mb="4" color="white" textAlign="center">
+            Your Active Battles
+          </Text>
               <Tabs isFitted variant="enclosed">
               <TabList mb="1em" borderBottom="1px solid" borderColor="gray.200">
                      <Tab

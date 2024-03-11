@@ -176,7 +176,7 @@ const startBattleManually = async (battleId: number) => {
             {isLoading ? (
               <Text textAlign="center">Loading...</Text>
             ) : activeBattles.length > 0 ? (
-              <Flex direction="column" gap="4">
+              <Flex marginTop="95px" direction="column" gap="4">
                 {activeBattles.map((battle) => (
                   <Box  key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="rgba(83, 33, 36, 0.9)" _hover={{ bg: "rgba(117, 47, 47, 0.9)" }}>
                     <Flex color="white" align="center">
