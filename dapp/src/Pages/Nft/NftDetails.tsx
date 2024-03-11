@@ -3,6 +3,10 @@ import HeaderWithDropdown from '../Components/HeaderWithDropdown/HeaderWithDropd
 // <HeaderWithDropdown />
 
 
+import DawgzActiveBattle from '../Components/YourActiveBattles/DawgzActiveBattle';
+// <DawgzActiveBattle />
+
+
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -221,17 +225,17 @@ const NftDetails = () => {
       const [nftMetadata, setNftMetadata] = useState<NftMetadata | undefined>(undefined);
 
       const backgroundMapping = {
- "bluebackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/bluebackground%2310.png",
+ "bluebackground": "https://alpha7.live/Background/bluebackground.png",
 
 
- "goldenbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground%231.png",
- "goldenbackground2": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground2%231.png",
- "goldenbackground3": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground3%231.png",
- "goldenbackground4": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/goldenbackground4%231.png",
+ "goldenbackground": "https://alpha7.live/Background/goldenbackground1.png",
+ "goldenbackground2": "https://alpha7.live/Background/goldenbackground2.png",
+ "goldenbackground3": "https://alpha7.live/Background/goldenbackground3.png",
+ "goldenbackground4": "https://alpha7.live/Background/goldenbackground4.png",
 
 
- "redbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/redbackground%2310.png",
- "greenbackground": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/Background/greenbackground%2310.png",
+ "redbackground": "https://alpha7.live/Background/redbackground.png",
+ "greenbackground": "https://alpha7.live/Background/greenbackground.png",
  // ... other mappings
 };
 
@@ -787,15 +791,12 @@ display="flex"
           gap="5px"
           bg="rgba(0, 0, 0, 0.0)"
           >
-          <Box flex="1" bg="rgba(0, 0, 0, 0.75)"  minH="150px">
+          <Box flex="1" bg="rgba(0, 0, 0, 0.75)"  minH="880px">
             <Text color="white">Active Battle Cards View</Text>
+            <DawgzActiveBattle />
           </Box>
-          <Box flex="1" bg="rgba(0, 0, 0, 0.75)"  marginTop='5px' minH="200px">
-            <Text color="white">Recent Battles List View</Text>
-            <Box bg="white" p={5} mt={5} borderRadius="md">
-        <Text fontSize="xl" fontWeight="bold">Dawgz Details for Token ID: {tokenId}</Text>
-        <Text mt={2}>Name: {dawgzData.name}</Text>
-      </Box>
+          <Box flex="1" bg="rgba(0, 0, 0, 0.75)"  marginTop='5px' minH="50px">
+            <Text color="white">Dawgz Extra MetaData</Text>
           </Box>
           </Flex>
 
@@ -820,7 +821,7 @@ display="flex"
 
                 minH="400px" // Adjust the height as needed
               >
-                <Text color="white">NFT MetaData and Traits</Text>
+                <Text color="white">Dawgz Completed Battles</Text>
                 <Flex direction="column" align="stretch" minH="100vh">
             {/* Ensure nftMetadata is not null before attempting to access its properties */}
             {nftMetadata && (

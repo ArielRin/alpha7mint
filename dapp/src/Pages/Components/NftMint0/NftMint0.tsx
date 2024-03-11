@@ -141,8 +141,15 @@ function NftMint() {
   const remainingSupply = maxSupply - totalSupply;
 
   return (
-    <div >
-      <div >
+    <Box paddingY="20px"> {/* Apply vertical padding to the box */}
+      <Box
+        bg="rgba(0,0,0,0.6)" // Choose your desired background color
+        borderRadius="md" // Optional: for rounded corners
+        padding="20px" // Apply padding inside the box
+        width="full" // Set the width of the box
+        mx="auto" // Center the box
+        my="20px" // Optional: additional vertical margin outside the box
+      >
           <div>
             <Text className="pricecosthead" style={{color: 'white', textAlign: 'center', fontWeight: 'bolder' }}>
               AlphaDawgz NFTs Minting
@@ -202,9 +209,10 @@ function NftMint() {
             </Text>
           )}
           {mintError && <Text color="red.500" mt="4">Error: {mintError.message}</Text>}
-      </div>
-    </div>
-  );
-}
+
+    </Box>
+   </Box>
+ );
+};
 
 export default NftMint;

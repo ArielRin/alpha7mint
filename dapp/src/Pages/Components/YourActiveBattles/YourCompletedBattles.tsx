@@ -284,7 +284,11 @@ const YourComplatedBattles: React.FC = () => {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                  <Box>
+                  <Box
+    maxHeight="600px" // Set the maximum height
+    overflowY="auto" // Enable vertical scrolling
+    // Additional styles can be added if necessary
+  >
                  {completedBattles.length > 0 ? (
                  <Flex direction="column" gap="4">
                  {completedBattles.map((battle) => (
@@ -366,45 +370,3 @@ const YourComplatedBattles: React.FC = () => {
 };
 
 export default YourComplatedBattles;
-// useEffect(() => {
-//    const fetchActiveBattleIds = async () => {
-//      if (userAddress && window.ethereum) {
-//        const provider = new ethers.providers.Web3Provider(window.ethereum);
-//        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-//
-//        try {
-//          const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
-//          const battleIds = await contract.getActiveBattleIds();
-//
-//          const battlesPromises = battleIds.map(async (id: number) => {
-//            const details = await contract.getBattleDetails(id);
-//            const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
-//
-//            return {
-//              id: id,
-//              initiatorTokenId: details.initiatorTokenId.toNumber(),
-//              secondaryTokenId: details.secondaryTokenId.toNumber(),
-//              initiator: details.initiator,
-//              secondaryEntrant: details.secondaryEntrant,
-//              startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
-//              battleValue: ethers.utils.formatEther(details.totalValueInBattle),
-//              endTime,
-//              countdown: calculateTimeLeft(endTime)
-//            };
-//          });
-//
-//          const allBattles = await Promise.all(battlesPromises);
-//          const userBattles = allBattles.filter(battle => battle.initiator === userAddress || battle.secondaryEntrant === userAddress);
-//          setActiveBattles(userBattles);
-//        } catch (error) {
-//          console.error("Failed to fetch active battles:", error);
-//        } finally {
-//          setIsLoading(false);
-//        }
-//      }
-//    };
-//
-//    if (userAddress) {
-//      fetchActiveBattleIds();
-//    }
-//  }, [userAddress, calculateTimeLeft]);

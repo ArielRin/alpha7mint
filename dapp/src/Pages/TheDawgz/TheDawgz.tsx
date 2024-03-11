@@ -5,6 +5,8 @@ import DawgRegistration from '../Components/DawgRegistration/DawgRegistration'; 
 
 import QRCode from 'qrcode.react';
 
+import { Web3Provider } from '@ethersproject/providers';
+
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import React, { useEffect, useState, useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
@@ -78,15 +80,33 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 // xb816222825Fd38B715904B301044C7D767389Aa2
 const ITEMS_PER_PAGE = 50;
 
-
-const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-const signer = provider.getSigner();
+const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
 
 
 
-const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
+
 
 const TheDawgz: React.FC = () => {
+
+  const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
+
+   // Provider and Signer setup
+   let provider: ethers.providers.Provider;
+   if ((window as any).ethereum) {
+     provider = new Web3Provider((window as any).ethereum as ethers.providers.ExternalProvider);
+   } else {
+     provider = new ethers.providers.JsonRpcProvider(fallbackRpcUrl);
+   }
+   const signer = provider instanceof Web3Provider ? provider.getSigner() : null;
+
+   // Contract instances
+   const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
+   const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+   const battleContract = signer
+     ? new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer)
+     : new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+
+
 
 
   interface NFT {
@@ -113,61 +133,51 @@ const TheDawgz: React.FC = () => {
     const [ownedTokenIds, setOwnedTokenIds] = useState<BigNumber[]>([]);
 
 
+      useEffect(() => {
+        const fetchNfts = async () => {
+          setIsLoading(true);
+          try {
+            const walletAddress = await (signer?.getAddress() || Promise.resolve(''));
 
-useEffect(() => {
-const fetchNfts = async () => {
-  setIsLoading(true);
-  try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-    const signer = provider.getSigner();
-    const walletAddress = await signer.getAddress();
+            const ownedTokenIds: BigNumber[] = await userRegistryContract.listNFTs(walletAddress);
+            const ownedTokenIdsArray: number[] = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
 
-    const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
-    const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
-    const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+            const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId: number) => {
+              const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
+              const response = await fetch(metadataUrl);
+              const metadata = await response.json();
 
-    const ownedTokenIds: BigNumber[] = await userRegistryContract.listNFTs(walletAddress);
-    const ownedTokenIdsArray: number[] = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
+              const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+              const isInBattle = await battleContract.tokenInBattle(tokenId);
 
-    // Update the nftList state with the fetched token IDs
-    setNftList(ownedTokenIdsArray);
+              let dawgName = null;
+              let dawgTaunt = null;
+              if (isRegistered) {
+                dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+                dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
+              }
 
-    const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId: number) => {
-      const metadata = await fetchNftData(tokenId);
-      const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
-      const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+              return {
+                tokenId,
+                imageUrl: metadata.imageUrl,
+                name: metadata.name,
+                isRegistered,
+                dawgName,
+                dawgTaunt,
+                isInBattle
+              };
+            }));
 
-      let dawgName = null;
-      let dawgTaunt = null;
-      if (isRegistered) {
-        dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-        dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
-      }
+            setNfts({ owned: ownedNftsData });
+          } catch (error) {
+            console.error("Failed to fetch owned NFTs:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
 
-      // Checking if the NFT is currently in battle
-      const isInBattle = await battleContract.tokenInBattle(tokenId);
-
-      return {
-        ...metadata,
-        tokenId,
-        imageUrl,
-        isRegistered,
-        dawgName,
-        dawgTaunt,
-        isInBattle  // Add the isInBattle property
-      };
-    }));
-
-    setNfts({ owned: ownedNftsData });
-  } catch (error) {
-    console.error("Failed to fetch owned NFTs:", error);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-fetchNfts();
-}, [currentPage]);
+        fetchNfts();
+      }, [currentPage, signer]);
 
     // Function to fetch individual NFT data
     const fetchNftData = async (tokenId: number) => {
@@ -207,7 +217,7 @@ fetchNfts();
 
 const addNftToWallet = async (tokenId: number) => {
     try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         await provider.send('wallet_watchAsset', {
             type: 'ERC721',
             options: {

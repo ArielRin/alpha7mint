@@ -399,7 +399,7 @@ setselectedReferrer(contractOptions[key]);
   return (
 
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh', marginTop: '80px'}}>
-     <div style={{ width: '370px', backgroundColor: 'rgba(0, 0, 0, 0.72)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+     <div style={{ width: '370px', backgroundColor: 'rgba(33, 142, 18, 0.44)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
      <div style={{ marginBottom: '20px' }}>
 
      </div>

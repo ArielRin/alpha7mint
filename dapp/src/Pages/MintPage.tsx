@@ -358,7 +358,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            bgImage={`url(${mainbackgroundImage})`}
            bgPosition="center"
            bgRepeat="no-repeat"
-           h="88vh"
+           h="1200px"
            bgSize="cover"
          >
 

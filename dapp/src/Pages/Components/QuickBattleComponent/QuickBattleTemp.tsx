@@ -54,7 +54,7 @@ import A7Logo from './Alpha7token.png';
 const tokenLogoUrl = 'https://raw.githubusercontent.com/ArielRin/alpha7mint/day-5/dapp/src/Pages/Alpha7token.png';
 const bnbLogoUrl = 'https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970';
 
-
+import { Web3Provider } from '@ethersproject/providers'; // Import Web3Provider
 
 
 import tokenAbi from './tokenAbi.json';
@@ -79,14 +79,6 @@ const metadataBaseUrl = "https://raw.githubusercontent.com/ArielRin/alpha7mint/d
 const ITEMS_PER_PAGE = 50;
 
 
-const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-const signer = provider.getSigner();
-
-
-
-const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
-
-
 
 
 
@@ -104,6 +96,25 @@ const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAb
 
 
 const QuickBattle = () => {
+
+
+
+
+
+
+  const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
+    let web3Provider: Web3Provider | null = null;
+
+    if ((window as any).ethereum) {
+      web3Provider = new Web3Provider((window as any).ethereum);
+    }
+    const provider = web3Provider ?? new ethers.providers.JsonRpcProvider(fallbackRpcUrl);
+    const signer = web3Provider ? web3Provider.getSigner() : null;
+
+
+  const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer || provider);
+
+
 
   interface NFT {
     tokenId: number;
@@ -126,50 +137,48 @@ const QuickBattle = () => {
 
 
 
-
   useEffect(() => {
-  const fetchNfts = async () => {
-    setIsLoading(true);
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      const signer = provider.getSigner();
-      const walletAddress = await signer.getAddress();
+    const fetchNfts = async () => {
+      setIsLoading(true);
+      try {
+        if (!signer) throw new Error("Signer not available");
 
-      const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
-      const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
-      const battleContractInstance = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+        const walletAddress = await signer.getAddress();
+        const userRegistryContract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, signer);
+        const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, signer);
+        const battleContractInstance = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
-      const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
-      const ownedTokenIdsArray = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
+        // Fetching NFT data
+        const ownedTokenIds: BigNumber[] = await userRegistryContract.listNFTs(walletAddress);
+        const ownedTokenIdsArray: number[] = ownedTokenIds.map((tokenId) => tokenId.toNumber());
 
-      const ownedNftsData = await Promise.all(
-        ownedTokenIdsArray.map(async (tokenId: number) => {
+        const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId: number) => {
           const metadata = await fetchNftData(tokenId);
-          const imageUrl = `https://alpha7.live/NFTDATA/Image/${tokenId}.png`;
           const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
           const isInBattle = await battleContractInstance.tokenInBattle(tokenId);
+          const dawgName = isRegistered ? await dawgRegistrationContract.dawgzNames(tokenId) : null;
+          const dawgTaunt = isRegistered ? await dawgRegistrationContract.dawgzDefaultTaunts(tokenId) : null;
 
-          let dawgName = null;
-          let dawgTaunt = null;
-          if (isRegistered) {
-            dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-            dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
-          }
+          return {
+            ...metadata,
+            tokenId,
+            isRegistered,
+            dawgName,
+            dawgTaunt,
+            isInBattle
+          };
+        }));
 
-          return { ...metadata, tokenId, isRegistered, dawgName, dawgTaunt, imageUrl, isInBattle };
-        })
-      );
+        setNfts({ owned: ownedNftsData });
+      } catch (error) {
+        console.error("Failed to fetch owned NFTs:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      setNfts({ owned: ownedNftsData });
-    } catch (error) {
-      console.error("Failed to fetch owned NFTs:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchNfts();
-}, [currentPage]);
+    fetchNfts();
+  }, [currentPage]);
 
 
   // Function to fetch individual NFT data
@@ -208,23 +217,6 @@ const activeTabColor = 'white'; // The color of the active tab indicator and tex
   const tokenPriceUSD = useContext(TokenPriceContext);
 
 // ------------------------------------------------------------------------------ //
-
-const addNftToWallet = async (tokenId: number) => {
-  try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      await provider.send('wallet_watchAsset', {
-          type: 'ERC721',
-          options: {
-              address: NFT_CONTRACT_ADDRESS,
-              tokenId: tokenId.toString(), // Convert tokenId to string
-              // You can add more token details if necessary (image, name, etc.)
-          },
-      } as any); // Bypass TypeScript's type checking
-  } catch (error) {
-      console.error('Error adding NFT to wallet', error);
-  }
-};
-
 
 
 
@@ -268,20 +260,23 @@ useEffect(() => {
   fetchEntryFeeAndSet();
 }, []);
 
+const [battleEntrySuccess, setBattleEntrySuccess] = useState({ success: false, tokenId: 0 });
 
 const enterBattle = async (tokenId: number, dawgTaunt: string) => {
-   try {
-     setIsTransactionLoading(true); // Start loading
-     const entryFee = await fetchEntryFee();
-     const transaction = await battleContract.enterBattle(tokenId, dawgTaunt, { value: entryFee });
-     await transaction.wait();
-     console.log('Battle entered successfully');
-   } catch (error) {
-     console.error('Error entering battle:', error);
-   } finally {
-     setIsTransactionLoading(false); // Stop loading irrespective of result
-   }
- };
+  try {
+    setIsTransactionLoading(true);
+    const entryFee = await fetchEntryFee();
+    const transaction = await battleContract.enterBattle(tokenId, dawgTaunt, { value: entryFee });
+    await transaction.wait();
+    setBattleEntrySuccess({ success: true, tokenId }); // Update success state
+    console.log('Battle entered successfully');
+  } catch (error) {
+    console.error('Error entering battle:', error);
+  } finally {
+    setIsTransactionLoading(false);
+  }
+};
+
 
  const [customTaunt, setCustomTaunt] = useState<string | null>(null);
 
@@ -303,12 +298,15 @@ const enterBattle = async (tokenId: number, dawgTaunt: string) => {
 
 
 
-    <Box width="330px" height="270px" bg="white" p={4} borderRadius="md">
+    <Box width="330px" minH="290px" bg="white" p={4} borderRadius="md">
     <Menu>
     <MenuButton bg="blue.500" as={Button} rightIcon={<ChevronDownIcon />}>
     Select Dawg!
     </MenuButton>
-    <MenuList>
+    <MenuList
+  maxHeight="380px" // Set the maximum height
+  overflowY="auto" // Enable vertical scrolling
+>
   {nfts.owned.length > 0 && nfts.owned.some(nft => !nft.isInBattle) ? (
     nfts.owned.filter(nft => !nft.isInBattle).map((nft, index) => (
       <MenuItem key={index} minH="48px" onClick={() => handleSelectNFT(nft)}>
@@ -352,6 +350,12 @@ const enterBattle = async (tokenId: number, dawgTaunt: string) => {
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomTaunt(e.target.value)}
       mb="4"
     />
+    {battleEntrySuccess.success && battleEntrySuccess.tokenId !== 0 && (
+    <Box color="green.500" fontSize="md" my={4}>
+      Successfully entered Dawg #{battleEntrySuccess.tokenId} in battle!
+    </Box>
+  )}
+
 
 
 
@@ -365,6 +369,7 @@ const enterBattle = async (tokenId: number, dawgTaunt: string) => {
     ? 'Entering Battle...'
     : `Enter ${entryFee ? ethers.utils.formatEther(entryFee) : '0'} BNB Battle Arena`}
 </Button>
+
        </Box>
 
     </Box>

@@ -13,10 +13,14 @@ import userRegistryAbi from './userRegistryAbi.json';
 const USER_REGISTRY_CONTRACT_ADDRESS = "0x37922C5C3DEEF8A82492E6855EE08307a8D27278";
 
 
+import YourCompletedBattleHistory from './YourCompletedBattleHistory';
+// <YourComplatedBattleHistory />
+
 interface BattleDetails {
   id: number;
   initiatorTokenId: number;
   secondaryTokenId: number;
+  opponentTokenId: number;
   initiator: string;
   secondaryEntrant: string;
   startTime: string;
@@ -24,8 +28,8 @@ interface BattleDetails {
   endTime: Date;
   countdown: string;
   winnerTokenId: number;
-}
 
+}
 
 const YourComplatedBattles: React.FC = () => {
   const [activeBattles, setActiveBattles] = useState<BattleDetails[]>([]);
@@ -34,6 +38,7 @@ const YourComplatedBattles: React.FC = () => {
   const [expandedBattleIds, setExpandedBattleIds] = useState<Record<number, boolean>>({});
   const [completedBattles, setCompletedBattles] = useState<BattleDetails[]>([]);
     const [ownedNFTs, setOwnedNFTs] = useState<number[]>([]);
+
 
     const [revealState, setRevealState] = useState<Record<number, { isRevealed: boolean, countdown: number }>>({});
     useEffect(() => {
@@ -49,26 +54,26 @@ const YourComplatedBattles: React.FC = () => {
   }, [revealState]);
 
 
-  interface TokenId {
-    toNumber(): number;
-    // Include other properties if there are any
-  }
 
-  const fetchOwnedNFTs = async () => {
-    if (userAddress && window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      const contract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
 
-      try {
-        const ownedTokenIds = await contract.listNFTs(userAddress);
-        // If ownedTokenIds are already numbers, you don't need to call toNumber()
-        setOwnedNFTs(ownedTokenIds);
-      } catch (error) {
-        console.error("Failed to fetch owned NFTs:", error);
-      }
-    }
-  };
 
+    const fetchOwnedNFTs = async () => {
+     if (userAddress && window.ethereum) {
+       const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+       const contract = new ethers.Contract(USER_REGISTRY_CONTRACT_ADDRESS, userRegistryAbi, provider);
+
+       try {
+         const ownedTokenIds = await contract.listNFTs(userAddress);
+         setOwnedNFTs(ownedTokenIds.map((id: BigNumber) => id.toNumber()));
+       } catch (error) {
+         console.error("Failed to fetch owned NFTs:", error);
+       }
+     }
+   };
+
+   useEffect(() => {
+     fetchOwnedNFTs();
+   }, [userAddress]);
 
 // ------------------------------------ //
 
@@ -83,63 +88,25 @@ const YourComplatedBattles: React.FC = () => {
     return 'Battle Ended';
   };
 
-  const fetchUserAddress = async () => {
-  if (window.ethereum) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-    const signer = provider.getSigner();
-    setUserAddress(await signer.getAddress());
-  }
-};
-
-useEffect(() => {
-  fetchUserAddress();
-}, []);
-useEffect(() => {
-  const fetchActiveBattleIds = async () => {
-    if (userAddress && window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-
-      try {
-        const roundDuration = await contract.roundDuration();
-        const roundDurationSeconds = roundDuration.toNumber() * 1000; // Convert to milliseconds
-        const battleIds = await contract.getActiveBattleIds();
-
-        const battlesPromises = battleIds.map(async (battleId: BigNumber) => {
-  const details = await contract.getBattleDetails(battleId);
-  const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
-
-  return {
-    id: battleId.toNumber(),
-    initiatorTokenId: details.initiatorTokenId.toNumber(),
-    secondaryTokenId: details.secondaryTokenId.toNumber(),
-    initiator: details.initiator,
-    secondaryEntrant: details.secondaryEntrant,
-    startTime: new Date(details.startTime.toNumber() * 1000).toLocaleString(),
-    battleValue: ethers.utils.formatEther(details.totalValueInBattle),
-    endTime,
-    countdown: calculateTimeLeft(endTime)
-  };
-});
-
-
-        const allBattles = await Promise.all(battlesPromises);
-        const userBattles = allBattles.filter(battle => battle.initiator === userAddress || battle.secondaryEntrant === userAddress);
-        setActiveBattles(userBattles);
-      } catch (error) {
-        console.error("Failed to fetch active battles:", error);
-      } finally {
-        setIsLoading(false);
+  useEffect(() => {
+    const fetchUserAddress = async () => {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const signer = provider.getSigner();
+        setUserAddress(await signer.getAddress());
       }
-    }
-  };
+    };
 
-  if (userAddress) {
-    fetchActiveBattleIds();
-  }
-}, [userAddress, calculateTimeLeft]);
+    fetchUserAddress();
+  }, []);
+
+
 
    //-------------------//-----------------------//------------------------//
+   const getOverlayColor = (battle: BattleDetails) => {
+     return ownedNFTs.includes(battle.winnerTokenId) ? "rgba(0, 128, 0, 0.3)" : "rgba(255, 105, 180, 0.3)"; // Green for win, Pink for loss
+   };
+
 
       //-------------------//-----------------------//------------------------//
          //-------------------//-----------------------//------------------------//
@@ -175,23 +142,7 @@ useEffect(() => {
 
    //-------------------//-----------------------//------------------------//
 
-const startBattleManually = async (battleId: number) => {
-        if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
-        try {
-          const transaction = await contract.startBattleManually(battleId);
-          await transaction.wait();
-          console.log(`Battle ${battleId} finalized successfully`);
-          // Refresh battles list or show a success message
-        } catch (error) {
-          console.error(`Error finalizing battle ${battleId}:`, error);
-          // Show an error message
-        }
-      }
-    };
         //-------------------//-----------------------//------------------------//
         const fetchCompletedBattlesByParticipant = async () => {
     if (userAddress && window.ethereum) {
@@ -201,6 +152,7 @@ const startBattleManually = async (battleId: number) => {
       try {
         const completedBattleIds = await contract.getCompletedBattlesByParticipant(userAddress);
         const battleDetailsPromises = completedBattleIds.map(async (id: number) => {
+
             const details = await contract.getBattleDetails(id);
 
           return {
@@ -232,74 +184,207 @@ const startBattleManually = async (battleId: number) => {
 
 
             //-------------------//-----------------------//------------------------//
+            const handleRevealWinner = async (battleId: number, battleValue: number) => {
+           setRevealState(prevState => ({
+             ...prevState,
+             [battleId]: { isRevealed: false, countdown: 3 } // Start countdown from 3 seconds
+           }));
 
+           // Countdown logic
+           const intervalId = setInterval(() => {
+             setRevealState(prevState => {
+               if (prevState[battleId].countdown > 1) {
+                 return { ...prevState, [battleId]: { ...prevState[battleId], countdown: prevState[battleId].countdown - 1 } };
+               } else {
+                 clearInterval(intervalId);
+                 return { ...prevState, [battleId]: { ...prevState[battleId], isRevealed: true, countdown: 0 } }; // Reveal the winner
+               }
+             });
+           }, 1000);
+         };
                 //-------------------//-----------------------//------------------------//
                     //-------------------//-----------------------//------------------------//
+        useEffect(() => {
+          if (userAddress) {
+            fetchCompletedBattlesByParticipant();
+          }
+        }, [userAddress]);
+
+        const isBattleOver12HoursOld = (battleStartTime: number) => {
+      const now = new Date().getTime();
+      return now - battleStartTime > 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+    };
 
 
             //-------------------//-----------------------//------------------------//
+            useEffect(() => {
+              const savedRevealState = localStorage.getItem('revealState');
+              if (savedRevealState) {
+                setRevealState(JSON.parse(savedRevealState));
+              }
+            }, []);
 
-
-
-
+            // This useEffect hook saves the revealState to local storage whenever it updates.
+            useEffect(() => {
+              localStorage.setItem('revealState', JSON.stringify(revealState));
+            }, [revealState]);
 
                         //-------------------//-----------------------//------------------------//
+                        useEffect(() => {
+                          // Function to fetch data (active battles, owned NFTs, and completed battles)
+                          const fetchData = async () => {
+                            if (userAddress) {
+                              await fetchOwnedNFTs();
+                              await fetchCompletedBattlesByParticipant();
+                            }
+                          };
+
+                          // Initial fetch when the component mounts
+                          fetchData();
+
+                          // Set an interval to refresh data every 20 seconds
+                          const interval = setInterval(fetchData, 20000);
+
+                          // Cleanup function to clear the interval when the component unmounts
+                          return () => clearInterval(interval);
+                        }, [userAddress]); // Dependencies array
+
+                        // The rest of your component remains the same
+
+
+
+
+
+
+
+
 
         return (
-      <Box bg="rgba(0,0,0,0.7)">
-        {completedBattles.length > 0 ? (
-          <Flex direction="column" gap="4">
-            {completedBattles.map((battle) => (
-              <Box key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="gray.100" position="relative">
-                {/* Overlay Box */}
-                <Box
-                  position="absolute"
-                  top="0"
-                  right="0"
-                  bottom="0"
-                  left="0"
-                  bg={ownedNFTs.includes(battle.winnerTokenId) ? "rgba(0, 128, 0, 0.3)" : "rgba(255, 105, 180, 0.3)"}
-                  borderRadius="lg"
-                  pointerEvents="none"
-                />
-                {/* Content Box */}
-                <Flex align="center" p="4" position="relative" zIndex="1">
-                  <Text flex="1" textAlign="left">Battle: {battle.id}</Text>
-                  <Image src={`/NFTDATA/Image/${battle.initiatorTokenId}.png`} width="35px" />
-                  <Text flex="1" textAlign="left"># {battle.initiatorTokenId}</Text>
-                  <Text flex="1" textAlign="left">VS</Text>
-                  <Image src={`/NFTDATA/Image/${battle.secondaryTokenId}.png`} width="35px" />
-                  <Text flex="1" textAlign="left"># {battle.secondaryTokenId}</Text>
-                  <Text flex="1" textAlign="right">Details</Text>
-                  <IconButton
-                    color="black"
-                    aria-label="Expand battle details"
-                    icon={expandedBattleIds[battle.id] ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                    onClick={() => toggleExpandedBattle(battle.id)}
-                  />
-                </Flex>
-                <Collapse in={expandedBattleIds[battle.id]}>
-                  <Box p="4">
-                    <Text>Initiator: #{battle.initiatorTokenId}</Text>
-                    <Text>Opponent: #{battle.secondaryTokenId}</Text>
-                    <Text>Value: {battle.battleValue} ETH</Text>
-                    {ownedNFTs.includes(battle.winnerTokenId) ? (
-                      <Text fontSize="2xl" fontWeight="bold" textAlign="center" color="green.500">Winner! You won the battle!</Text>
-                    ) : (
-                      <Text fontSize="xl" fontWeight="bold" textAlign="center" color="red.500">Sorry, you lost. Better luck next time.</Text>
-                    )}
-                    <Text>Winning Token ID: #{battle.winnerTokenId}</Text>
+          <Box
+          bg="rgba(0,0,0,07)"
+          >
+
+          <Box
+maxHeight="600px" // Set the maximum height
+overflowY="auto" // Enable vertical scrolling
+// Additional styles can be added if necessary
+>
+                 {completedBattles.length > 0 ? (
+                 <Flex direction="column" gap="4">
+                 {completedBattles.map((battle) => (
+                   <Box key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="gray.100" position="relative">
+
+
+                       <Box
+                         position="absolute"
+                         top="0"
+                         right="0"
+                         bottom="0"
+                         left="0"
+                         bg={ownedNFTs.includes(battle.winnerTokenId) ? "rgba(0, 128, 0, 0.3)" : "rgba(255, 105, 180, 0.3)"}
+                         borderRadius="lg"
+                         pointerEvents="none"
+                       />
+
+                            <Flex align="center">
+                              <Text flex="1" textAlign="left">Battle: {battle.id}</Text>
+                              <Image src={`/NFTDATA/Image/${battle.initiatorTokenId}.png`} width="55px" />
+                              <Text flex="1" textAlign="left"># {battle.initiatorTokenId}</Text>
+                              <Text flex="1" textAlign="left">VS</Text>
+
+                              <Image src={`/NFTDATA/Image/${battle.opponentTokenId}.png`} width="55px" />
+                              <Text flex="1" textAlign="left"># {battle.opponentTokenId}</Text>
+                              <Text flex="1" textAlign="right">
+                                Details
+                              </Text>
+                              <IconButton
+                                aria-label="Expand battle details"
+                                icon={expandedBattleIds[battle.id] ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                                onClick={() => toggleExpandedBattle(battle.id)}
+                              />
+                            </Flex>
+                            <Collapse in={expandedBattleIds[battle.id]}>
+                              <Box p="4">
+                                <Text>Initiator: #{battle.initiatorTokenId}</Text>
+                                <Text>Opponent: #{battle.opponentTokenId}</Text>
+                                <Text>Value: {battle.battleValue} BNB</Text>
+
                   </Box>
-                </Collapse>
-              </Box>
-            ))}
-          </Flex>
-        ) : (
-          <Text textAlign="center" color="white" my="20px">No completed battles found.</Text>
-        )}
-      </Box>
-    );
+                            </Collapse>
+                            </Box>
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text>No active battles found.</Text>
+                  )}
+                 </Box>
+            </Box>
+
+
+        );
 
 };
 
 export default YourComplatedBattles;
+
+
+//
+//
+// return (
+// <Box bg="rgba(0,0,0,0.7)">
+// {completedBattles.length > 0 ? (
+//   <Flex direction="column" gap="4">
+//     {completedBattles.map((battle) => (
+//       <Box key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="gray.100" position="relative">
+//         {/* Overlay Box */}
+//         <Box
+//           position="absolute"
+//           top="0"
+//           right="0"
+//           bottom="0"
+//           left="0"
+//           bg={ownedNFTs.includes(battle.winnerTokenId) ? "rgba(0, 128, 0, 0.3)" : "rgba(255, 105, 180, 0.3)"}
+//           borderRadius="lg"
+//           pointerEvents="none"
+//         />
+//         {/* Content Box */}
+//         <Flex align="center" p="4" position="relative" zIndex="1">
+//           <Text flex="1" textAlign="left">Battle: {battle.id}</Text>
+//           <Image src={`/NFTDATA/Image/${battle.initiatorTokenId}.png`} width="35px" />
+//           <Text flex="1" textAlign="left"># {battle.initiatorTokenId}</Text>
+//           <Text flex="1" textAlign="left">VS</Text>
+//           <Image src={`/NFTDATA/Image/${battle.secondaryTokenId}.png`} width="35px" />
+//           <Text flex="1" textAlign="left"># {battle.secondaryTokenId}</Text>
+//           <Text flex="1" textAlign="right">Details</Text>
+//           <IconButton
+//             color="black"
+//             aria-label="Expand battle details"
+//             icon={expandedBattleIds[battle.id] ? <ChevronUpIcon /> : <ChevronDownIcon />}
+//             onClick={() => toggleExpandedBattle(battle.id)}
+//           />
+//         </Flex>
+//         <Collapse in={expandedBattleIds[battle.id]}>
+//           <Box p="4">
+//             <Text>Initiator: #{battle.initiatorTokenId}</Text>
+//             <Text>Opponent: #{battle.secondaryTokenId}</Text>
+//             <Text>Value: {battle.battleValue} ETH</Text>
+//             {ownedNFTs.includes(battle.winnerTokenId) ? (
+//               <Text fontSize="2xl" fontWeight="bold" textAlign="center" color="green.500">Winner! You won the battle!</Text>
+//             ) : (
+//               <Text fontSize="xl" fontWeight="bold" textAlign="center" color="red.500">Sorry, you lost. Better luck next time.</Text>
+//             )}
+//             <Text>Winning Token ID: #{battle.winnerTokenId}</Text>
+//           </Box>
+//         </Collapse>
+//       </Box>
+//     ))}
+//   </Flex>
+// ) : (
+//   <Text textAlign="center" color="white" my="20px">No completed battles found.</Text>
+// )}
+// </Box>
+// );
+//
+// };
+//
+// export default YourComplatedBattles;

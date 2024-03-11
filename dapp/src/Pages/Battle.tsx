@@ -3,7 +3,7 @@
 import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 
 
-// import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
+import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // <YourComplatedBattles />
 
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
@@ -12,17 +12,17 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 // import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
 //
-// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
+import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
 // // <YourActiveBattles />
 //
 
-// import UserBattleStats from './Components/UserProfile/UserBattleStats';
+import UserBattleStats from './Components/UserProfile/UserBattleStats';
 // <UserBattleStats />
 // import AllActiveBattlesTest from './Components/AllActiveBattlesTest/AllActiveBattlesTest';
 // // // <AllActiveBattlesTest />
 //
 //
-// import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
+import BattleNowMainComponent from './Components/QuickBattleComponent/BattleNowMainComponent';
 // // <BattleNowMainComponent />
 
 // import QuickBattleComponent from './Components/QuickBattleComponent/QuickBattleTemp';
@@ -414,14 +414,13 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
               justifyContent="center" // Horizontally center the content
               alignItems="center" // Vertically center the content
             >
+ <BattleNowMainComponent />
 
 
             </Box>
           </Box>
 
           {/* Second Column
-            <BattleNowMainComponent />
-
 
             <Box
               flex={{ base: 1, md: 1 }}
@@ -445,8 +444,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             justifyContent="center" // Horizontally center the content
             alignItems="center" // Vertically center the content
           >
-
-            {/* Content for the third column     <UserBattleStats />
+          <UserBattleStats />
+            {/* Content for the third column
              */}
           </Box>
         </Flex>
@@ -458,13 +457,13 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
       minH="40px" // Minimum height of 400px for the row
     >
 
-
+      {/* First Column */}
       <Box
         flex={{ base: 1, md: 6 }}
         minW="0" // Prevents shrinking below content width
       >
-    {/* <YourActiveBattles /> */}
 
+      <YourActiveBattles />
       </Box>
 
 
@@ -472,7 +471,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         flex={{ base: 1, md: 4 }}
         minW={{ base: 'auto', md: '360px' }}
       >
-
+<YourComplatedBattles />
       {/*
       <YourComplatedBattles /> */}
             </Box>
