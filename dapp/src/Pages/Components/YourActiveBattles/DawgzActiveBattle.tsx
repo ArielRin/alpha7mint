@@ -52,12 +52,16 @@ const ActiveBattles: React.FC = () => {
     fetchBattleForToken();
   }, [tokenId]);
 
+
   const backgroundStyle = {
     backgroundImage: `url(https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/Pages/Components/YourActiveBattles/bwBkg.png)`,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    backgroundColor: 'rgba(0, 0, 0, 0.0)', // Set the background color to fully transparent
   };
+
+
 
   if (isLoading) {
     return <Text>Loading...</Text>;
