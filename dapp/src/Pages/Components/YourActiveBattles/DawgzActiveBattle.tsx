@@ -22,12 +22,12 @@ const ActiveBattles: React.FC = () => {
 
   useEffect(() => {
     const fetchBattleForToken = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
       setIsLoading(true);
 
       try {
-        const tokenIdNum = parseInt(tokenId, 10);
+        const tokenIdNum = parseInt(tokenId || '0', 10);
         const activeBattleIds = await contract.getActiveBattleIds();
 
         for (let id of activeBattleIds) {

@@ -139,6 +139,23 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
 
 
    //-------------------//-----------------------//------------------------//
+const startBattleManually = async (battleId: number) => {
+       if (window.ethereum) {
+       try {
+         setIsLoading(true);
+         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+         const signer = provider.getSigner();
+         const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
+
+         const tx = await battleContract.startBattleManually(battleId);
+         await tx.wait();
+       } catch (error) {
+         console.error("Error starting battle manually:", error);
+       } finally {
+         setIsLoading(false);
+       }
+     }
+   };
 
 
         //-------------------//-----------------------//------------------------//
@@ -222,7 +239,15 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
                       <Flex mt="4" justifyContent="center"> {/* Adjusted justifyContent to "center" */}
 
                   {/*       <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>    */}
-                    <Button colorScheme="green" >Finalise Battle</Button>
+                  <Button
+                    colorScheme="green"
+                    onClick={() => startBattleManually(battle.id)}
+                    isDisabled={isLoading}
+                    alignSelf="center"
+                    >
+                    {isLoading ? 'Processing...' : 'Finalise Battle'}
+                    </Button>
+
 
                   </Flex>
                   <Text style={{ textAlign: 'center', fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Who will become the AlphaDawg!</Text>

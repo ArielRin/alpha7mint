@@ -392,63 +392,45 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
             >
           </Flex>
           {/* New Flex Row with 3 Columns */}
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          gap="4" // Adjust gap as needed
-          p={4} // Adjust padding as needed
-          minH="10px" // Minimum height of 400px for the row
-        >
-          {/* First Column */}
-          <Box
-            flex={{ base: 1, md: 2 }}
-            minW="0" // Prevents shrinking below content width on smaller screens
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-            {/* Content for the first column */}
-            <Box
-              w="100%" // Box takes 100% width
-              minH="10px"
-              display="flex" // Use flexbox for alignment
-              justifyContent="center" // Horizontally center the content
-              alignItems="center" // Vertically center the content
-            >
- <BattleNowMainComponent />
-
-
-            </Box>
-          </Box>
-
-          {/* Second Column
-
-            <Box
-              flex={{ base: 1, md: 1 }}
-              minW={{ base: 'auto', md: '350px' }}
-              display="flex" // Use flexbox for alignment
-              justifyContent="center" // Horizontally center the content
-              alignItems="center" // Vertically center the content
-            >
-
-                         </Box>
-
-             */}
 
 
 
-          {/* Third Column */}
-          <Box
-            flex={{ base: 1, md: 1 }}
-            minW={{ base: 'auto', md: '350px' }}
-            display="flex" // Use flexbox for alignment
-            justifyContent="center" // Horizontally center the content
-            alignItems="center" // Vertically center the content
-          >
-          <UserBattleStats />
-            {/* Content for the third column
-             */}
-          </Box>
-        </Flex>
+          <Flex
+                    direction={{ base: 'column', md: 'row' }}
+                    gap="4" // Adjust gap as needed
+                    p={4} // Adjust padding as needed
+                    minH="200px" // Minimum height of 200px for the row
+                  >
+                    {/* First Column */}
+                    <Box
+                    justifyContent="center" // Horizontally center the content
+                  alignItems="center" // Vertically center the content
+                      flex={1} // Ensures equal space distribution
+                      display="flex"
+                      // Add content or components for first column
+                    >
+                      {/* Content for the first column */}
+                      <BattleNowMainComponent />
+                    </Box>
+
+                    {/* Second Column */}
+                    <Box
+                    justifyContent="center" // Horizontally center the content
+                  alignItems="center" // Vertically center the content
+                      flex={1} // Ensures equal space distribution
+                      display="flex"
+                      // Add content or components for second column
+                    >
+                      {/* Content for the second column */}
+                          <UserBattleStats />
+                    </Box>
+                  </Flex>
+
+
+
+
+
+
 
          <Flex
       direction={{ base: 'column', md: 'row' }}
@@ -468,6 +450,8 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
       <Box
+      marginTop="120px"
+
         flex={{ base: 1, md: 4 }}
         minW={{ base: 'auto', md: '360px' }}
       >
@@ -476,16 +460,13 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
       <YourComplatedBattles /> */}
             </Box>
     </Flex>
-           <Flex
-             direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
-             gap={0} // Adjust the gap as needed
-             p={0} // Adjust the padding as needed
-           >
-             {/* FastSwapComponent with 30% width on medium devices and above */}
-             <Box flex={{ base: 1, md: 3 }}>
-          {/*      <DropdownComponent /> */}
-             </Box>
-           </Flex>
+
+
+
+
+
+
+
          </Box>
          <Footer />
        </Box>

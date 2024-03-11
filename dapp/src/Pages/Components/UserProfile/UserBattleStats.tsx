@@ -184,9 +184,10 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         };
 
         return (
-            <Box  color="white" bg="rgba(0, 0, 0, 0.1)" minH="300px" p={4}>
-              <Text fontSize="xl" fontWeight="bold" mb={4}>Your User Battle Stats</Text>
-              <Text textAlign="right">Number of Battles: {stats.totalBattles}</Text>
+
+              <Box color="white" width="400px" bg="rgba(107, 105, 106, 0.4)" p={4} borderRadius="md">
+              <Text textAlign="right" fontSize="2xl" color="white" fontWeight="bold">Your User Battle Stats</Text>
+              <Text textAlign="right" fontSize="md" color="white" mt={3}>Number of Battles: {stats.totalBattles}</Text>
               <Text textAlign="right">Total Value Spent (BNB): {Number(stats.totalValueSpent).toFixed(4)} </Text>
               <Text textAlign="right">Total Value Won (BNB): {Number(stats.totalValueLost).toFixed(4)} </Text>
 
