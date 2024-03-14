@@ -264,7 +264,7 @@ const valueEarnedParsed: number = parseFloat(tokenStats.valueEarned ?? "0");
         >
           <Flex align="center">
 
-            <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+            <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/headerlogo.png" w="163px" />
             <ChakraLink as={RouterLink} to="/" color="white" ml="3"></ChakraLink>
           </Flex>
           <Box p="5px">

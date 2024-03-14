@@ -92,7 +92,7 @@ const HeaderWithDropdown = () => {
 
           <Flex align="center" mr={5}>
             <RouterLink to="/">
-              <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="100px" />
+              <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/headerlogo.png" w="100px" />
             </RouterLink>
           </Flex>
           <IconButton
@@ -116,12 +116,14 @@ const HeaderWithDropdown = () => {
             flexGrow={1}
             ml={{ md: 5 }}
           >
-            <RouterLink to="/buy">Buy</RouterLink>
-              <RouterLink to="/mint">Mint</RouterLink>
-              <RouterLink to="/battle">Battle</RouterLink>
+            <RouterLink style={{ fontWeight: 'bold' }} to="/buy">Buy</RouterLink>
+          <RouterLink style={{ fontWeight: 'bold' }} to="/staking">Stake</RouterLink>
 
-            <RouterLink to="/thedawgz">Collection</RouterLink>
-            <RouterLink to="/values">Financials</RouterLink>
+            <RouterLink style={{ fontWeight: 'bold' }} to="/mint">Mint</RouterLink>
+            <RouterLink style={{ fontWeight: 'bold' }} to="/battle">Battle</RouterLink>
+
+          <RouterLink style={{ fontWeight: 'bold' }} to="/thedawgz">Collection</RouterLink>
+          <RouterLink style={{ fontWeight: 'bold' }} to="/values">Financials</RouterLink>
           </Stack>
 
           {/* Mobile Links and Wallet Info */}
@@ -152,7 +154,7 @@ const HeaderWithDropdown = () => {
          </ChakraLink>
           <Flex marginTop="10px" justify="center" align="center">
             <Image src={bnbLogoUrl} h="20px" mr="2" />
-            <Text fontSize="md" fontWeight="bold">${bnbPrice}</Text>
+            <Text  fontSize="md" fontWeight="bold">${bnbPrice}</Text>
           </Flex>
         </Flex>
 
@@ -161,12 +163,13 @@ const HeaderWithDropdown = () => {
         <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Battle</RouterLink>
 
         */}
-        <RouterLink to="/" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Home</RouterLink>
-        <RouterLink to="/buy" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Buy</RouterLink>
-        <RouterLink to="/mint" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Mint</RouterLink>
-        <RouterLink to="/battle" style={{ textAlign: 'center', width: '100%', marginTop: '25px' }}>Battle</RouterLink>
-        <RouterLink to="/thedawgz" style={{ textAlign: 'center', width: '100%' }}>Collection</RouterLink>
-        <RouterLink to="/values" style={{ textAlign: 'center', width: '100%' }}>Financials</RouterLink>
+        <RouterLink to="/" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Home</RouterLink>
+        <RouterLink to="/buy" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Buy</RouterLink>
+        <RouterLink to="/staking" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Stake</RouterLink>
+        <RouterLink to="/mint" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Mint</RouterLink>
+        <RouterLink to="/battle" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Battle</RouterLink>
+        <RouterLink to="/thedawgz" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%' }}>Collection</RouterLink>
+        <RouterLink to="/values" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%'  }}>Financials</RouterLink>
       </VStack>
     </Flex>
   </Collapse>

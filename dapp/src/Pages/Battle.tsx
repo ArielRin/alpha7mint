@@ -14,6 +14,14 @@ import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdo
 //
 import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles';
 // // <YourActiveBattles />
+
+
+
+import AllActiveBattles from './Components/YourActiveBattles/AllActiveBattles';
+// // <AllActiveBattles />
+
+
+
 //
 
 import UserBattleStats from './Components/UserProfile/UserBattleStats';
@@ -385,14 +393,14 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
          >
 
          <Flex
-              direction={{ base: 'column', md: 'row' }}
+              direction={{ base: 'row', md: 'row' }}
               gap="4" // Adjust gap as needed
               p={4} // Adjust padding as needed
               minH="60px" // Minimum height of 400px for the row
             >
+
           </Flex>
           {/* New Flex Row with 3 Columns */}
-
 
 
           <Flex
@@ -428,6 +436,24 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
 
+                  <Flex
+                       direction={{ base: 'row', md: 'row' }}
+                       gap="4" // Adjust gap as needed
+                       p={4} // Adjust padding as needed
+                       minH="250px" // Minimum height of 400px for the row
+                     >
+                     <Box
+                     marginTop="120px"
+
+                       flex={{ base: 1, md: 4 }}
+                       minW={{ base: 'auto', md: '360px' }}
+                     >
+                     {/*
+                       <AllActiveBattles />
+
+                      */}
+                           </Box>
+                   </Flex>
 
 
 

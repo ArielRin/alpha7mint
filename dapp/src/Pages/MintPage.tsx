@@ -59,6 +59,7 @@ import {
   Tabs,
   TabList,
   TabPanels,
+  Heading,
   Spacer,
   Tab,
   TabPanel,
@@ -389,6 +390,61 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         </Flex>
 
          </Box>
+
+
+         <Flex
+           direction={{ base: 'column', md: 'row' }}
+           wrap="wrap"
+           justify="center"
+           align="center"
+           gap="4" // Adjust the gap as needed
+           p={6} // Adjust the padding as needed
+           minH="90px" // Minimum height of 60px for the row
+           w="full" // Take full width of the container
+           bg="black"
+         >
+
+           <Box bg="black" p={4}>
+              {/* Main Heading */}
+              <Heading color="white" mb="4" fontSize="xl">Alpha Dawgz Additional Benefits</Heading>
+
+              {/* Sub Heading */}
+              <Heading color="white" mb="2" fontSize="lg">Higher Alpha7 Token Reflections</Heading>
+              {/* Body */}
+              <Text color="white" mb="4">
+                Alpha Dawg NFTs will enjoy an additional 2% reflection from Alpha7 token to the NFT rewards pool, which will be distributed to holders on a weekly basis.
+              </Text>
+
+              {/* Sub Heading */}
+              <Heading color="white" mb="2" fontSize="lg">Access to VIP Competitions</Heading>
+              {/* Body */}
+              <Text color="white" mb="4">
+                Ownership of an ALPHA Dawg NFT grants exclusive access to VIP competitions. These events are not just about winning; they are about being part of a community that values innovation and rewards participation.
+              </Text>
+
+              {/* Sub Heading */}
+              <Heading color="white" mb="2" fontSize="lg">BattleDawgz PvP Prize in BNB</Heading>
+              {/* Body */}
+              <Text color="white" mb="4">
+              BattleDawgz currently a live work in progress Player vs Player (PvP) NFT Game, with Players pitting their Dawgz against each other to win the prize pot. Bet amounts and Prizes are in BNB.
+              </Text>
+
+              {/* Sub Heading */}
+              <Heading color="white" mb="2" fontSize="lg">Weekly Prizes and Community Trades</Heading>
+              {/* Body */}
+              <Text color="white" mb="4">
+                The excitement continues with weekly prizes and opportunities for community trades. These features keep the community engaged and offer additional incentives for NFT holders.
+              </Text>
+
+              {/* Sub Heading */}
+              <Heading color="white" mb="2" fontSize="lg">Marketplace and DApp Integration</Heading>
+              {/* Body */}
+              <Text color="white" mb="4">
+                Upon launch, a ToFuNFT marketplace will be available for trading ALPHA Dawg NFTs. This platform ensures seamless purchases, swaps, and transfers of NFTs. Alongside, a minting and collection DApp will be introduced, enhancing the user experience and offering a straightforward approach to managing your NFTs.
+              </Text>
+            </Box>
+
+         </Flex>
          <Footer />
        </Box>
      );

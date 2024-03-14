@@ -400,7 +400,7 @@ setselectedReferrer(contractOptions[key]);
      <div style={{ marginBottom: '20px' }}>
        <ConnectButton />
      </div>
-     <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+     <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/headerlogo.png" w="163px" />
      <h2 style={{
     color: 'white',
     textAlign: 'center',

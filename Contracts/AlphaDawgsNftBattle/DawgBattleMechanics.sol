@@ -1,15 +1,10 @@
 
 // SPDX-License-Identifier: MIT
-// File: @openzeppelin/contracts@4.5.0/utils/Context.sol
-// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
-
 
 
 
 
 /*
-
-
                                                   --------------------------------================.
                                                  *@@@@@%%%%%%%%%%%%@@@@@%%%%%%%%%%%%@%@@@@@@@@@@@=
                                                 #@@@%+:::::::::::::::::::::::::::::::::::-*@@@@@-
@@ -35,11 +30,25 @@
                                                     =@@@@%#%%%%%#@@@@@-
                                                    =@@@@@@@@@@@@@@@@%:
                                                   :+++++++++++++++++.
-AlphaDawgs Battle System
+AlphaDawgs Battle System 7.4.5 (BattleStats +)
 
-NFT Contract AlphaDawgs: 0xca695feb6b1b603ca9fec66aaa98be164db4e660
+0x0e96F3C42d594EBbfD0835d92FDab28014233182 v7_2_1_2 great!
+0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D THIS CONTRACT!!!!!
+
+
+testing at BSC:
+
+
+NFT Contract AlphaDawgs: 0xca695feb6b1b603ca9fec66aaa98be164db4e660 //for testmax use 0xC4Ba9f624B9ebc0386C7a8160Bb489f96b47aD68
 Treasury Fee to Developer Wallet: 0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7
+
 The Dawg Pound Contract: 0x3cf4d5ef3cB24F061dEe1E75e4E0b47f99cb4a6E
+
+
+
+---Version History Added Features---
+V7_2_1
+Comments section when entering battle . Suggested by Affinity King on our Telegram Chat.
 
 
 # Technical Document: AlphaDawgsBattleSystem Contract Mechanics
@@ -113,21 +122,11 @@ https://t.me/InHausDevelopment
 
 
 
-
-v1.2 with battleId statistics
-tokenId statistics
-pound operator feature
-
-
-v1.3
-participate in multiple battles simultaneously same bet arena different battleid
-
-
-
-
 */
 
+// File: @openzeppelin/contracts@4.5.0/utils/Context.sol
 
+// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
 
@@ -514,180 +513,437 @@ interface IERC721 is IERC165 {
     ) external;
 }
 
-// File: Copy_DawgBattleMechanics.sol
-
-
-
-
+// File: BATTLEDAWGZ V3/AlphaDawgsBattleSystemBetaV5.sol
 pragma solidity ^0.8.0;
 
-
-interface IExternalContract {
-    function setPoundStatus(uint256 tokenId, bool isInPound) external;
+// Add at the top where other interfaces are declared
+interface IERC20 {
+    function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
-contract AlphaDawgsBattleSystemBETA1 is ReentrancyGuard, Ownable {
+contract AlphaDawgsBattleSystemBetaVsplit7_4_6 is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _battleIdCounter;
 
-    IERC721 public nftContract;
-    IExternalContract public externalContract;
-
-    bool public isPoundFunctionalityEnabled = false;
-
-    uint256 public constant ENTRY_FEE = 0.00001 ether;
-    address public treasuryAddress;
-    uint256 public devFeePercentage = 7;
+    mapping(address => uint256[]) private battlesParticipated;
 
     struct Battle {
         uint256 id;
         address[2] entrants;
         uint256[2] tokenIds;
         uint256 startTime;
-        bool[2] readyNow; // Tracks if each dawg has marked ready.
+        bool[2] readyNow;
         bool completed;
-        uint256 totalPot;
+        address winnerAddress;
         uint256 winnerTokenId;
-        uint256 loserTokenId;
+        address winner;
+        uint256 additionalPrize;
+
+
+        string[2] comments; // Stores comments for each entrant
     }
+
+    bool public commentsEnabled = true;
+    bool private paused = false;
 
     struct TokenStats {
         uint256 valueEarned;
         uint256 timesWon;
         uint256 timesLost;
-        uint256[] activeBattles;
-        uint256[] wonBattles;
-        uint256[] lostBattles;
+        uint256 totalValueSpent;
+        uint256 totalValueWon;
+        uint256 totalValueLost;
     }
 
-    mapping(uint256 => Battle) public lotteries;
+    mapping(uint256 => Battle) public battles;
     mapping(uint256 => TokenStats) public tokenStats;
+    mapping(uint256 => bool) public tokenInBattle;
 
-    event BattleEntered(uint256 indexed battleId, address entrant, uint256 tokenId, uint256 totalPot);
-    event WinnerDeclared(uint256 indexed battleId, uint256 winnerTokenId, uint256 loserTokenId, uint256 prize, uint256 devFee);
-    event TreasuryAddressChanged(address newTreasuryAddress);
-    event DevFeePercentageChanged(uint256 newDevFeePercentage);
+    IERC721 public nftContract;
+    uint256 public entryFee = 0.00001 ether;
+    address public treasuryAddress;
+    uint256 public devFeePercentage = 7;
 
-    constructor(address _nftContract, address _treasuryAddress, address _externalTheDawgPoundAddress) {
+    event BattleInitiated(uint256 indexed battleId, uint256 initiatedByTokenId, string comment);
+    event BattleReady(uint256 indexed battleId, address entrant);
+    event WinnerDeclared(uint256 indexed battleId, address winner, uint256 winningTokenId, uint256 losingTokenId, uint256 prize, uint256 devFee);
+    event PrizeBoosted(uint256 battleId, uint256 additionalValue);
+
+    constructor(address _nftContract, address _treasuryAddress) {
         require(_nftContract != address(0), "NFT contract address cannot be zero address");
         nftContract = IERC721(_nftContract);
         treasuryAddress = _treasuryAddress;
-        externalContract = IExternalContract(_externalTheDawgPoundAddress);
     }
 
-    function setExternalContract(address _externalTheDawgPoundAddress) external onlyOwner {
-        externalContract = IExternalContract(_externalTheDawgPoundAddress);
+    modifier whenNotPaused() {
+        require(!paused, "Contract is paused");
+        _;
     }
 
-    function togglePoundFunctionality(bool _isEnabled) external onlyOwner {
-        isPoundFunctionalityEnabled = _isEnabled;
-    }
-
-    function enterBattle(uint256 tokenId) external payable {
-        require(msg.value == ENTRY_FEE, "Incorrect entry fee");
+    function enterBattle(uint256 tokenId, string calldata comment) external payable whenNotPaused {
+        require(msg.value == entryFee, "Incorrect entry fee");
         require(nftContract.ownerOf(tokenId) == msg.sender, "Not the NFT owner");
+        require(!tokenInBattle[tokenId], "Token already in an active battle");
+        require(commentsEnabled || bytes(comment).length == 0, "Comments are disabled");
+        require(bytes(comment).length <= 55, "Comment exceeds maximum length");
 
-        // Allow users to participate in multiple battles simultaneously
-        _createNewBattle(msg.sender, tokenId);
+        uint256 battleId = _findOrCreateBattle(tokenId, comment);
+
+        // Update battles participated for the entrant
+        battlesParticipated[msg.sender].push(battleId);
+
+        emit BattleInitiated(battleId, tokenId, comment);
     }
 
-    function _createNewBattle(address entrant, uint256 tokenId) private {
-        _battleIdCounter.increment();
+
+
+    function _findOrCreateBattle(uint256 tokenId, string memory comment) private returns (uint256) {
+    for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
+        Battle storage battle = battles[i];
+        if (!battle.completed && battle.entrants[1] == address(0) && battle.entrants[0] != msg.sender) {
+            battle.entrants[1] = msg.sender;
+            battle.tokenIds[1] = tokenId;
+            battle.startTime = block.timestamp;
+            battle.comments[1] = comment;
+            tokenInBattle[tokenId] = true;
+            return i;
+        }
+    }
+    _battleIdCounter.increment();
         uint256 battleId = _battleIdCounter.current();
-        lotteries[battleId] = Battle({
+        battles[battleId] = Battle({
             id: battleId,
-            entrants: [entrant, address(0)],
+            entrants: [msg.sender, address(0)],
             tokenIds: [tokenId, 0],
             startTime: 0,
             readyNow: [false, false],
             completed: false,
-            totalPot: msg.value,
+            additionalPrize: 0,
+            comments: [comment, ""],
+            winnerAddress: address(0),
             winnerTokenId: 0,
-            loserTokenId: 0
+            winner: address(0)
         });
-        tokenStats[tokenId].activeBattles.push(battleId);
-        emit BattleEntered(battleId, entrant, tokenId, msg.value);
+
+        tokenInBattle[tokenId] = true;
+        return battleId;
     }
 
-    function markReady(uint256 battleId, bool isReady) external {
-        require(battleId <= _battleIdCounter.current(), "Battle does not exist");
-        Battle storage battle = lotteries[battleId];
+
+function toggleCommentsFeature() external onlyOwner {
+    commentsEnabled = !commentsEnabled;
+}
+
+
+    function markReady(uint256 battleId) external {
+        Battle storage battle = battles[battleId];
+        require(msg.sender == battle.entrants[0], "Only the first entrant can mark ready");
+        battle.readyNow[0] = true;
+        emit BattleReady(battleId, msg.sender);
+    }
+uint256 public roundDuration = 300; // Default to 5 minutes in seconds
+
+function setRoundDuration(uint256 _durationInMinutes) external onlyOwner {
+    roundDuration = _durationInMinutes * 60; // Convert minutes to seconds
+}
+
+function startBattleManually(uint256 battleId) external {
+    Battle storage battle = battles[battleId];
+
+    // Ensure the battle exists
+    require(battle.id != 0, "Battle does not exist.");
+
+    // Check if the battle has already been completed
+    require(!battle.completed, "Battle already completed.");
+
+    // Ensure that enough time has passed since the battle started
+    require(block.timestamp >= battle.startTime + roundDuration, "Round duration has not passed.");
+
+    // Additional checks if needed (e.g., number of participants, battle readiness, etc.)
+
+    // Declare the winner of the battle
+    _declareWinner(battleId);
+
+    // Update the battle state to completed
+    battle.completed = true;
+
+    // Any additional logic or event emissions
+}
+
+
+
+    function forceStartBattle(uint256 battleId) external onlyOwner {
+        Battle storage battle = battles[battleId];
+        require(battle.entrants[0] != address(0), "Battle does not exist.");
         require(!battle.completed, "Battle already completed");
-
-        // Mark the entrant's readiness
-        if (battle.entrants[0] == msg.sender && battle.tokenIds[0] != 0) {
-            battle.readyNow[0] = isReady;
-        } else if (battle.entrants[1] == msg.sender && battle.tokenIds[1] != 0) {
-            battle.readyNow[1] = isReady;
-        } else {
-            revert("Not a participant in this battle");
-        }
-
-        // Automatically declare a winner if conditions are met
-        if (battle.readyNow[0] && battle.readyNow[1]) {
-            _declareWinner(battleId);
-        }
+        _declareWinner(battleId);
     }
 
     function _declareWinner(uint256 battleId) internal {
-        Battle storage battle = lotteries[battleId];
+        Battle storage battle = battles[battleId];
+        require(!battle.completed, "Battle already completed");
+        require(battle.entrants[1] != address(0), "Not enough participants");
+
         uint256 winnerIndex = uint256(keccak256(abi.encodePacked(block.timestamp, battleId))) % 2;
-        battle.completed = true;
-        battle.winnerTokenId = battle.tokenIds[winnerIndex];
-        battle.loserTokenId = battle.tokenIds[1 - winnerIndex];
+        uint256 loserIndex = 1 - winnerIndex;
 
-        if (isPoundFunctionalityEnabled) {
-            externalContract.setPoundStatus(battle.loserTokenId, true);
-        }
+        address winner = battle.entrants[winnerIndex];
+        uint256 winnerTokenId = battle.tokenIds[winnerIndex];
+        uint256 loserTokenId = battle.tokenIds[loserIndex];
 
-        uint256 prize = battle.totalPot * (100 - devFeePercentage) / 100;
-        uint256 devFee = battle.totalPot - prize;
+        uint256 totalEntryFees = entryFee * 2;
+        uint256 totalPrize = totalEntryFees + battle.additionalPrize;
+        uint256 devFee = (totalPrize * devFeePercentage) / 100;
+        uint256 prize = totalPrize - devFee;
+
+        payable(winner).transfer(prize);
         payable(treasuryAddress).transfer(devFee);
-        payable(battle.entrants[winnerIndex]).transfer(prize);
 
-        emit WinnerDeclared(battleId, battle.winnerTokenId, battle.loserTokenId, prize, devFee);
+        // Update battle and token statistics
+        battle.completed = true;
+        battle.winnerAddress = winner;
+        battle.winnerTokenId = winnerTokenId;
+        tokenInBattle[winnerTokenId] = false;
+        tokenInBattle[loserTokenId] = false;
+
+        tokenStats[winnerTokenId].timesWon += 1;
+        tokenStats[winnerTokenId].totalValueWon += prize; // Update total value won for winner
+        tokenStats[winnerTokenId].valueEarned += prize;
+
+        tokenStats[loserTokenId].timesLost += 1;
+        tokenStats[loserTokenId].totalValueLost += entryFee; // Assuming the loser only loses the entry fee
+
+        emit WinnerDeclared(battleId, winner, winnerTokenId, battle.tokenIds[loserIndex], prize, devFee);
     }
 
-    function setTreasuryAddress(address _newTreasuryAddress) external onlyOwner {
-        require(_newTreasuryAddress != address(0), "Treasury address cannot be zero address");
-        treasuryAddress = _newTreasuryAddress;
-        emit TreasuryAddressChanged(_newTreasuryAddress);
+
+
+
+    function boostPrizeValue(uint256 battleId) external payable onlyOwner {
+        require(battleId <= _battleIdCounter.current(), "Battle does not exist.");
+        require(!battles[battleId].completed, "Battle already completed");
+        battles[battleId].additionalPrize += msg.value;
+        emit PrizeBoosted(battleId, msg.value);
     }
 
-    function setDevFeePercentage(uint256 _newDevFeePercentage) external onlyOwner {
-        require(_newDevFeePercentage <= 100, "Dev fee percentage cannot exceed 100");
-        devFeePercentage = _newDevFeePercentage;
-        emit DevFeePercentageChanged(_newDevFeePercentage);
+    function setEntryFee(uint256 _entryFee) external onlyOwner {
+        entryFee = _entryFee;
     }
 
-    function recoverToken(uint256 tokenId) external onlyOwner {
-        nftContract.transferFrom(address(this), owner(), tokenId);
+   function getBattleDetails(uint256 battleId) public view returns (
+        uint256 id,
+        address initiator,
+        uint256 initiatorTokenId,
+        address secondaryEntrant,
+        uint256 secondaryTokenId,
+        uint256 startTime,
+        bool completed,
+        uint256 totalValueInBattle,
+        string memory initiatorComment,
+        string memory secondaryEntrantComment,
+        address winnerAddress,
+        uint256 winnerTokenId
+    ) {
+        Battle storage battle = battles[battleId];
+        require(battle.entrants[0] != address(0), "Battle does not exist.");
+
+        uint256 participants = (battle.entrants[1] != address(0)) ? 2 : 1;
+        totalValueInBattle = entryFee * participants + battle.additionalPrize;
+
+        initiatorComment = battle.comments[0];
+        secondaryEntrantComment = battle.comments[1];
+        winnerAddress = battle.winnerAddress;
+        winnerTokenId = battle.winnerTokenId;
+
+        return (
+            battle.id,
+            battle.entrants[0],
+            battle.tokenIds[0],
+            battle.entrants[1],
+            battle.tokenIds[1],
+            battle.startTime,
+            battle.completed,
+            totalValueInBattle,
+            initiatorComment,
+            secondaryEntrantComment,
+            winnerAddress,
+            winnerTokenId
+        );
+
     }
 
-    function getActiveBattles() external view returns (uint256[] memory) {
+
+
+    function getBattleWinnerAndLoser(uint256 battleId) public view returns (
+        address winnerAddress,
+        uint256 winnerTokenId,
+        uint256 winnerPrizeValue,
+        address loserAddress,
+        uint256 loserTokenId
+    ) {
+        Battle storage battle = battles[battleId];
+        require(battle.entrants[0] != address(0), "Battle does not exist");
+
+        if (battle.completed) {
+            winnerAddress = battle.winnerAddress;
+            winnerTokenId = battle.winnerTokenId;
+            winnerPrizeValue = (battle.winnerAddress == battle.entrants[0] ? tokenStats[battle.tokenIds[0]].valueEarned : tokenStats[battle.tokenIds[1]].valueEarned);
+
+            // Determine the loser (the entrant who is not the winner)
+            loserAddress = (battle.entrants[0] == winnerAddress) ? battle.entrants[1] : battle.entrants[0];
+            loserTokenId = (battle.tokenIds[0] == winnerTokenId) ? battle.tokenIds[1] : battle.tokenIds[0];
+        } else {
+            revert("Battle has not been completed");
+        }
+    }
+
+
+
+
+
+
+    function getActiveBattleIds() public view returns (uint256[] memory) {
     uint256 activeCount = 0;
-    // First, determine the number of active battles
     for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
-        if (!lotteries[i].completed) {
+        if (!battles[i].completed) {
             activeCount++;
         }
     }
 
-    // Then, collect the IDs of active battles
-    uint256[] memory activeBattles = new uint256[](activeCount);
+    uint256[] memory activeIds = new uint256[](activeCount);
     uint256 currentIndex = 0;
     for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
-        if (!lotteries[i].completed) {
-            activeBattles[currentIndex] = i;
+        if (!battles[i].completed) {
+            activeIds[currentIndex] = i;
+            currentIndex++;
+        }
+    }
+    return activeIds;
+}
+
+    function getCompletedBattleIds() public view returns (uint256[] memory) {
+    uint256 completedCount = 0;
+    for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
+        if (battles[i].completed) {
+            completedCount++;
+        }
+    }
+
+    uint256[] memory completedIds = new uint256[](completedCount);
+    uint256 currentIndex = 0;
+    for (uint256 i = 1; i <= _battleIdCounter.current(); i++) {
+        if (battles[i].completed) {
+            completedIds[currentIndex] = i;
+            currentIndex++;
+        }
+    }
+    return completedIds;
+    }
+
+
+
+
+
+
+
+
+    // Function to withdraw Ether sent to the contract by mistake
+    function withdrawEther(address payable recipient, uint256 amount) external onlyOwner {
+    require(address(this).balance >= amount, "Insufficient balance");
+    recipient.transfer(amount);
+    }
+
+    // Function to withdraw ERC20 tokens sent to the contract by mistake
+    function withdrawERC20(address tokenAddress, address recipient, uint256 amount) external onlyOwner {
+    IERC20 token = IERC20(tokenAddress);
+    require(token.transfer(recipient, amount), "Transfer failed");
+    }
+
+    function getCompletedBattlesByParticipant(address participant) public view returns (uint256[] memory) {
+    uint256[] memory participantBattles = battlesParticipated[participant];
+    uint256 completedCount = 0;
+
+    // First, count the number of completed battles
+    for (uint256 i = 0; i < participantBattles.length; i++) {
+        uint256 battleId = participantBattles[i];
+        if (battles[battleId].completed) {
+            completedCount++;
+        }
+    }
+
+    // Now, create an array to hold the IDs of completed battles
+    uint256[] memory completedBattles = new uint256[](completedCount);
+    uint256 currentIndex = 0;
+
+    // Populate the array with completed battle IDs
+    for (uint256 i = 0; i < participantBattles.length; i++) {
+        uint256 battleId = participantBattles[i];
+        if (battles[battleId].completed) {
+            completedBattles[currentIndex] = battleId;
             currentIndex++;
         }
     }
 
-    return activeBattles;
+
+
+    return completedBattles;
     }
 
 
-    // Fallback function to handle receiving ETH directly
+
+    // Function to pause the contract - onlyOwner to prevent unauthorized access
+    function pause() external onlyOwner {
+        paused = true;
+    }
+
+    // Function to unpause the contract - onlyOwner to prevent unauthorized access
+    function unpause() external onlyOwner {
+        paused = false;
+    }
+
+    function _updateStatsOnBattleCompletion(uint256 winnerTokenId, uint256 loserTokenId, uint256 prizeValue) internal {
+    tokenStats[winnerTokenId].timesWon += 1;
+    tokenStats[winnerTokenId].totalValueWon += prizeValue;
+    tokenStats[loserTokenId].timesLost += 1;
+    tokenStats[loserTokenId].totalValueLost += prizeValue;
+}
+
+    function getCombinedUserStats(address user) public view returns (
+        uint256 totalBattles,
+        uint256 totalValueSpent,
+        uint256 totalValueWon,
+        uint256 totalValueLost,
+        uint256 totalWins,
+        uint256 totalLosses
+    ) {
+        uint256[] memory participantBattles = battlesParticipated[user];
+        totalBattles = participantBattles.length;
+
+        for (uint256 i = 0; i < totalBattles; i++) {
+            uint256 battleId = participantBattles[i];
+            Battle storage battle = battles[battleId];
+
+            if (battle.completed) {
+                if (battle.winner == user) {
+                    totalWins++;
+                    // Add the prize value to the totalValueWon
+                    totalValueWon += tokenStats[battle.tokenIds[battle.winner == battle.entrants[0] ? 0 : 1]].valueEarned;
+                } else {
+                    totalLosses++;
+                    // Add the lost value to the totalValueLost
+                    uint256 loserIndex = battle.entrants[0] == user ? 0 : 1;
+                    totalValueLost += tokenStats[battle.tokenIds[loserIndex]].valueEarned;
+                }
+
+                // Add the entry fee to totalValueSpent for each battle
+                totalValueSpent += entryFee;
+            }
+        }
+
+        return (totalBattles, totalValueSpent, totalValueWon, totalValueLost, totalWins, totalLosses);
+    }
+
+
     receive() external payable {}
     fallback() external payable {}
 }

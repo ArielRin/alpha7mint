@@ -1,23 +1,16 @@
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
-// import NftMint0 from './Components/NftMint0/NftMint0';
-// <NftMint0 />
 
 import Footer from './Components/Footer/Footer';
 // <Footer />
 
-import ZapToLP from './Components/ZapToLP/ZapToLP';
-// <ZapToLP />
 
 import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 
-import MiniSwapper from './Components/MiniSwapper/MiniSwapper'; // //
-// <MiniSwapper />
 
 import FastSwapComponent from './Components/ReferralSawpper/ReferralSwapper'; // //
 // <FastSwapComponent />
-
 
 import React, { useEffect, useState, useContext } from 'react';
 import {
@@ -62,7 +55,7 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./greenbkg.png";
+import mainbackgroundImage from "./bkg.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";
@@ -359,7 +352,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            >
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
-               <FastSwapComponent />
+             <FastSwapComponent />
              </Box>
            </Flex>
          </Box>

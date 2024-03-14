@@ -89,7 +89,20 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./mintbkg.png";
+import nft1Image from "./image1.png";
+import nft2Image from "./image2.png";
+import nft3Image from "./image3.png";
+import nft4Image from "./image4.png";
+
+import section2Image from "./bwdrkbackground.png";
+import sectionImage from "./bwbackground.png";
+import sectionBattleImage from "./sectionBattleImage.png";
+
+
+import battleVsImage from "./battleVsImage.png";
+import petterdaleImage from "./petterdale.png";
+import aboutImage from "./about.png";
+import mainbackgroundImage from "./a7banner.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";
@@ -106,6 +119,8 @@ const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
 const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
 // import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // //
+
+
 
 // ________________________________________________________________________________ //
 
@@ -373,54 +388,33 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            display="flex"
            flexDirection="column"
            bg="rgba(0, 0, 0, 1)"
-           bgImage={`url(${mainbackgroundImage})`}
            bgPosition="center"
            bgRepeat="no-repeat"
            bgSize="cover"
          >
 
+        <Flex
+             direction={{ base: 'column', md: 'row' }}
+             gap="4" // Adjust gap as needed
+             bg="rgba(0, 0, 0, 1)"
+             p={4} // Adjust padding as needed
+             minH="140px" // Minimum height of 400px for the row
+           >
+         </Flex>
+
+
          <Flex
               direction={{ base: 'column', md: 'row' }}
               gap="4" // Adjust gap as needed
+
+              bgImage={`url(${mainbackgroundImage})`}
               p={4} // Adjust padding as needed
-              minH="200px" // Minimum height of 400px for the row
+              minH="800px" // Minimum height of 400px for the row
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
             >
           </Flex>
-          <Flex
-      direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
-      align="center" // Align items vertically in the center
-      justify="center" // Justify content (horizontally) to the center
-      gap="4" // Adjust gap as needed
-      p={4} // Adjust padding as needed
-      minH="60px" // Minimum height of 60px for the row
-      w="full" // Take full width of the container
-    >
-
-      <Image
-        src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/token.gif"
-        alt="Token"
-        mx="auto" // Margin auto for horizontal centering
-        mt="190px" // Margin top of 100px
-        mb={4} // Margin bottom as needed
-      />
-
-    </Flex>
-
-                   <Flex
-                        direction={{ base: 'column', md: 'row' }}
-                        gap="4" // Adjust gap as needed
-                        p={4} // Adjust padding as needed
-                        minH="200px" // Minimum height of 400px for the row
-                      >
-                    </Flex>
-                    <Flex
-                         direction={{ base: 'column', md: 'row' }}
-                         gap="4" // Adjust gap as needed
-                         p={4} // Adjust padding as needed
-                         minH="200px" // Minimum height of 400px for the row
-                       >
-                     </Flex>
-
 
 
 
@@ -445,35 +439,39 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
          <Flex
      direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
      align="center" // Align items vertically in the center
-     justify="center" // Justify content (horizontally) to the center
      gap="4" // Adjust gap as needed
      p={4} // Adjust padding as needed
-     minH="300px" // Minimum height of 60px for the row
+     minH="400px" // Minimum height of 60px for the row
      w="full" // Take full width of the container
      bg="black"
-   >
+     >
+
 
      {/* Left Column */}
      <Box
        w="80%" // Equal width for both columns
-       bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+       bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
        p={4} // Padding inside the box
      >
-       <Heading color="white" mb="30px">Welcome to Alpha7 Token on BSC</Heading>
+       <Heading color="white" mb="30px">Welcome to Alpha7 Token on Binance Smart Chain</Heading>
        <Text color="white">
-         Welcome to the unveiling of ALPHA7, a groundbreaking BEP20 token on the Binance Smart Chain that is set to redefine the standards of cryptocurrency tokens. On this page, we will take a closer look at ALPHA7, a token not just designed to be part of the crypto market but to lead it with innovative features and a robust ecosystem.
+         A groundbreaking BEP20 token on the BSC that is set to redefine the standards of cryptocurrency tokens. On this page, we will take a closer look at ALPHA7, a token not just designed to be part of the crypto market but to lead it with innovative features and a robust ecosystem.
        </Text>
      </Box>
 
      {/* Right Column */}
      <Box
-       w="50%" // Equal width for both columns
-       bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
-       p={4} // Padding inside the box
-       // Additional content or styling for the right column
-     >
-       {/* Content for the right column goes here */}
-     </Box>
+  w="50%" // Equal width for both columns
+  bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
+  p={4} // Padding inside the box
+  minH="400px" // Minimum height of the box
+>
+  <Flex direction="column" align="center" justify="center" height="100%">
+    <Image src={aboutImage} alt="WireFrame Dawgz" width="320px" objectFit="contain" />
+  </Flex>
+
+  {/* Content for the right column goes here */}
+</Box>
    </Flex>
    <Flex
 direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
@@ -481,15 +479,33 @@ align="center" // Align items vertically in the center
 justify="center" // Justify content (horizontally) to the center
 gap="4" // Adjust gap as needed
 p={4} // Adjust padding as needed
-minH="300px" // Minimum height of 60px for the row
+minH="400px" // Minimum height of 60px for the row
 w="full" // Take full width of the container
 bg="black"
+bgImage={`url(${sectionImage})`}
+bgPosition="center"
+bgRepeat="no-repeat"
+bgSize="cover"
 >
-
 {/* Left Column */}
+
+
+<Box
+  w="50%" // Equal width for both columns
+  bg="rgba(0, 0, 0, 0.0)" // Dark grey with transparency
+  p={9} // Padding inside the box
+>
+  <Flex direction="column" align="center" justify="center" height="100%">
+    <Image src={a7Logo} alt="WireFrame Dawgz" width="320px" objectFit="contain" />
+  </Flex>
+
+  {/* Content for the right column goes here */}
+</Box>
+
+{/* Right Column */}
 <Box
  w="80%" // Equal width for both columns
- bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
+ bg="rgba(0, 0, 0, 0.7)" // Dark grey with transparency
  p={4} // Padding inside the box
 >
  <Heading color="white" mb="30px">About</Heading>
@@ -505,19 +521,11 @@ Catch all of the fun in the world with a hilarious community, open to learning a
 <Text mt="20px" color="white">
 Human x Artificial intelligence has achieved great feats. Let’s see what happens when you combine Humans x Memes x Artificial intelligence.
 </Text>
-<Text color="white">
-Let’s Foking Go! Alpha7 It! Woof! </Text>
+<Text
+marginBottom="130px" color="white">
+Let’s Barking Go! Alpha7 It!  </Text>
 </Box>
 
-{/* Right Column */}
-<Box
- w="50%" // Equal width for both columns
- bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
- p={4} // Padding inside the box
- // Additional content or styling for the right column
->
- {/* Content for the right column goes here */}
-</Box>
 </Flex>
 
 <Flex
@@ -529,13 +537,16 @@ p={4} // Adjust padding as needed
 minH="300px" // Minimum height of 60px for the row
 w="full" // Take full width of the container
 bg="black"
+bgPosition="center"
+bgRepeat="no-repeat"
+bgSize="cover"
 >
 
 {/* Left Column */}
 <Box
-w="80%" // Equal width for both columns
-bg="rgba(33, 33, 33, 0.8)" // Dark grey with transparency
-p={4} // Padding inside the box
+w="85%" // Equal width for both columns
+bg="rgba(33, 33, 33, 0.5)" // Dark grey with transparency
+p={6} // Padding inside the box
 >
 <Heading color="white" mb="30px">Tokenomics</Heading>
 <Text color="white">
@@ -560,7 +571,7 @@ Launch Price $0.0000002984
 <Text color="white">
 Liquidity:
 
-Minimum $4,000.00
+Minimum $18,000
 </Text>
 <Text color="white">
 Tax:
@@ -584,7 +595,176 @@ Treasury:
 </Text>
 </Box>
 
+{/* Right Column */}
+<Box
+marginBottom="130px"
+  w="50%" // Equal width for both columns
+  bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
+  p={4} // Padding inside the box
+  // Additional content or styling for the right column
+>
+  {/* Content for the right column goes here */}
+</Box>
 </Flex>
+<Flex
+  direction={{ base: 'column', md: 'row' }}
+  wrap="wrap"
+  justify="center"
+  align="center"
+  gap="4" // Adjust the gap as needed
+  p={6} // Adjust the padding as needed
+  minH="90px" // Minimum height of 60px for the row
+  w="full" // Take full width of the container
+  bg="black"
+>
+<Heading textAlign="center" color="white" mb="30px">Meet the AlphaDawgz</Heading>
+</Flex>
+<Flex
+  direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+  wrap="wrap" // Enable wrapping
+  justify={{ base: "center", md: "center" }} // Center the items on all screen sizes
+  align="center" // Align items vertically in the center
+  gap="2" // Reduced gap for closer images
+  px={{ base: "4", md: "14%" }} // 14% left and right padding on larger devices
+  py={4} // Padding top and bottom
+  minH="200px" // Minimum height for the row
+  w="full" // Take full width of the container
+  bg="black"
+>
+  {/* Image 1 */}
+  <Box w={{ base: 'full', md: '20%' }} p={2}>
+    <Image src={nft1Image} alt="Image 1" style={{ width: '100%', height: 'auto' }} />
+  </Box>
+
+  {/* Image 2 */}
+  <Box w={{ base: 'full', md: '20%' }} p={2}>
+    <Image src={nft2Image} alt="Image 2" style={{ width: '100%', height: 'auto' }} />
+  </Box>
+
+  {/* Image 3 */}
+  <Box w={{ base: 'full', md: '20%' }} p={2}>
+    <Image src={nft3Image} alt="Image 3" style={{ width: '100%', height: 'auto' }} />
+  </Box>
+
+  {/* Image 4 */}
+  <Box w={{ base: 'full', md: '20%' }} p={2}>
+    <Image src={nft4Image} alt="Image 4" style={{ width: '100%', height: 'auto' }} />
+  </Box>
+</Flex>
+
+
+
+
+<Flex
+direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+align="center" // Align items vertically in the center
+gap="4" // Adjust gap as needed
+p={4} // Adjust padding as needed
+minH="100px" // Minimum height of 60px for the row
+w="full" // Take full width of the container
+bg="black"
+>
+
+{/* Left Column  <Heading color="white" mb="30px">Introducing AlphaDawgz! NFT with a PvP Battle System </Heading>
+ */}
+<Box
+w="100%" // Equal width for both columns
+bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
+p={4} // Padding inside the box
+>
+<Text align="center" color="white">
+
+
+
+
+Alpha Dawg NFTs were released prior to the Alpha7 token launch, with the sales contributing to the initial liquidity pool (LP) and the NFT Holder rewards pool. Holders of these NFTs continue to receive benefits, such as Alpha7 Airdrops and reflections for each NFT they own. This approach was strategically designed to swiftly balance the initial cost of the NFTs. Additionally, holders of Alpha Dawg NFTs benefit from an ongoing additional 2% reflection from the Alpha7 token to the NFT rewards pool, which is distributed to them on a weekly basis.
+</Text>
+<Text marginBottom="130px" align="center" color="white">
+
+ Each ALPHA Dawg NFT, priced at just 0.07 BNB, is not only an artistic digital asset but also a key to unlocking a world of benefits. As a holder of these NFTs, you gain access to VIP competitions with weekly prizes, reflections, and community trades.
+
+ </Text>
+</Box>
+
+</Flex>
+
+<Flex
+direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+align="center" // Align items vertically in the center
+gap="4" // Adjust gap as needed
+p={4} // Adjust padding as needed
+minH="200px" // Minimum height of 60px for the row
+w="full" // Take full width of the container
+bg="black"
+bgImage={`url(${sectionBattleImage})`}
+bgPosition="center"
+bgRepeat="no-repeat"
+bgSize="cover"
+>
+
+{/* Left Column  <Heading color="white" mb="30px">Introducing AlphaDawgz! NFT with a PvP Battle System </Heading>
+ */}
+<Box
+w="100%" // Equal width for both columns
+bg="rgba(0, 0, 0, 0.6)" // Dark grey with transparency
+p={4} // Padding inside the box
+>
+<Heading  textAlign="center" color="white" mb="30px">AlphaDawgz Battle System NFT PvP!</Heading>
+
+<Text color="white">
+The AlphaDawgsBattleSystem offers a unique and thrilling experience in the world of NFTs and blockchain gaming, where chance reigns supreme in deciding the victors. In this simple yet captivating game, players place their bets on their AlphaDawg NFTs, entering them into a battle arena with no additional player interaction required. The allure of this system lies in its complete reliance on randomness; each battle outcome is determined by a random draw, ensuring that all participating AlphaDawgz have an equal opportunity to emerge victorious. This approach strips away the complexities of strategy and skill, making it a game of pure luck and anticipation. Players get the chance to win Binance Coin (BNB) from their competitors, adding a layer of excitement and reward to their NFT ownership.
+</Text>
+<Text color="white">
+The game’s format is straightforward yet engaging: two AlphaDawgz enter the battle, but only one comes out victorious. The process is entirely automated, with the smart contract executing the random selection to decide the winner. This simplicity and the thrill of potentially winning BNB just by participating make the AlphaDawgsBattleSystem an attractive and accessible option for NFT enthusiasts. It's not just a game but an experience where the thrill of chance and the beauty of NFTs converge, offering a unique and enjoyable way for players to engage with their digital assets in the blockchain space. </Text>
+</Box>
+
+{/* Right Column */}
+<Box
+w="100%" // Equal width for both columns
+bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
+p={4} // Padding inside the box
+minH="200px" // Minimum height of the box
+>
+<Flex direction="column" align="center" justify="center" height="100%">
+<Image src={battleVsImage} alt="WireFrame Dawgz" width="80%" objectFit="contain" />
+</Flex>
+
+{/* Content for the right column goes here */}
+</Box>
+</Flex>
+
+
+
+<Flex
+  direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+  align="center" // Align items vertically in the center
+  gap="4" // Adjust gap as needed
+  p={4} // Adjust padding as needed
+  h="600px" // Set height to 400px
+  w="full" // Full width of the container
+  bg="black"
+>
+  <Box
+    w="full" // Full width of the container
+    h="100%" // Use full height of the Flex container
+    bg="rgba(0, 0, 0, 1)" // Background color
+    display="flex"
+    justifyContent="center"
+    position="relative" // Relative positioning for the iframe
+  >
+    <iframe
+      src="https://dexscreener.com/bsc/0xa2136fEA6086f2254c9361C2c3E28c00F9e73366?embed=1&theme=dark&trades=0&info=0"
+      style={{
+        width: '80%', // Width set to 80% of its parent
+        height: '100%', // Height set to 100% of its parent
+        border: 0
+      }}
+      title="DexScreener"
+    ></iframe>
+  </Box>
+</Flex>
+
+
 
          <Footer />
        </Box>

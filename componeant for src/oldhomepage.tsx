@@ -327,7 +327,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
       <RouterLink to="/" style={{ color: 'white', marginRight: '15px' }}>
       <div>
-        <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="163px" />
+        <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/headerlogo.png" w="163px" />
       </div>
       </RouterLink>
       <RouterLink to="/thedawgz" style={{ color: 'white', marginRight: '6px' }}>Buy</RouterLink>

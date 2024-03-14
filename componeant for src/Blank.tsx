@@ -82,7 +82,7 @@ return (
 
         <Flex align="center" mr={5}>
           <RouterLink to="/">
-            <Image src="https://prismatic-semifreddo-aec57e.netlify.app/assets/headerlogo.90cb497a.png" w="100px" />
+            <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/src/headerlogo.png" w="100px" />
           </RouterLink>
         </Flex>
         <IconButton
