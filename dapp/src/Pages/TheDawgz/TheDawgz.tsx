@@ -1,9 +1,16 @@
 
 import QuickBattle from '../Components/QuickBattleComponent/QuickBattleTemp2';
 
+import Footer from '../Components/Footer/Footer';
+// <Footer />
 import DawgRegistration from '../Components/DawgRegistration/DawgRegistration'; // //
 // <DawgRegistration />
 // import DawgRegistration from './DawgCard'; // //
+
+
+
+import AllDawgz from './AllDawgz'; // //
+// <AllDawgz />
 
 import QRCode from 'qrcode.react';
 
@@ -22,7 +29,6 @@ import {
   ModalHeader,
   ModalFooter,
     SimpleGrid,
-    Spinner,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -62,7 +68,6 @@ const bnbLogoUrl = 'https://assets.coingecko.com/coins/images/825/standard/bnb-i
 
 
 
-
 import tokenAbi from './tokenAbi.json';
 
 import abiFile from './abiFile.json';
@@ -91,9 +96,6 @@ const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
 
 
 const TheDawgz: React.FC = () => {
-
-
-
 
   const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
 
@@ -149,65 +151,52 @@ const TheDawgz: React.FC = () => {
           setIsBattleModalOpen(true);
         };
 
-        useEffect(() => {
-          let isMounted = true; // Flag to check the mounted state
 
-          const fetchNfts = async () => {
-            if (!isMounted) return; // Exit if component is not mounted
-            setIsLoading(true);
+      useEffect(() => {
+        const fetchNfts = async () => {
+          setIsLoading(true);
+          try {
+            const walletAddress = await (signer?.getAddress() || Promise.resolve(''));
 
-            try {
-              const walletAddress = await (signer?.getAddress() || Promise.resolve(''));
-              const ownedTokenIds = await userRegistryContract.listNFTs(walletAddress);
-              const ownedTokenIdsArray = ownedTokenIds.map((tokenId) => tokenId.toNumber());
+            const ownedTokenIds: BigNumber[] = await userRegistryContract.listNFTs(walletAddress);
+            const ownedTokenIdsArray: number[] = ownedTokenIds.map((tokenId: BigNumber) => tokenId.toNumber());
 
-              const ownedNftsData = await Promise.all(
-                ownedTokenIdsArray.map(async (tokenId) => {
-                  const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
-                  const response = await fetch(metadataUrl);
-                  const metadata = await response.json();
+            const ownedNftsData = await Promise.all(ownedTokenIdsArray.map(async (tokenId: number) => {
+              const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
+              const response = await fetch(metadataUrl);
+              const metadata = await response.json();
 
-                  const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
-                  const isInBattle = await battleContract.tokenInBattle(tokenId);
+              const isRegistered = await dawgRegistrationContract.isNFTRegistered(tokenId);
+              const isInBattle = await battleContract.tokenInBattle(tokenId);
 
-                  let dawgName = null;
-                  let dawgTaunt = null;
-                  if (isRegistered) {
-                    dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
-                    dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
-                  }
-
-                  return {
-                    tokenId,
-                    imageUrl: metadata.imageUrl,
-                    name: metadata.name,
-                    isRegistered,
-                    dawgName,
-                    dawgTaunt,
-                    isInBattle,
-                  };
-                })
-              );
-
-              if (isMounted) {
-                setNfts({ owned: ownedNftsData });
+              let dawgName = null;
+              let dawgTaunt = null;
+              if (isRegistered) {
+                dawgName = await dawgRegistrationContract.dawgzNames(tokenId);
+                dawgTaunt = await dawgRegistrationContract.dawgzDefaultTaunts(tokenId);
               }
-            } catch (error) {
-              console.error("Failed to fetch owned NFTs:", error);
-            } finally {
-              if (isMounted) {
-                setIsLoading(false);
-              }
-            }
-          };
 
-          fetchNfts();
+              return {
+                tokenId,
+                imageUrl: metadata.imageUrl,
+                name: metadata.name,
+                isRegistered,
+                dawgName,
+                dawgTaunt,
+                isInBattle
+              };
+            }));
 
-          return () => {
-            isMounted = false; // Set the flag to false when the component unmounts
-          };
-        }, [currentPage, signer]); // Dependencies for useEffect
+            setNfts({ owned: ownedNftsData });
+          } catch (error) {
+            console.error("Failed to fetch owned NFTs:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
 
+        fetchNfts();
+      }, [currentPage, signer]);
 
     // Function to fetch individual NFT data
     const fetchNftData = async (tokenId: number) => {
@@ -335,33 +324,7 @@ const fetchTokenStats = async (tokenId: number) => {
 
 
 
-useEffect(() => {
-  // Function to handle account change
-  const handleAccountsChanged = (accounts) => {
-    // Logic to handle account change
-    fetchNfts(); // Call the function to fetch NFTs for the new account
-  };
 
-  // Function to handle network change
-  const handleNetworkChanged = (networkId) => {
-    // Logic to handle network change
-    fetchNfts(); // You might need to fetch NFTs again as per the new network
-  };
-
-  if ((window as any).ethereum) {
-    const ethereum = (window as any).ethereum;
-
-    // Add event listeners
-    ethereum.on('accountsChanged', handleAccountsChanged);
-    ethereum.on('networkChanged', handleNetworkChanged);
-
-    // Remove event listeners on cleanup
-    return () => {
-      ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      ethereum.removeListener('networkChanged', handleNetworkChanged);
-    };
-  }
-}, []);
 
 
 
@@ -399,16 +362,15 @@ return (
           <Tabs variant="enclosed-colored" size="lg" colorScheme="gray">
               <TabList mb="1em" bg={tabBackground}>
                   <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>Your Dawgz</Tab>
+                  <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>All Dawgz</Tab>
+
               </TabList>
 
               <TabPanels>
-              <TabPanel>
-  <SimpleGrid columns={[1, 1, 2, 3]} spacing="20px">
-      {isLoading ? (
-          <Center w="100%">
-              <Spinner size="xl" color="teal.500" />
-          </Center>
-      ) : nfts.owned.length > 0 ? (
+                  <TabPanel>
+
+                  <SimpleGrid columns={[1, 1, 2, 3]} spacing="20px">
+    {nfts.owned.length > 0 ? (
       nfts.owned.map((nft) => (
         <VStack key={nft.tokenId} p="5" minW="250px" shadow="md" borderWidth="1px" bgColor="rgba(0, 0, 0, 0.65)" color="white" alignItems="flex-start">
           <Box position="relative">
@@ -508,19 +470,15 @@ return (
      </VStack>
     ))
   ) : (
-    <Center w="100%">
-                  <VStack spacing={4}>
-                      <Text fontSize="xl" color="white">
-                          No AlphaDawgz Owned! try refreshing if this is incorrect, or Click here to head to the mint page.
-                      </Text>
-                      <Button colorScheme="green" as={RouterLink} to="/mint">
-                          Go to Mint Page
-                      </Button>
-                  </VStack>
-              </Center>
-          )}
-      </SimpleGrid>
-  </TabPanel>
+    <Text>No owned Dawgz found.</Text>
+  )}
+</SimpleGrid>
+
+                  </TabPanel>
+
+                      <TabPanel>
+                      <AllDawgz />
+                                        </TabPanel>
               </TabPanels>
           </Tabs>
       </Box>
@@ -548,6 +506,7 @@ return (
       </ModalBody>
     </ModalContent>
   </Modal>
+  <Footer />
 
   </Flex>
 );

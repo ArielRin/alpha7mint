@@ -400,7 +400,12 @@ setselectedReferrer(contractOptions[key]);
 
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh', marginTop: '80px'}}>
      <div style={{ width: '370px', backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '24px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+     <Text color="white" fontSize="md" fontWeight="bold" marginRight="12px">
+      Staking Platform Currently Being Built. Checkback shortly.
+     </Text>
      <div style={{ marginBottom: '20px' }}>
+
+
 
      </div>
 

@@ -122,7 +122,7 @@ const HeaderWithDropdown = () => {
             <RouterLink style={{ fontWeight: 'bold' }} to="/mint">Mint</RouterLink>
             <RouterLink style={{ fontWeight: 'bold' }} to="/battle">Battle</RouterLink>
 
-          <RouterLink style={{ fontWeight: 'bold' }} to="/thedawgz">Collection</RouterLink>
+          <RouterLink style={{ fontWeight: 'bold' }} to="/thedawgz">NFTs</RouterLink>
           <RouterLink style={{ fontWeight: 'bold' }} to="/values">Financials</RouterLink>
           </Stack>
 
@@ -168,7 +168,7 @@ const HeaderWithDropdown = () => {
         <RouterLink to="/staking" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Stake</RouterLink>
         <RouterLink to="/mint" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Mint</RouterLink>
         <RouterLink to="/battle" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%', marginTop: '25px' }}>Battle</RouterLink>
-        <RouterLink to="/thedawgz" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%' }}>Collection</RouterLink>
+        <RouterLink to="/thedawgz" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%' }}>NFTs</RouterLink>
         <RouterLink to="/values" style={{ fontWeight: 'bold', textAlign: 'center', width: '100%'  }}>Financials</RouterLink>
       </VStack>
     </Flex>

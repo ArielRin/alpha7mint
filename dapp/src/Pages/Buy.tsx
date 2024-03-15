@@ -344,12 +344,21 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
            bgPosition="center"
            bgRepeat="no-repeat"
            bgSize="cover"
+           h="1150px"
          >
            <Flex
              direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
              gap={0} // Adjust the gap as needed
              p={0} // Adjust the padding as needed
            >
+             <Flex
+               direction={{ base: 'column', md: 'row' }} // Stack on mobile, horizontal on medium devices and above
+               gap={0} // Adjust the gap as needed
+               p={0} // Adjust the padding as needed
+               minH="50px"
+             >
+
+         </Flex>
              {/* FastSwapComponent with 30% width on medium devices and above */}
              <Box flex={{ base: 1, md: 3 }}>
              <FastSwapComponent />

@@ -4,6 +4,7 @@ import Staking from './Pages/Staking';
 import MintPage from './Pages/MintPage';
 import Battle from './Pages/Battle';
 import Values from './Pages/Values';
+import AllDawgz from './Pages/TheDawgz/AllDawgz';
 import TheDawgz from './Pages/TheDawgz/TheDawgz';
 import NftDetails from './Pages/Nft/NftDetails';
 
@@ -171,7 +172,7 @@ useEffect(() => {
               <Route path="/staking" element={<Staking />} />
               <Route path="/mint" element={<MintPage />} />
                 <Route path="/battle" element={<Battle />} />
-              <Route path="/thedawgz" element={<TheDawgz />} /> // New route for TheDawgz page
+              <Route path="/thedawgz" element={<TheDawgz />} />
                 <Route path="/values" element={<Values />} />
                   <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
 Staking

@@ -1,6 +1,10 @@
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
+
+import Footer from './Components/Footer/Footer';
+// <Footer />
+
 import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -707,6 +711,7 @@ useEffect(() => {
                </VStack>
                </Flex>
                </Box>
+               <Footer />
                     </Flex>
   );
 };
