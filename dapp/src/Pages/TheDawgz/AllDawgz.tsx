@@ -126,7 +126,7 @@ const FetchAllDawgz: React.FC = () => {
           tokenId,
           imageUrl: metadata.imageUrl,
           name: metadata.name,
-          dawgName: dawgName || 'Unknown Dawg',
+          dawgName: dawgName || 'Stray Dawg',
           dawgTaunt: dawgTaunt || 'No taunt'
         };
       });
@@ -162,7 +162,7 @@ const FetchAllDawgz: React.FC = () => {
                      marginTop="38px" alt={`NFT ${nft.name}`} borderRadius="md" />
                     <Flex justifyContent="space-between" alignItems="center" mt="2">
 
-                        <Text fontSize="24px" fontWeight="semibold" color="green.500"> {nft.dawgName}</Text>
+                        <Text fontSize="32px" fontWeight="bold" color="green.500"> {nft.dawgName}</Text>
 
                       <Flex>
 
@@ -213,7 +213,11 @@ const FetchAllDawgz: React.FC = () => {
                      height="100%"
                    >
                      <Center>
+                     <Box width="80%" marginTop="5px" border="1px" borderColor="white" p="2" bg="white" display="flex" justifyContent="center" alignItems="center">
+
                        <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={72} />
+
+                       </Box>
                      </Center>
                      <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/element.png" alt="Element" mt="3" alignSelf="center" />
                    </ChakraLink>

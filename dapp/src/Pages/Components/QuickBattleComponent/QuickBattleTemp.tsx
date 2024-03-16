@@ -332,11 +332,14 @@ const enterBattle = async (tokenId: number, dawgTaunt: string) => {
     </Menu>
     {selectedNFTDetails && (
     <Box mt="20px">
-    <Image
-      src={selectedNFTDetails.imageUrl}
-      width="80px"
-      alt={`NFT ${selectedNFTDetails.tokenId}`}
-    />
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img
+          src={selectedNFTDetails.imageUrl}
+          width="160px"
+          alt={`NFT ${selectedNFTDetails.tokenId}`}
+        />
+      </div>
+
     <Text fontSize="lg" fontWeight="bold" color="black">
       {selectedNFTDetails.dawgName || 'No Name'}
     </Text>
@@ -345,7 +348,7 @@ const enterBattle = async (tokenId: number, dawgTaunt: string) => {
     </Text>
     <Box mt="20px">
     <Input
-      placeholder="Enter your custom taunt..."
+      placeholder="Or enter a custom taunt (this Battle)..."
       value={customTaunt || ''}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomTaunt(e.target.value)}
       mb="4"

@@ -18,7 +18,7 @@ const BattleNowMain = () => {
       <Box width="400px" bg="rgba(107, 105, 106, 0.4)" p={4} borderRadius="md">
         <Text fontSize="2xl" color="white" fontWeight="bold">Quick Battle</Text>
         <Text fontSize="md" color="white" mt={3}>Get your Dawgz into the arena fast!</Text>
-          <Text fontSize="xl" color="white" fontWeight="bold">0.007 BNB ($3.70USD)</Text>
+          <Text fontSize="xl" color="white" fontWeight="bold">Testing at 0.0035 BNB ($2.20USD)</Text>
         <Button colorScheme="red" mt={4} onClick={onOpen}>Battle Now!</Button>
       </Box>
 

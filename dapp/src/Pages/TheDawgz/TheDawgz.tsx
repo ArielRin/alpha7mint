@@ -126,9 +126,11 @@ const TheDawgz: React.FC = () => {
     dawgName?: string;
     dawgTaunt?: string;
     isInBattle?: boolean;  // New field to indicate if the NFT is in battle
+    
 }
 
 
+const [selectedNFTForModification, setSelectedNFTForModification] = useState<NFT | null>(null);
 
 
     const [nfts, setNfts] = useState<{ owned: NFT[] }>({ owned: [] });
@@ -223,6 +225,9 @@ const TheDawgz: React.FC = () => {
         setSelectedNFT(null);
     };
 
+    const handleModifyDawg = (nft: NFT) => {
+        setSelectedNFTForModification(nft);
+    };
 
 
   const tabBackground = 'gray.800'; // The tab background color
@@ -324,6 +329,32 @@ const fetchTokenStats = async (tokenId: number) => {
 
 
 
+const handleApproval = async () => {
+    if (!signer) return;
+
+    try {
+        const feeInWei = ethers.utils.parseUnits(registrationFee, 'ether'); // Adjust the units based on your token's decimals
+        const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
+        const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
+        await tx.wait();
+        setIsApproved(true);
+        toast({
+            title: "Approval Successful",
+            description: "ERC20 token spend approved.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+        });
+    } catch (error) {
+        toast({
+            title: "Approval Error",
+            description: error instanceof Error ? error.message : "Unknown error",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+        });
+    }
+};
 
 
 
@@ -441,6 +472,20 @@ return (
 </ChakraLink>
 
 
+{nft.isRegistered && (
+    <ChakraLink
+        onClick={() => handleModifyDawg(nft)}
+        color="blue.500"
+        cursor="pointer"
+        marginTop="12px"
+        display="flex"
+        alignItems="center"
+    >
+        <Image src="" boxSize="20px" mr="2" />
+        <Text ml="5px">Modify Dawg Registration</Text>
+    </ChakraLink>
+)}
+
           </Flex>
 
 
@@ -461,7 +506,11 @@ return (
              height="100%"
            >
              <Center>
+             <Box width="80%" marginTop="5px" border="1px" borderColor="white" p="2" bg="white" display="flex" justifyContent="center" alignItems="center">
+
                <QRCode value={`https://element.market/assets/bsc/0xca695feb6b1b603ca9fec66aaa98be164db4e660/${nft.tokenId}`} size={72} />
+
+               </Box>
              </Center>
              <Image src="https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/element.png" alt="Element" mt="3" alignSelf="center" />
            </ChakraLink>
@@ -490,6 +539,18 @@ return (
               <ModalCloseButton />
               <ModalBody>
                   {selectedNFT && <DawgRegistration tokenId={selectedNFT.tokenId} />}
+              </ModalBody>
+          </ModalContent>
+      </Modal>
+
+
+      <Modal isOpen={selectedNFTForModification !== null} onClose={() => setSelectedNFTForModification(null)}>
+          <ModalOverlay />
+          <ModalContent>
+              <ModalHeader>Modify Dawg Registration</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                  {selectedNFTForModification && <DawgRegistration tokenId={selectedNFTForModification.tokenId} />}
               </ModalBody>
           </ModalContent>
       </Modal>

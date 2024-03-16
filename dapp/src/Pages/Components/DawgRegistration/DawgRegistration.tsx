@@ -7,9 +7,8 @@ import erc20Abi from './tokenAbi.json';
 
 
 interface DawgRegistrationProps {
-  tokenId: number; // Adjust type if needed
+  tokenId: number;
 }
-
 
 const DawgRegistrationComponent: React.FC<DawgRegistrationProps> = ({ tokenId }) => {
   const [dawgName, setDawgName] = useState('');
@@ -18,62 +17,90 @@ const DawgRegistrationComponent: React.FC<DawgRegistrationProps> = ({ tokenId })
   const [isRegistering, setIsRegistering] = useState(false);
   const [registrationFee, setRegistrationFee] = useState('');
   const [isApproved, setIsApproved] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const { data: signer, isError: signerError } = useSigner();
   const toast = useToast();
 
   const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7";
   const ERC20_TOKEN_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 
-  if (signerError) {
-    toast({
-      title: "Signer Error",
-      description: "There was a problem with the signer.",
-      status: "error",
-      duration: 5000,
-      isClosable: true,
-    });
-    return <Text>Signer Error</Text>; // Adjust as needed
-  }
-
-  const { data: feeData } = useContractRead({
-    addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
-    contractInterface: dawgRegistrationAbi,
-    functionName: 'registrationFee',
-  });
+  useEffect(() => {
+    checkRegistrationStatus();
+  }, [tokenId, signer]);
 
   useEffect(() => {
-    if (feeData) {
-      const feeFormatted = ethers.utils.formatUnits(feeData, 9); // Assuming 9 decimal places
-      setRegistrationFee(feeFormatted);
+    if (isRegistered) {
+      fetchDawgDetails();
     }
-  }, [feeData]);
+  }, [isRegistered]);
 
-  const handleApproval = async () => {
+  const checkRegistrationStatus = async () => {
     if (!signer) return;
-
+    // Add logic to check if the Dawg is registered.
+    // Assuming a method `isRegistered` exists in your contract.
     try {
-      const feeInWei = ethers.utils.parseUnits(registrationFee, 9);
-      const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
-      const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
-      await tx.wait();
-      setIsApproved(true);
-      toast({
-        title: "Approval Successful",
-        description: "ERC20 token spend approved.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      const contract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, signer);
+      const registered = await contract.isRegistered(tokenId);
+      setIsRegistered(registered);
     } catch (error) {
-      toast({
-        title: "Approval Error",
-        description: error instanceof Error ? error.message : "Unknown error",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.error('Error checking registration status:', error);
     }
   };
+
+  const fetchDawgDetails = async () => {
+    if (!signer) return;
+    // Replace this with your method to fetch Dawg details.
+    try {
+      const contract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, signer);
+      const details = await contract.getDawgDetails(tokenId);
+      setDawgName(details.name);
+      setDawgTaunt(details.taunt);
+      setDawgBio(details.bio);
+    } catch (error) {
+      console.error('Error fetching Dawg details:', error);
+    }
+  };
+
+
+
+  const handleApproval = async () => {
+      if (!signer) {
+          toast({
+              title: "Signer Error",
+              description: "No Ethereum signer is available.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+          });
+          return;
+      }
+
+      try {
+          // Adjusting to 9 decimal places for the token
+          const feeInWei = ethers.utils.parseUnits(registrationFee, 9);
+          const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
+          const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
+          await tx.wait();
+          setIsApproved(true);
+          toast({
+              title: "Approval Successful",
+              description: "ERC20 token spend approved.",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+          });
+      } catch (error) {
+          toast({
+              title: "Approval Error",
+              description: error instanceof Error ? error.message : "Unknown error",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+          });
+      }
+  };
+
+
 
   const handleRegistration = async () => {
     if (!isApproved) {
@@ -86,14 +113,13 @@ const DawgRegistrationComponent: React.FC<DawgRegistrationProps> = ({ tokenId })
       });
       return;
     }
-
     setIsRegistering(true);
     try {
-      await registerNFT();
-
+      const writeFunction = isRegistered ? modifyNFTDetails : registerNFT;
+      await writeFunction();
       toast({
         title: "Dawg Registration",
-        description: "Dawg registered successfully!",
+        description: isRegistered ? "Dawg modified successfully!" : "Dawg registered successfully!",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -117,29 +143,38 @@ const DawgRegistrationComponent: React.FC<DawgRegistrationProps> = ({ tokenId })
     functionName: 'registerNFT',
     args: [tokenId, dawgName, dawgTaunt, dawgBio],
   });
-    return (
-        <Box>
-            <Flex direction="column" padding="20px">
-                <Text mb="4" fontSize="lg" fontWeight="bold">
-                    Registering Dawg #{tokenId}
-                </Text>
-                {registrationFee && <Text>Registration Fee: {registrationFee} Tokens</Text>}
 
-                <Input placeholder="Dawg's Name" value={dawgName} onChange={(e) => setDawgName(e.target.value)} />
-                <Input placeholder="Dawg's Default Taunt" value={dawgTaunt} onChange={(e) => setDawgTaunt(e.target.value)} />
-                <Input placeholder="Dawg's Bio" value={dawgBio} onChange={(e) => setDawgBio(e.target.value)} />
+  const { write: modifyNFTDetails } = useContractWrite({
+    addressOrName: DAWG_REGISTRATION_CONTRACT_ADDRESS,
+    contractInterface: dawgRegistrationAbi,
+    functionName: 'modifyNFTDetails',
+    args: [tokenId, dawgName, dawgTaunt, dawgBio],
+  });
 
-                {!isApproved &&
-                    <Button onClick={handleApproval} mt="4">
-                        Approve ERC20 Token Spend
-                    </Button>
-                }
-                <Button onClick={handleRegistration} mt="4" isLoading={isRegistering} disabled={!isApproved}>
-                    Register Dawg
-                </Button>
-            </Flex>
-        </Box>
-    );
-};
 
-export default DawgRegistrationComponent;
+  return (
+     <Box>
+       <Flex direction="column" padding="20px">
+         <Text mb="4" fontSize="lg" fontWeight="bold">
+           {isRegistered ? `Modify Dawg #${tokenId}` : `Registering Dawg #${tokenId}`}
+         </Text>
+         {registrationFee && <Text>Registration Fee: {registrationFee} Tokens</Text>}
+
+         <Input placeholder="Dawg's Name" value={dawgName} onChange={(e) => setDawgName(e.target.value)} />
+         <Input placeholder="Dawg's Default Taunt" value={dawgTaunt} onChange={(e) => setDawgTaunt(e.target.value)} />
+         <Input placeholder="Dawg's Bio" value={dawgBio} onChange={(e) => setDawgBio(e.target.value)} />
+
+         {!isApproved && !isRegistered &&
+           <Button onClick={handleApproval} mt="4">
+             Approve ERC20 Token Spend
+           </Button>
+         }
+         <Button onClick={handleRegistration} mt="4" isLoading={isRegistering} disabled={!isApproved && !isRegistered}>
+           {isRegistered ? 'Modify Registration' : 'Register Dawg'}
+         </Button>
+       </Flex>
+     </Box>
+   );
+ };
+
+ export default DawgRegistrationComponent;
