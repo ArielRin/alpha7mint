@@ -3,6 +3,13 @@ import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
+import Leaderboard from './Components/Leaderboard/Leaderboard';
+// <Leaderboard />
+
+
+import TopDawg from './Components/Leaderboard/TopDawg';
+// <TopDawg />
+
 import UserHeaderComponent from './Components/UserHeaderComponent/UserHeaderComponent';
 // <UserHeaderComponent />
 // //
@@ -97,6 +104,8 @@ import nft4Image from "./image4.png";
 import section2Image from "./bwdrkbackground.png";
 import sectionImage from "./bwbackground.png";
 import sectionBattleImage from "./sectionBattleImage.png";
+import leaderboardImage from "./leaderboardImage.png";
+
 
 
 import battleVsImage from "./battleVsImage.png";
@@ -732,7 +741,69 @@ minH="200px" // Minimum height of the box
 {/* Content for the right column goes here */}
 </Box>
 </Flex>
+<Flex
+     direction={{ base: 'column', md: 'row' }}
+     gap="4" // Adjust gap as needed
+     bg="rgba(0, 0, 0, 1)"
+     p={4} // Adjust padding as needed
+     minH="140px" // Minimum height of 400px for the row
+   >
+ </Flex>
+<Flex
+direction={{ base: 'column', md: 'row' }} // Column on small screens, row on medium and larger screens
+align="center" // Align items vertically in the center
+gap="4" // Adjust gap as needed
+p={4} // Adjust padding as needed
+minH="200px" // Minimum height of 60px for the row
+w="full" // Take full width of the container
+bg="black"
+bgImage={`url(${leaderboardImage})`}
+bgPosition="center"
+bgRepeat="no-repeat"
+bgSize="cover"
+>
 
+{/* Left Column  <Heading color="white" mb="30px">Introducing AlphaDawgz! NFT with a PvP Battle System </Heading>
+ */}
+<Box
+  alignItems="center" // Changed from align to alignItems
+w="100%" // Equal width for both columns
+bg="rgba(0, 0, 0, 0.75)" // Dark grey with transparency
+p={4} // Padding inside the box
+>
+<Heading  textAlign="center" color="white" mb="30px">AlphaDawgz Leaderboard </Heading>
+
+<Text color="white">
+AlphaDawgz Battle System is all about fun and excitement! Picture this: the top seven Dawgz, battling it out to see who's the toughest. These Dawgz have won the most battles, and everyone's eager to see who will become the ultimate AlphaDawg. The best part? You get to join in and battle other players. It's a straight-up 50/50 shot at winning each time, and if you win, you score some cool BNB crypto. It's a wild ride where every battle is a new chance to be the top Dawg!
+</Text>
+ <TopDawg />
+</Box>
+
+{/* Right Column */}
+<Box
+w="100%" // Equal width for both columns
+bg="rgba(33, 33, 33, 0.0)" // Dark grey with transparency
+p={4} // Padding inside the box
+minH="200px" // Minimum height of the box
+>
+<Flex direction="column" align="center" justify="center" height="100%">
+
+<Leaderboard />
+
+</Flex>
+
+{/* Content for the right column goes here */}
+</Box>
+</Flex>
+
+<Flex
+     direction={{ base: 'column', md: 'row' }}
+     gap="4" // Adjust gap as needed
+     bg="rgba(0, 0, 0, 1)"
+     p={4} // Adjust padding as needed
+     minH="140px" // Minimum height of 400px for the row
+   >
+ </Flex>
 
 
 <Flex
@@ -763,6 +834,14 @@ minH="200px" // Minimum height of the box
     ></iframe>
   </Box>
 </Flex>
+<Flex
+     direction={{ base: 'column', md: 'row' }}
+     gap="4" // Adjust gap as needed
+     bg="rgba(0, 0, 0, 1)"
+     p={4} // Adjust padding as needed
+     minH="140px" // Minimum height of 400px for the row
+   >
+ </Flex>
 
 
 
