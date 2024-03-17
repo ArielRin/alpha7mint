@@ -2,6 +2,8 @@
 
 import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 
+import Leaderboard from './Components/Leaderboard/Leaderboard';
+// <Leaderboard />
 
 import YourComplatedBattles from './Components/YourActiveBattles/YourCompletedBattles';
 // <YourComplatedBattles />
@@ -496,6 +498,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
 
          </Box>
+         <Leaderboard />
          <Footer />
        </Box>
      );
