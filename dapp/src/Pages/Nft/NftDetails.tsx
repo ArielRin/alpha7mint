@@ -98,7 +98,7 @@ const NftDetails = () => {
   useEffect(() => {
     const fetchDawgzData = async () => {
       try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+            const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const dawgRegistrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 
         const name = await dawgRegistrationContract.dawgzNames(tokenId);

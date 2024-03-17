@@ -68,7 +68,7 @@ function NftMint() {
 
     try {
       setLoading(true);
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(NFTMINT_CONTRACT_ADDRESS, nftMintAbi, provider);
       const supply = await contract.totalSupply();
       setTotalSupply(supply.toNumber());

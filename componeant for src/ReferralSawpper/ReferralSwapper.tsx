@@ -154,7 +154,7 @@ const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Referr
     useEffect(() => {
       const fetchWalletDetails = async () => {
         if (typeof window.ethereum !== 'undefined') {
-          const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+          const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
           const signer = provider.getSigner();
           const address = await signer.getAddress();
           setUserAddress(address);
@@ -303,7 +303,7 @@ const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Referr
     useEffect(() => {
       const fetchLPTokenBalances = async () => {
         if (typeof window.ethereum !== 'undefined') {
-          const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+          const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
           const signer = provider.getSigner();
           const alpha7LPContract = new ethers.Contract(ALPHA7_LP_TOKEN_ADDRESS, tokenAbi, signer);
 
@@ -331,7 +331,7 @@ const [selectedReferrer, setselectedReferrer] = useState(contractOptions["Referr
   try {
     if (typeof window.ethereum !== 'undefined') {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const signer = provider.getSigner();
       const transactionResponse = await signer.sendTransaction({
         to: selectedContract, // Use the selected contract address here

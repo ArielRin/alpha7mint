@@ -26,7 +26,7 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
   const fetchAllTokenStats = async () => {
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
       const registrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 

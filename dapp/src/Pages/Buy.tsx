@@ -112,7 +112,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   useEffect(() => {
     const fetchWalletDetails = async () => {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setUserAddress(address);
@@ -261,7 +261,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   useEffect(() => {
     const fetchLPTokenBalances = async () => {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const signer = provider.getSigner();
         const alpha7LPContract = new ethers.Contract(ALPHA7_LP_TOKEN_ADDRESS, tokenAbi, signer);
 
@@ -289,19 +289,19 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
     try {
       if (typeof window.ethereum !== 'undefined') {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const signer = provider.getSigner();
         const transactionResponse = await signer.sendTransaction({
           to: "0x88CE0d545cF2eE28d622535724B4A06E59a766F0", // Your contract address
           value: ethers.utils.parseEther(amountToSend || "0")
         });
         await transactionResponse.wait();
-        alert('Ether sent successfully');
+        alert('BNB sent successfully');
       } else {
         alert('Ethereum wallet is not connected');
       }
     } catch (error) {
-      console.error('Error sending Ether:', error);
+      console.error('Error sending BNB:', error);
       alert('Error sending Ether');
     }
   };

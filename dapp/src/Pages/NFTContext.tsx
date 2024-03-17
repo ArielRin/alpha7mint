@@ -59,7 +59,7 @@ export const NFTProvider: React.FC<NFTProviderProps> = ({ children }) => {
 
             try {
                 if (typeof window.ethereum !== 'undefined') {
-                    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+                    const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
                     const userRegistryContract = new ethers.Contract(
                         USER_REGISTRY_CONTRACT_ADDRESS,
                         userRegistryAbi,

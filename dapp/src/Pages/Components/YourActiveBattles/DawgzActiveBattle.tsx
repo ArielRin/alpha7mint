@@ -22,7 +22,7 @@ const ActiveBattles: React.FC = () => {
 
   useEffect(() => {
     const fetchBattleForToken = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
       setIsLoading(true);
 

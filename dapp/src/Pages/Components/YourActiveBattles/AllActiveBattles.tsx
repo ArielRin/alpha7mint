@@ -50,7 +50,7 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
   }, []);
 
 
-const calculateTimeLeft = (endTime: Date) => {   
+const calculateTimeLeft = (endTime: Date) => {
     if (!endTime) {
       return 'Time data unavailable';
     }

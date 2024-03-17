@@ -172,7 +172,7 @@ function App() {
     setIsApprovalPending(true); // Set approval pending status to true
 
     try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const signer = provider.getSigner();
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, signer);
 
@@ -217,7 +217,7 @@ function App() {
     }
 
     try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const signer = provider.getSigner();
       const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, signer);
 
@@ -307,7 +307,7 @@ function App() {
 
   const fetchUserStakedBalance = async () => {
   try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
@@ -330,7 +330,7 @@ function App() {
  useEffect(() => {
    const fetchUserAddress = async () => {
      if (window.ethereum) {
-         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+         const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
        try {
          await provider.send('eth_requestAccounts', []);
          const signer = provider.getSigner();
@@ -349,7 +349,7 @@ function App() {
  // Fetch user's token balance
  const fetchUserTokenBalance = async (address) => {
    if (!address) return;
-     const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+     const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
    const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, provider);
    try {
      const balance = await tokenContract.balanceOf(address);
@@ -364,7 +364,7 @@ function App() {
  useEffect(() => {
    const fetchUnlockDate = async () => {
      if (!userAddress) return;
-       const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+       const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
      const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
      try {
        const unlockTime = await stakingContract.holderUnlockTime(userAddress);
@@ -393,7 +393,7 @@ function App() {
        try {
          setIsClaiming(true); // Disable the button
 
-           const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+           const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
          await provider.send('eth_requestAccounts', []); // Request account access
          const signer = provider.getSigner();
          const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, signer);
@@ -699,7 +699,7 @@ useEffect(() => {
 
 const fetchData = async () => {
   try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     const stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stake14Abi, provider);
     const userAddress = (await provider.listAccounts())[0]; // Assumes the user's wallet is connected
 
@@ -919,7 +919,7 @@ const calculateTokenValueInUSD = () => {
 
   useEffect(() => {
     // Initialize provider and signer
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     const signer = provider.getSigner();
 
     // Initialize the poundContract with signer to perform transactions
@@ -967,7 +967,7 @@ const calculateTokenValueInUSD = () => {
 
     useEffect(() => {
       const fetchActiveBattles = async () => {
-const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
         try {
@@ -1029,7 +1029,7 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
 
   useEffect(() => {
     const fetchActiveBattles = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
       try {
@@ -1061,7 +1061,7 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
 
 
 useEffect(() => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+  const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
   const getUserAddress = async () => {
     const accounts = await provider.listAccounts();
     if (accounts) setCurrentUser(accounts[0]);
@@ -1079,7 +1079,7 @@ useEffect(() => {
     try {
       // Ensure that there's an Ethereum provider (e.g., MetaMask) available
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         await provider.send("eth_requestAccounts", []); // Request account access if needed
         const signer = provider.getSigner(); // Get the signer to sign transactions
 
@@ -1104,7 +1104,7 @@ useEffect(() => {
   const handleStartBattleManually = async (battleId) => {
   try {
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       await provider.send("eth_requestAccounts", []); // Request account access if needed
       const signer = provider.getSigner(); // Get the signer to sign transactions
 
@@ -1133,7 +1133,7 @@ useEffect(() => {
   const fetchBattlePrice = async () => {
   if (!window.ethereum) return alert('Please install MetaMask.');
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+  const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
   const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
   try {
@@ -1153,7 +1153,7 @@ useEffect(() => {
   const enterBattle = async (tokenId, comment, battlePrice) => {
     if (!window.ethereum) return alert('Please install MetaMask.');
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
 
@@ -1185,7 +1185,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchAllTokenStats = async () => {
       // Create a provider and contract instance
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
       const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
       // Fetch stats for each token
@@ -1222,7 +1222,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchRoundDuration = async () => {
     // Fetch the round duration from the contract
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
     const duration = await contract.roundDuration();
     setRoundDuration(duration.toNumber());
@@ -1233,7 +1233,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCompletedBattles = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
     const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
 
     // Fetch the array of completed battle IDs

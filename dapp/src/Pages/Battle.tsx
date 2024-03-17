@@ -453,7 +453,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
                      {/*
                        <AllActiveBattles />
 
-                      */}
+                      */} <AllActiveBattles />
                            </Box>
                    </Flex>
 
