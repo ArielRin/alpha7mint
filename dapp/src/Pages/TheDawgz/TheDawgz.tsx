@@ -9,8 +9,11 @@ import DawgRegistration from '../Components/DawgRegistration/DawgRegistration'; 
 
 
 
-import AllDawgz from './AllDawgz'; // //
-// <AllDawgz />
+import RegisteredDawgz from './RegisteredDawgz';
+// <RegisteredDawgz />
+
+import AllDawgz from './AllDawgz';
+ // <AllDawgz />
 
 import QRCode from 'qrcode.react';
 
@@ -96,8 +99,13 @@ const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
 
 
 const TheDawgz: React.FC = () => {
+      const toast = useToast();
 
   const fallbackRpcUrl = "https://bsc-dataseed1.ninicoin.io";
+
+
+  const registrationFee = "10"; // Replace this with the actual fee or logic to compute it
+
 
    // Provider and Signer setup
    let provider: ethers.providers.Provider;
@@ -126,7 +134,7 @@ const TheDawgz: React.FC = () => {
     dawgName?: string;
     dawgTaunt?: string;
     isInBattle?: boolean;  // New field to indicate if the NFT is in battle
-    
+
 }
 
 
@@ -139,7 +147,7 @@ const [selectedNFTForModification, setSelectedNFTForModification] = useState<NFT
     const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
     const [nftList, setNftList] = useState<number[]>([]);
 
-
+    const [isApproved, setIsApproved] = useState(false);
 
     const [ownedTokenIds, setOwnedTokenIds] = useState<BigNumber[]>([]);
 
@@ -231,7 +239,7 @@ const [selectedNFTForModification, setSelectedNFTForModification] = useState<NFT
 
 
   const tabBackground = 'gray.800'; // The tab background color
-  const activeTabColor = 'white'; // The color of the active tab indicator and text
+  const activeTabColor = 'blue'; // The color of the active tab indicator and text
 
 
     const bnbPrice = useContext(BnbPriceContext); // Use the context
@@ -334,7 +342,7 @@ const handleApproval = async () => {
 
     try {
         const feeInWei = ethers.utils.parseUnits(registrationFee, 'ether'); // Adjust the units based on your token's decimals
-        const erc20Contract = new ethers.Contract(ERC20_TOKEN_ADDRESS, erc20Abi, signer);
+        const erc20Contract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, signer);
         const tx = await erc20Contract.approve(DAWG_REGISTRATION_CONTRACT_ADDRESS, feeInWei);
         await tx.wait();
         setIsApproved(true);
@@ -394,6 +402,7 @@ return (
               <TabList mb="1em" bg={tabBackground}>
                   <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>Your Dawgz</Tab>
                   <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>All Dawgz</Tab>
+                  <Tab _selected={{ color: activeTabColor }} _focus={{ boxShadow: 'none' }}>Registered Dawgz</Tab>
 
               </TabList>
 
@@ -525,9 +534,14 @@ return (
 
                   </TabPanel>
 
-                      <TabPanel>
+                  <TabPanel>
                       <AllDawgz />
-                                        </TabPanel>
+                  </TabPanel>
+
+
+                  <TabPanel>
+                        <RegisteredDawgz />
+                  </TabPanel>
               </TabPanels>
           </Tabs>
       </Box>

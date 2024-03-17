@@ -748,20 +748,11 @@ display="flex"
       bg="rgba(0, 0, 0, 0.75)"
       p="5px"
       minH="120px" // Adjust the height as needed
-      align="center"
     >
     <Text color="white" fontSize="22px" fontWeight="bold" textAlign="center" mr="5px" >
       View on BSCSCAN
       </Text>
-      <Button colorScheme="orange" >
-      Modify Dawg Registration
-      </Button>
-      <Button colorScheme="green">
-      Register Dawg
-      </Button>
-      <Button colorScheme="red">
-      Battle this Dawg now!
-      </Button>
+
 
     </Box>
   </Flex>
