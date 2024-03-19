@@ -144,7 +144,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 useEffect(() => {
   const fetchWalletDetails = async () => {
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       setUserAddress(address);
@@ -298,7 +298,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchLPTokenBalances = async () => {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const signer = provider.getSigner();
         const alpha7LPContract = new ethers.Contract(ALPHA7_LP_TOKEN_ADDRESS, tokenAbi, signer);
 

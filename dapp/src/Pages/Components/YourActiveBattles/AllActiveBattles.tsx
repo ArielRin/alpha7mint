@@ -15,6 +15,10 @@ import a7Logo from './headerlogo.png';
 const BATTLE_CONTRACT_ADDRESS = '0x8d695bf3cB976210c8a7aE403D93Eec8332D0f5D';
 import dawgBattleAbi from './dawgBattleAbi.json';
 
+const DAWG_REGISTRATION_CONTRACT_ADDRESS = "0x6B49F7B1239F5487566815Ce58ec0396b2E363e7"; // Contract address
+import dawgRegistrationAbi from './dawgRegistrationAbi.json'; // ABI for Dawg registration contract
+
+
 
 interface BattleDetails {
   id: number;
@@ -26,6 +30,9 @@ interface BattleDetails {
   battleValue: string;
   endTime: Date;
   countdown: string;
+  dawgzName: string | null;
+  dawgzTaunt: string | null;
+  imageUrl: string;
 }
 
 
@@ -163,6 +170,68 @@ const startBattleManually = async (battleId: number) => {
         };
 
 
+          useEffect(() => {
+          const fetchAllTokenStats = async () => {
+            if (window.ethereum) {
+              const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
+              const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+              const registrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
+
+              try {
+                const promises = Array.from({ length: 200 }, async (_, i) => {
+                  const tokenId = i + 1;
+                  const stats = await battleContract.tokenStats(tokenId);
+                  const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
+                  const response = await fetch(metadataUrl);
+                  const metadata = await response.json();
+
+                  const isRegistered = await registrationContract.isNFTRegistered(tokenId);
+                  let dawgzName = null;
+                  let dawgzTaunt = null;
+                  if (isRegistered) {
+                    dawgzName = await registrationContract.dawgzNames(tokenId);
+                    dawgzTaunt = await registrationContract.dawgzDefaultTaunts(tokenId);
+                  }
+
+                  return {
+                    tokenId,
+                    timesWon: stats.timesWon.toNumber(),
+                    valueEarned: ethers.utils.formatEther(stats.valueEarned),
+                    dawgzName,
+                    dawgzTaunt,
+                    imageUrl: metadata.imageUrl
+                  };
+                });
+
+                const statsArray = await Promise.all(promises);
+                statsArray.sort((a, b) => b.timesWon - a.timesWon);
+                setLeaderboardData(statsArray.slice(0, 7)); // Top 7
+              } catch (error) {
+                console.error("Failed to fetch stats:", error);
+              }
+            }
+          };
+
+          fetchAllTokenStats();
+        }, []);
+
+
+            // Function to fetch individual NFT data
+            const fetchNftData = async (tokenId: number) => {
+
+
+                const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
+                const imageUrl = `/NFTDATA/Image/${tokenId}.png`;
+
+                const response = await fetch(metadataUrl);
+                const metadata = await response.json();
+
+                return {
+                    tokenId,
+                    imageUrl,
+                    name: metadata.name
+                };
+            };
 
         return (
           <Box >
