@@ -1,0 +1,27 @@
+{
+  "name": "Get Outta the Pound! AlphaDawgz",
+  "description": "This Card can be used to release you Alphadawg from the DawgPound. keep this card for use on Alphadawgz Battle System",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/dapp/public/poundplaceholder.png",
+  "dna": "a0000100006a439870fc37861e231f65",
+  "edition": 1,
+  "date": 1710825325,
+  "attributes": [
+    {
+      "trait_type": "GameCard",
+      "value": "Get out of the Pound"
+    },
+    {
+      "trait_type": "Logo",
+      "value": "Alpha7"
+    },
+    {
+      "trait_type": "Uses",
+      "value": "Use this card to get your Alphadawg released from the pound."
+    },
+    {
+      "trait_type": "Conditions",
+      "value": "One time use! Will be removed from wallet on use."
+    }
+  ],
+  "compiler": "Alpha7 Art Engine"
+}
