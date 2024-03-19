@@ -1,0 +1,27 @@
+{
+  "name": "DawgTreatz Points",
+  "description": "Use Dawg Treats to Gain City Turf Check page for current points needed for City Turf. Which team will become the AlphaDawgz",
+  "image": "https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/NFTDATA/GameCards/Image/DawgTreatz.png",
+  "dna": "a0000300006a439870fc37861e231f65",
+  "edition": 2,
+  "date": 1710838642,
+  "attributes": [
+    {
+      "trait_type": "GameCard",
+      "value": "Point for Teams! Dawg Treats to Gain City Turf"
+    },
+    {
+      "trait_type": "Logo",
+      "value": "Alpha7"
+    },
+    {
+      "trait_type": "Uses",
+      "value": "Dawg Treats to Gain City Turf"
+    },
+    {
+      "trait_type": "Conditions",
+      "value": "Swap Points for City Turf"
+    }
+  ],
+  "compiler": "Alpha7 Art Engine"
+}
