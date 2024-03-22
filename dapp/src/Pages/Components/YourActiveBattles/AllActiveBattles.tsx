@@ -30,10 +30,12 @@ interface BattleDetails {
   battleValue: string;
   endTime: Date;
   countdown: string;
-  dawgzName: string | null;
-  dawgzTaunt: string | null;
-  imageUrl: string;
-}
+  isAwaitingChallenger: boolean;
+  dawgzNameInitiator: string | null;
+  dawgzTauntInitiator: string | null;
+  dawgzNameSecondary: string | null;
+  dawgzTauntSecondary: string | null;
+  }
 
 
 
@@ -42,6 +44,7 @@ const AllActiveBattles: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userAddress, setUserAddress] = useState<string | null>(null);
   const [expandedBattleIds, setExpandedBattleIds] = useState<Record<number, boolean>>({});
+
 
 
   useEffect(() => {
@@ -73,25 +76,50 @@ const calculateTimeLeft = (endTime: Date) => {
     return 'Battle Ended';
   };
 
+
   useEffect(() => {
     const fetchActiveBattleIds = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-        const contract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+        const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
+        const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
+        const registrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 
         try {
-          const roundDurationSeconds = (await contract.roundDuration()).toNumber() * 1000; // Convert to milliseconds
-          const battleIds = await contract.getActiveBattleIds();
+          const roundDurationSeconds = (await battleContract.roundDuration()).toNumber() * 1000;
+          const battleIds = await battleContract.getActiveBattleIds();
 
           const battlesPromises = battleIds.map(async (id: BigNumber) => {
-            const details = await contract.getBattleDetails(id);
+            const details = await battleContract.getBattleDetails(id);
             const endTime = new Date(details.startTime.toNumber() * 1000 + roundDurationSeconds);
+
+            // Fetch dawgzName and dawgzTaunt for both the initiator and secondary entrant
+            const initiatorNamePromise = registrationContract.dawgzNames(details.initiatorTokenId);
+            const initiatorTauntPromise = registrationContract.dawgzDefaultTaunts(details.initiatorTokenId);
+            const secondaryNamePromise = registrationContract.dawgzNames(details.secondaryTokenId);
+            const secondaryTauntPromise = registrationContract.dawgzDefaultTaunts(details.secondaryTokenId);
+
+            // Determine if the battle is awaiting a second challenger
+            const isAwaitingChallenger = details.secondaryTokenId.eq(0); // Assuming 0 means no second challenger
+
+            // Await all promises simultaneously for efficiency
+            const [initiatorName, initiatorTaunt, secondaryName, secondaryTaunt] = await Promise.all([
+              initiatorNamePromise,
+              initiatorTauntPromise,
+              secondaryNamePromise,
+              secondaryTauntPromise,
+            ]);
 
             return {
               id: id.toNumber(),
-              // ... other battle details ...
-              endTime, // Ensure endTime is correctly calculated and assigned
-              countdown: calculateTimeLeft(endTime) // calculate initial countdown
+              initiatorTokenId: details.initiatorTokenId.toNumber(),
+              secondaryTokenId: details.secondaryTokenId.toNumber(),
+              dawgzNameInitiator: initiatorName,
+              dawgzTauntInitiator: initiatorTaunt,
+              dawgzNameSecondary: secondaryName,
+              dawgzTauntSecondary: secondaryTaunt,
+              endTime,
+              countdown: calculateTimeLeft(endTime),
+              isAwaitingChallenger,
             };
           });
 
@@ -106,7 +134,7 @@ const calculateTimeLeft = (endTime: Date) => {
     };
 
     fetchActiveBattleIds();
-  }, []);
+  }, [setActiveBattles, setIsLoading]);
 
    //-------------------//-----------------------//------------------------//
       //-------------------//-----------------------//------------------------//
@@ -169,51 +197,15 @@ const startBattleManually = async (battleId: number) => {
           backgroundSize: 'cover'
         };
 
+        const backgroundImages = [
+          'url(https://alpha7.live/Background/goldenbackground1.png)',
+          'url(https://alpha7.live/Background/bluebackground.png)',
+          'url(https://alpha7.live/Background/goldenbackground3.png)',
+          'url(https://alpha7.live/Background/redbackground.png)',
+          'url(https://alpha7.live/Background/greenbackground.png)',
+        ];
 
-          useEffect(() => {
-          const fetchAllTokenStats = async () => {
-            if (window.ethereum) {
-              const provider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
-              const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, provider);
-              const registrationContract = new ethers.Contract(DAWG_REGISTRATION_CONTRACT_ADDRESS, dawgRegistrationAbi, provider);
 
-              try {
-                const promises = Array.from({ length: 200 }, async (_, i) => {
-                  const tokenId = i + 1;
-                  const stats = await battleContract.tokenStats(tokenId);
-                  const metadataUrl = `/NFTDATA/metadata/${tokenId}.json`;
-                  const response = await fetch(metadataUrl);
-                  const metadata = await response.json();
-
-                  const isRegistered = await registrationContract.isNFTRegistered(tokenId);
-                  let dawgzName = null;
-                  let dawgzTaunt = null;
-                  if (isRegistered) {
-                    dawgzName = await registrationContract.dawgzNames(tokenId);
-                    dawgzTaunt = await registrationContract.dawgzDefaultTaunts(tokenId);
-                  }
-
-                  return {
-                    tokenId,
-                    timesWon: stats.timesWon.toNumber(),
-                    valueEarned: ethers.utils.formatEther(stats.valueEarned),
-                    dawgzName,
-                    dawgzTaunt,
-                    imageUrl: metadata.imageUrl
-                  };
-                });
-
-                const statsArray = await Promise.all(promises);
-                statsArray.sort((a, b) => b.timesWon - a.timesWon);
-                setLeaderboardData(statsArray.slice(0, 7)); // Top 7
-              } catch (error) {
-                console.error("Failed to fetch stats:", error);
-              }
-            }
-          };
-
-          fetchAllTokenStats();
-        }, []);
 
 
             // Function to fetch individual NFT data
@@ -234,40 +226,37 @@ const startBattleManually = async (battleId: number) => {
             };
 
         return (
-          <Box >
-            {isLoading ? (
-              <Text textAlign="center">Loading...</Text>
-            ) : activeBattles.length > 0 ? (
-              <Flex marginTop="95px" direction="column" gap="4">
-                {activeBattles.map((battle) => (
-                  <Box  key={battle.id} borderWidth="1px" borderRadius="lg" p="2" bg="rgba(83, 33, 36, 0.3)" _hover={{ bg: "rgba(117, 47, 47, 0.9)" }}>
-                    <Flex color="white" align="center">
-                      <Text flex="1" textAlign="center">Battle {battle.id}</Text>
-                      <Image src={`/NFTDATA/Image/${battle.initiatorTokenId}.png`} width="55px" />
-                      <Text flex="1" textAlign="center"># {battle.initiatorTokenId}</Text>
-                      <Text flex="1" textAlign="center">VS</Text>
+          <Box>
 
-                      <Image src={`/NFTDATA/Image/${battle.secondaryTokenId}.png`} width="55px" />
-                      <Text flex="1" textAlign="center"># {battle.secondaryTokenId}</Text>
+            <Text fontSize="2xl" fontWeight="bold" mb="4" color="white" textAlign="center">
+              All Active Battles
+            </Text>
+    {isLoading ? (
+      <Text color="white" textAlign="center">Loading...</Text>
+    ) : activeBattles.length > 0 ? (
+      <Flex direction="row" wrap="wrap" justifyContent="space-around" marginTop="5px">
+        {activeBattles.map((battle, index) => (
+          <Box
+             key={battle.id}
+             minW="360px" // Set width to fit 3 cards in a row
+             borderWidth="1px"
+             borderRadius="lg"
+             bg="rgba(83, 33, 36, 0.3)"
+             _hover={{ bg: "rgba(117, 47, 47, 0.9)" }}
+             m="2" // Margin for spacing between cards
+             // Dynamically set the background image from the array
+             style={{
+               ...backgroundStyle, // Keep your existing styles
+               backgroundImage: backgroundImages[index % backgroundImages.length], // Cycle through backgrounds
+               backgroundSize: 'cover', // Ensure background covers the box
+               backgroundPosition: 'center',
+             }}
+           >
+             <Box
+             p="5"
 
-                      <Text flex="1" textAlign="center">
-                        Remaining: {battle.countdown}
-                      </Text>
-                      <IconButton
-                      color="black"
-                        aria-label="Expand battle details"
-                        icon={expandedBattleIds[battle.id] ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                        onClick={() => toggleExpandedBattle(battle.id)}
-                      />
-                    </Flex>
-                    <Collapse in={expandedBattleIds[battle.id]}>
-
-                    <Box
-                    style={backgroundStyle}
-                    bgPosition="center"
-                    bgRepeat="no-repeat"
-                    bgSize="cover"p="5" borderWidth="1px" borderRadius="lg" mb="5">
-                    <img src={a7Logo} alt="Token Logo" style={{ width: "180px", margin: "0 auto", display: "block" }} />
+           bg="rgba(0, 0, 0, 0.6)"
+           >
                     <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz #{battle.id}</Text>
 
 
@@ -275,66 +264,42 @@ const startBattleManually = async (battleId: number) => {
                     {/* Second row: Contestants and VS */}
                     <Flex direction="row" alignItems="center" justifyContent="space-between" mb="4">
                       {/* Left contestant */}
-                      <Box minH="270px" width="40%">
-                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="160px" mx="auto" />
-                        <Text style={{  textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.initiatorTokenId}</Text>
+                      <Box minH="220px" width="45%">
+                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="100px" mx="auto" />
+                        <Text style={{ textAlign: 'center', fontSize: '20px', color: 'white', fontWeight: 'bold' }} mb="4">{battle.initiatorTokenId} {battle.dawgzNameInitiator}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: '18px', color: 'white', fontWeight: 'normal' }} mb="4">{battle.dawgzTauntInitiator}</Text>
+
                       </Box>
 
                       {/* VS */}
                       <Box width="10%" textAlign="center">
-                        <Text style={{  fontSize: '48px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
+                        <Text style={{  fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
                       </Box>
 
                       {/* Right contestant */}
-                      <Box minH="270px" width="40%">
-                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" boxSize="160px" mx="auto" />
-                        <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.secondaryTokenId}</Text>
+                      <Box minH="220px" width="45%">
+                        <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.secondaryTokenId}.png`} alt="Secondary NFT" boxSize="100px" mx="auto" />
+                        <Text style={{ textAlign: 'center', fontSize: '20px', color: 'white', fontWeight: 'bold' }} mb="4">{battle.secondaryTokenId} {battle.dawgzNameSecondary}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: '18px', color: 'white', fontWeight: 'normal' }} mb="4">{battle.dawgzTauntSecondary}</Text>
+
                       </Box>
                     </Flex>
 
-                    <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Winner of the battle will receive 93% of the battle value with 7% battle fees.</Text>
 
                     {/* 7th row: Buttons */}
-                    <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} flex="1" textAlign="center">
-                      Remaining: {battle.countdown}
-                    </Text>
-                      <Flex mt="4" justifyContent="center"> {/* Adjusted justifyContent to "center" */}
-
-                  {/*       <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>    */}
-                  <Button
-                    colorScheme="green"
-                    onClick={() => startBattleManually(battle.id)}
-                    isDisabled={isLoading}
-                    alignSelf="center"
-                    >
-                    {isLoading ? 'Processing...' : 'Finalise Battle'}
-                    </Button>
-
-
-                  </Flex>
-                  <Text style={{ textAlign: 'center', fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Who will become the AlphaDawg!</Text>
+                    <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">
+               Remaining: {
+                 battle.isAwaitingChallenger ? "Awaiting Start" : // Check if awaiting challenger
+                 new Date() > battle.endTime ? "Battle Ended" : // Check if the battle has ended
+                 calculateTimeLeft(battle.endTime) // Otherwise, show countdown
+               }
+             </Text>
 
 
 
 
-                  {/*     <Box p="4">
-                        <Text>Initiator: #{battle.initiatorTokenId}</Text>
-                        <Text>Opponent: #{battle.secondaryTokenId}</Text>
-                        <Text>Value: {battle.battleValue} ETH</Text>
-                        <Button
-    colorScheme={new Date() > new Date(battle.endTime) ? "green" : "gray.500"}
-    onClick={() => startBattleManually(battle.id)}
-    isDisabled={new Date() <= new Date(battle.endTime)}
-    color="white"
-  >
-    {new Date() > new Date(battle.endTime) ? "Finalize Battle" : "Battle Ongoing"}
-  </Button>
 
-                      </Box>
-                        Additional details can be added here */}
-
-                      </Box>
-                    </Collapse>
+                               </Box>
                   </Box>
                 ))}
               </Flex>
@@ -347,98 +312,3 @@ const startBattleManually = async (battleId: number) => {
 };
 
 export default AllActiveBattles;
-
-//
-// <Box
-// >
-//     {battleDetails.map((battle, index) => (
-//       <Box
-//
-//       bgImage={`url(${redBkg})`}
-//       bgPosition="center"
-//       bgRepeat="no-repeat"
-//       bgSize="cover"key={index} p="5" borderWidth="1px" borderRadius="lg" mb="5">
-//         {/* First row: Battle ID */}
-//         <img src={a7Logo} alt="Token Logo" style={{ width: "100px", margin: "0 auto", display: "block" }} />
-//         <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Dawgz</Text>
-//
-//         <Text style={{ textAlign: 'center', fontSize: '26px', color: 'white', fontWeight: 'bold' }} mb="4">BattleID #{battle.id} </Text>
-//
-//
-//         {/* Second row: Contestants and VS */}
-//         <Flex direction="row" alignItems="center" justifyContent="space-between" mb="4">
-//           {/* Left contestant */}
-//           <Box minH="270px" width="40%">
-//             <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.initiatorTokenId}.png`} alt="Initiator NFT" boxSize="160px" mx="auto" />
-//             <Text style={{  textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.initiatorTokenId}</Text>
-//             <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }} mb="4">{battle.initiatorComment}</Text>
-//           </Box>
-//
-//           {/* VS */}
-//           <Box width="10%" textAlign="center">
-//             <Text style={{  fontSize: '48px', color: 'white', fontWeight: 'bold' }} mb="4">VS</Text>
-//           </Box>
-//
-//           {/* Right contestant */}
-//           <Box minH="270px" width="40%">
-//             <Image borderRadius="lg" src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/master/NFTDATA/Image/${battle.opponentTokenId}.png`} alt="Secondary NFT" boxSize="160px" mx="auto" />
-//             <Text style={{ textAlign: 'center', fontSize: '24px', color: 'white', fontWeight: 'bold' }} mb="4">Dawg #{battle.opponentTokenId}</Text>
-//             <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }} mb="4">{battle.secondaryEntrantComment}</Text>
-//           </Box>
-//         </Flex>
-//
-//         {/* Third to 6th row: Battle details */} {/* Check if timeRemaining is less than 1000 milliseconds (1 second) */}
-//   {battle.timeRemaining < 1000 ? (
-//     <p>Battle Now</p>
-//   ) : (
-//     <Text style={{ textAlign: 'center', fontSize: '18px', color: 'white', fontWeight: 'bold' }} mb="4"></Text>
-//   )}
-//         <Text style={{ textAlign: 'center', fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Battle Prizes: {battle.totalValueInBattle} BNB</Text>
-//         <Text style={{ textAlign: 'center', fontSize: '12px', color: 'white', fontWeight: 'bold' }} mb="4">Winner of the battle will receive 93% of the battle value with 7% battle fees.</Text>
-//
-//         {/* 7th row: Buttons */}
-//           <Flex mt="4" justifyContent="center"> {/* Adjusted justifyContent to "center" */}
-//       {/*       <Button colorScheme="orange" onClick={() => handleMarkReady(battle.battleId)}>Mark Ready</Button>    */}
-//         <Button colorScheme="green" onClick={() => handleStartBattleManually(battle.battleId)}>Finalise Battle</Button>
-//
-//       </Flex>
-//       <Text style={{ textAlign: 'center', fontSize: '32px', color: 'white', fontWeight: 'bold' }} mb="4">Who will become the AlphaDawg!</Text>
-//
-//       </Box>
-//     ))}
-//   </Box>
-//
-
-
-
-//
-//   return (
-//     <Box>
-//       <Text fontSize="2xl" fontWeight="bold" mb="4" textAlign="center">
-//         Your Active Battles
-//       </Text>
-//       {isLoading ? (
-//         <Text textAlign="center">Loading...</Text>
-//       ) : activeBattles.length > 0 ? (
-//         <Flex direction="column" gap="4">
-//           {activeBattles.map((battle, index) => (
-//             <Flex key={index} align="center" borderWidth="1px" borderRadius="lg" p="2" bg="gray.100" _hover={{ bg: "gray.200" }}>
-//               <Text flex="1" textAlign="left">Battle ID: {battle.id}</Text>
-//               <Spacer />
-//               <Text flex="1" textAlign="center">Initiator: #{battle.initiatorTokenId}</Text>
-//               <Spacer />
-//               <Text flex="1" textAlign="center">Opponent: #{battle.opponentTokenId}</Text>
-//               <Spacer />
-//               <Text flex="1" textAlign="right">Value: {battle.battleValue} ETH</Text>
-//             </Flex>
-//           ))}
-//         </Flex>
-//       ) : (
-//         <Text>No active battles found.</Text>
-//       )}
-//
-//     </Box>
-//   );
-// };
-//
-// export default ActiveBattles;

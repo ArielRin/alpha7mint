@@ -35,6 +35,7 @@ const ActiveBattles: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userAddress, setUserAddress] = useState<string | null>(null);
   const [expandedBattleIds, setExpandedBattleIds] = useState<Record<number, boolean>>({});
+    const [leaderboardData, setLeaderboardData] = useState(null); // Adjust the initial state as needed
 
   const calculateTimeLeft = (endTime: Date) => {
     const now = new Date();

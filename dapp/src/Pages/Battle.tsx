@@ -114,14 +114,11 @@ import MainTextLogo from "./headerlogo.png";
 
 import { ethers } from 'ethers';
 
-// import NftDetails from './Nft/NftDetails'; // Adjust the import path as needed
 
 const TOKEN_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
 const DEVELOPER_WALLET_ADDRESS = "0x57103b1909fB4D295241d1D5EFD553a7629736A9";
 const TREASURY_WALLET_ADDRESS = "0x0bA23Af142055652Ba3EF1Bedbfe1f86D9bC60f7";
-const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366"; // Address for the Alpha7 LP token contract
-// import YourActiveBattles from './Components/YourActiveBattles/YourActiveBattles'; // //
-
+const ALPHA7_LP_TOKEN_ADDRESS = "0xa2136fEA6086f2254c9361C2c3E28c00F9e73366";
 // ________________________________________________________________________________ //
 
 const REFERRAL_CONTRACT_ADDRESS = "0x88CE0d545cF2eE28d622535724B4A06E59a766F0";
@@ -203,7 +200,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
   useEffect(() => {
     const fetchWalletDetails = async () => {
-      // Existing wallet detail fetches
     };
 
     const fetchBnbPrice = async () => {
@@ -219,7 +215,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
     };
 
     fetchWalletDetails();
-    fetchBnbPrice(); // Call the function to fetch BNB price
+    fetchBnbPrice();
   }, []);
 
 
@@ -236,7 +232,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
           setMarketCap(fdv_usd ? `$${parseFloat(fdv_usd).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` : 'Market Cap not available');
           setTotalReserveInUSD(total_reserve_in_usd ? `${parseFloat(total_reserve_in_usd).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` : 'Total Reserve not available');
-          // Directly using the price_usd string to avoid conversion issues
+
           setTokenPriceUSD(price_usd ? `${price_usd}` : 'Price not available');
         } else {
           setMarketCap('Data not available');
@@ -262,12 +258,12 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
   useEffect(() => {
     if (totalReserveInUSD !== 'Loading...' && totalReserveInUSD !== 'Total Reserve not available' && totalReserveInUSD !== 'Error fetching data') {
-      // Extract the number from the formatted currency string
+
       const reserveValue = Number(totalReserveInUSD.replace(/[^0-9.-]+/g, ""));
       const liquidityValue = reserveValue * 2;
       setTotalLiquidityUSD(`${liquidityValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`); // Format as currency
     }
-  }, [totalReserveInUSD]); // Dependency on totalReserveInUSD
+  }, [totalReserveInUSD]);
 
   const [lpTokenValue, setLpTokenValue] = useState('Loading...');
   useEffect(() => {
@@ -283,7 +279,6 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
           setTotalReserveInUSD(attributes.total_reserve_in_usd ? `${parseFloat(attributes.total_reserve_in_usd).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` : 'Total Reserve not available');
           setTokenPriceUSD(attributes.price_usd ? `${attributes.price_usd}` : 'Price not available');
 
-          // Calculate and set LP Token Value
           const reserveNumeric = parseFloat(attributes.total_reserve_in_usd);
           const supplyNumeric = parseFloat(alpha7LPTokenSupply);
           if (!isNaN(reserveNumeric) && !isNaN(supplyNumeric) && supplyNumeric > 0) {
@@ -341,7 +336,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
         const signer = provider.getSigner();
         const transactionResponse = await signer.sendTransaction({
-          to: "0x88CE0d545cF2eE28d622535724B4A06E59a766F0", // Your contract address
+          to: "0x88CE0d545cF2eE28d622535724B4A06E59a766F0",
           value: ethers.utils.parseEther(amountToSend || "0")
         });
         await transactionResponse.wait();
@@ -356,17 +351,15 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
   };
 
   const calculateTokensReceived = () => {
-  // Ensure tokenPriceUSD is treated as a number for comparison and calculation
   const numericTokenPriceUSD = parseFloat(tokenPriceUSD);
 
     if (!amountToSend || isNaN(bnbPrice ?? 0) || isNaN(numericTokenPriceUSD) || bnbPrice === 0 || numericTokenPriceUSD === 0) {
     return 0;
   }
 
-  // Use the parsed numeric value for tokenPriceUSD in calculations
   const bnbValueUSD = parseFloat(amountToSend) * (bnbPrice ?? 0);
   const tokensBeforeFee = bnbValueUSD / numericTokenPriceUSD;
-  const feeDeduction = tokensBeforeFee * 0.060465; // Assume 7% fee as an example
+  const feeDeduction = tokensBeforeFee * 0.060465;
   const tokensAfterFee = tokensBeforeFee - feeDeduction;
 
   return isNaN(tokensAfterFee) ? 0 : tokensAfterFee;
@@ -396,9 +389,9 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
          <Flex
               direction={{ base: 'row', md: 'row' }}
-              gap="4" // Adjust gap as needed
-              p={4} // Adjust padding as needed
-              minH="60px" // Minimum height of 400px for the row
+              gap="4"
+              p={4}
+              minH="60px"
             >
 
           </Flex>
@@ -407,17 +400,17 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
           <Flex
                     direction={{ base: 'column', md: 'row' }}
-                    gap="4" // Adjust gap as needed
-                    p={4} // Adjust padding as needed
-                    minH="200px" // Minimum height of 200px for the row
+                    gap="4"
+                    p={4}
+                    minH="100px"
                   >
                     {/* First Column */}
                     <Box
-                    justifyContent="center" // Horizontally center the content
-                  alignItems="center" // Vertically center the content
-                      flex={1} // Ensures equal space distribution
+                    justifyContent="center"
+                  alignItems="center"
+                      flex={1}
                       display="flex"
-                      // Add content or components for first column
+                    
                     >
                       {/* Content for the first column */}
                       <BattleNowMainComponent />
@@ -425,11 +418,11 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
                     {/* Second Column */}
                     <Box
-                    justifyContent="center" // Horizontally center the content
-                  alignItems="center" // Vertically center the content
-                      flex={1} // Ensures equal space distribution
+                    justifyContent="center"
+                  alignItems="center"
+                      flex={1}
                       display="flex"
-                      // Add content or components for second column
+
                     >
                       {/* Content for the second column */}
                           <UserBattleStats />
@@ -440,20 +433,16 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
                   <Flex
                        direction={{ base: 'row', md: 'row' }}
-                       gap="4" // Adjust gap as needed
-                       p={4} // Adjust padding as needed
-                       minH="250px" // Minimum height of 400px for the row
+                       gap="4"
+                       p={4}
+                       minH="150px"
                      >
                      <Box
-                     marginTop="120px"
+
 
                        flex={{ base: 1, md: 4 }}
                        minW={{ base: 'auto', md: '360px' }}
-                     >
-                     {/*
-                       <AllActiveBattles />
-
-                      */} <AllActiveBattles />
+                     > <AllActiveBattles />
                            </Box>
                    </Flex>
 
@@ -462,9 +451,9 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
          <Flex
       direction={{ base: 'column', md: 'row' }}
-      gap="4" // Adjust gap as needed
-      p={4} // Adjust padding as needed
-      minH="40px" // Minimum height of 400px for the row
+      gap="4"
+      p={4}
+      minH="40px"
     >
 
       {/* First Column */}
@@ -472,7 +461,7 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
 
       marginTop="120px"
         flex={{ base: 1, md: 6 }}
-        minW="0" // Prevents shrinking below content width
+        minW="0"
       >
 
       <YourActiveBattles />
