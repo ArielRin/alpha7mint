@@ -3,6 +3,8 @@ import Buy from './Pages/Buy';
 import Staking from './Pages/Staking';
 import MintPage from './Pages/MintPage';
 import Battle from './Pages/Battle';
+
+import BattleCompetition from './Pages/BattleCompetition';
 import Values from './Pages/Values';
 import AllDawgz from './Pages/TheDawgz/AllDawgz';
 import TheDawgz from './Pages/TheDawgz/TheDawgz';
@@ -172,10 +174,10 @@ useEffect(() => {
               <Route path="/staking" element={<Staking />} />
               <Route path="/mint" element={<MintPage />} />
                 <Route path="/battle" element={<Battle />} />
-              <Route path="/thedawgz" element={<TheDawgz />} />
-                <Route path="/values" element={<Values />} />
-                  <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
-Staking
+                  <Route path="/BattleCompetition" element={<BattleCompetition />} />
+                    <Route path="/thedawgz" element={<TheDawgz />} />
+                      <Route path="/values" element={<Values />} />
+                        <Route path="/nftdetails/:tokenId" element={<NftDetails />} />
             </Routes>
         </Router>
       </TokenPriceContext.Provider>

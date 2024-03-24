@@ -409,9 +409,22 @@ const [nftTreasuryWalletLPTokenBalance, setNftTreasuryWalletLPTokenBalance] = us
              gap="4" // Adjust gap as needed
              bg="rgba(0, 0, 0, 1)"
              p={4} // Adjust padding as needed
-             minH="140px" // Minimum height of 400px for the row
+             minH="90px" // Minimum height of 400px for the row
            >
          </Flex>
+
+         <Flex
+              direction={{ base: 'column', md: 'row' }}
+              gap="4" // Adjust gap as needed
+              bg="rgba(0, 0, 0, 1)"
+              p={4} // Adjust padding as needed
+              minH="140px" // Minimum height of 400px for the row
+            >
+
+            <Heading textAlign="center" color="white" mb="30px">Alpha7's Very First Battle Tournament Starts in next 24hours</Heading>
+First Battle Tournament Starts in next 24hours
+
+          </Flex>
 
 
          <Flex
