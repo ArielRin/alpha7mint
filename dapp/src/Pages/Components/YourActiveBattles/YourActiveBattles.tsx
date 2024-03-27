@@ -140,23 +140,31 @@ const provider = new ethers.providers.Web3Provider(window.ethereum as any);
 
 
    //-------------------//-----------------------//------------------------//
-const startBattleManually = async (battleId: number) => {
-       if (window.ethereum) {
-       try {
-         setIsLoading(true);
-         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-         const signer = provider.getSigner();
-         const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
+   const startBattleManually = async (battleId: number) => {
+   if (window.ethereum) {
+     try {
+       setIsLoading(true);
+       const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+       const signer = provider.getSigner();
+       const battleContract = new ethers.Contract(BATTLE_CONTRACT_ADDRESS, dawgBattleAbi, signer);
 
-         const tx = await battleContract.startBattleManually(battleId);
-         await tx.wait();
-       } catch (error) {
-         console.error("Error starting battle manually:", error);
-       } finally {
-         setIsLoading(false);
-       }
+       // Specify a custom gas price of 4 Gwei, directly in wei
+       const gasPrice = ethers.BigNumber.from("4000000000"); // 4 Gwei in wei
+
+       // Specify a custom gas limit
+       const gasLimit = ethers.BigNumber.from(300000); // Custom gas limit of 300,000
+
+       // Include the custom gas price and gas limit in the transaction options
+       const tx = await battleContract.startBattleManually(battleId, { gasPrice, gasLimit });
+       await tx.wait();
+     } catch (error) {
+       console.error("Error starting battle manually:", error);
+     } finally {
+       setIsLoading(false);
      }
-   };
+   }
+ };
+
 
 
         //-------------------//-----------------------//------------------------//

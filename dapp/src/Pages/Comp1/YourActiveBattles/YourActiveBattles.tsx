@@ -12,7 +12,7 @@ import DawgRegistration from '../../Components/DawgRegistration/DawgRegistration
 import a7Logo from './headerlogo.png';
 
 // const BATTLE_CONTRACT_ADDRESS = 'x0e96F3C42d594EBbfD0835d92FDab28014233182';
-const BATTLE_CONTRACT_ADDRESS = '0x0460eCB4cf623C83Ac066347de9F4Bf5A0A6495c';
+const BATTLE_CONTRACT_ADDRESS = '0x6b9f10c6B8fA69EbA3d870B2e5002067244950f1';
 import dawgBattleAbi from './dawgBattleAbi.json';
 
 

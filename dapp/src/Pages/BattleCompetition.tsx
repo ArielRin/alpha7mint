@@ -6,7 +6,7 @@ import BnbPriceContext from '../Pages/BnbPriceContext'; // //
 import HeaderWithDropdown from './Components/HeaderWithDropdown/HeaderWithDropdown';
 // <HeaderWithDropdown />
 
-import Leaderboard from './Comp1/Leaderboard/Leaderboard';
+import Leaderboard from './Comp1/Leaderboard/UserLeaderboard';
 // <Leaderboard />
 
 import YourComplatedBattles from './Comp1/YourActiveBattles/YourCompletedBattles';
@@ -21,7 +21,7 @@ import AllActiveBattles from './Comp1/YourActiveBattles/AllActiveBattles';
 import BattleNowMainComponent from './Comp1/QuickBattleComponent/BattleNowMainComponent';
 // // <BattleNowMainComponent />
 
-import UserBattleStats from './Components/UserProfile/UserBattleStats';
+import UserBattleStats from './Comp1/UserProfile/UserBattleStats';
 // <UserBattleStats />
 
 
@@ -70,7 +70,7 @@ import {
 } from "@chakra-ui/react";
 
 
-import mainbackgroundImage from "./redbkg.png";
+import mainbackgroundImage from "./competition1.png";
 import tokenGif from "./token.gif";
 import a7Logo from "./headerlogo.png";
 import dawgImage from "./token.gif";

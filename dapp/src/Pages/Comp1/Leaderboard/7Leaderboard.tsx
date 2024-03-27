@@ -88,30 +88,45 @@ const Leaderboard: React.FC = () => {
 
 
   return (
-    <div className="leaderboardtop">
-      <h2 style={{ width: '100%', textAlign: 'center', fontSize: '28px', fontWeight: 'bold', color: 'white', marginBottom: '0px' }}>
-        Current AlphaDawg!
-      </h2>
+    <div className="leaderboard">
+    <h2 style={{ width: '100%', textAlign: 'center', fontSize: '32px', fontWeight: 'bold',  color: 'white', marginBottom: '0px' }}>
+      Top Dawgz Leaderboard
+    </h2>
 
-      {leaderboardData.length > 0 && (
-        <Flex className="leaderboard-entry" align="center" justify="space-between" p="2" borderWidth="1px" borderRadius="md" mb="2">
+    {leaderboardData.map((data, index) => (
+      <Flex className="leaderboard-entry" key={index} align="center" justify="space-between" p="2" borderWidth="1px" borderRadius="md" mb="2">
+        <Box w="5%">
+          <Text fontSize="20px" fontWeight="bold" color="white">
+            {index + 1}
+          </Text>
+        </Box>
+        <Box w="15%" textAlign="center">
+          <Image
+            src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/NFTDATA/Image/${data.tokenId}.png`}
+            alt={`#${data.tokenId}`}
+            boxSize="80px"
+            borderRadius="md"
+          />
+        </Box>
+        <Box w="30%" textAlign="left">
+          <Text fontSize="20px" fontWeight="bold" color="white">
+          {`#${data.tokenId}`}  {data.dawgzName ? data.dawgzName : 'Stray Dawg'}
+          </Text>
+        </Box>
+        <Box w="20%" textAlign="right">
+          <Text fontSize="20px" fontWeight="bold" color="white">
+            Wins: {data.timesWon}
+          </Text>
+        </Box>
+        <Box w="30%" textAlign="right">
+          <Text fontSize="20px" fontWeight="bold" color="white">
+            {parseFloat(data.valueEarned).toFixed(4)} BNB
+          </Text>
+        </Box>
+      </Flex>
+    ))}
+  </div>
 
-          <Box w="55%" textAlign="center">
-            <Image
-              src={`https://raw.githubusercontent.com/ArielRin/alpha7mint/day-12/NFTDATA/Image/${leaderboardData[0].tokenId}.png`}
-              alt={`#${leaderboardData[0].tokenId}`}
-              boxSize="100%"
-              borderRadius="md"
-            />
-          </Box>
-          <Box w="45%" textAlign="center">
-            <Text fontSize="20px" fontWeight="bold" color="white">
-              {`#${leaderboardData[0].tokenId}`}  {leaderboardData[0].dawgzName ? leaderboardData[0].dawgzName : 'Stray Dawg'}
-            </Text>
-          </Box>
-        </Flex>
-      )}
-    </div>
   );
 };
 

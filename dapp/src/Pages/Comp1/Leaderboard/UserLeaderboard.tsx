@@ -54,8 +54,8 @@ const Leaderboard: React.FC = () => {
 
 
   return (
-  <Box w="full" mx="auto" p={5} borderWidth="1px" borderColor="gray.200" borderRadius="lg" overflow="hidden" bg="black">
-    <Text fontSize="2xl" pb={4} textAlign="center" fontWeight="bold" color="gray.200">User Leaderboard Tournament 1</Text>
+  <Box w="full"  p={0}  bg="black">
+    <Text fontSize="2xl" pb={4} textAlign="center" fontWeight="bold" color="gray.200">User Leaderboard Tournament</Text>
     {isLoading ? (
       <Flex justify="center" alignItems="center" height="200px">
         <Text fontSize="lg" color="gray.500">Loading...</Text>
@@ -65,13 +65,20 @@ const Leaderboard: React.FC = () => {
         {leaderboardData.length > 0 ? (
           <Flex direction="column" gap="4">
             {leaderboardData.map((entry, index) => (
-              <Box key={index} p={4} borderWidth="1px" borderRadius="md" borderColor="gray.100" bg="gray.800" shadow="sm">
+              <Box key={index} p={1} borderWidth="1px" borderRadius="md" borderColor="gray.100" bg="gray.800" shadow="sm">
                 <Flex justify="space-between" align="center">
+                <Box w="6%" textAlign="left">
                   <Text color="white" fontWeight="bold" fontSize="md">{index + 1}.</Text>
-                  <Text color="white" fontSize="sm">
+               </Box>
+               <Box w="60%" textAlign="center">
+                  <Text color="white" fontWeight="bold" fontSize="md">
                     {`${entry.address.substring(0, 2)}.....${entry.address.substring(entry.address.length - 6)}`}
                   </Text>
+              </Box>
+              <Box w="34%" p={2} textAlign="right">
+
                     <Text  fontWeight="bold" color="gray.100">Wins: {entry.wins}</Text>
+              </Box>
                 </Flex>
               </Box>
             ))}

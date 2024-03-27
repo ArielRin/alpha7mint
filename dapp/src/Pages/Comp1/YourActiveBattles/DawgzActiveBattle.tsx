@@ -6,7 +6,7 @@ import { Box, Image, Text, Flex, Button } from '@chakra-ui/react';
 import a7Logo from './headerlogo.png';
 import dawgBattleAbi from './dawgBattleAbi.json';
 
-const BATTLE_CONTRACT_ADDRESS = '0x0460eCB4cf623C83Ac066347de9F4Bf5A0A6495c';
+const BATTLE_CONTRACT_ADDRESS = '0x6b9f10c6B8fA69EbA3d870B2e5002067244950f1';
 
 interface BattleDetails {
   id: number;
